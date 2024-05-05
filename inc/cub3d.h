@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/05/05 19:08:48 by momrane          ###   ########.fr       */
+/*   Updated: 2024/05/05 19:28:43 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,17 @@
 # define SUCCESS 0
 # define FAILURE 1
 
+typedef struct s_cub3d
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+}			t_cub3d;
+
 /*	UTILS	*/
-int	ft_strcmp(char *s1, char *s2);
+int		ft_strcmp(char *s1, char *s2);
+void	ft_free_cube3d(t_cub3d *cub3d);
 
 /*	PARSING	*/
-int	ft_parsing(int ac, char **av);
+int		ft_parsing(int ac, char **av);
 
 #endif
