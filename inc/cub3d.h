@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/13 15:29:57 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/13 19:04:36 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,27 @@
 # define SUCCESS 0
 # define FAILURE 1
 
-typedef struct s_cub3d
+typedef struct s_img
+{
+    void	*mlx_img;	// what is returned by mlx_new_image()
+    char	*addr;
+    int		bpp; /* bits per pixel */
+    int		line_len;
+    int		endian;
+}	t_img;
+
+typedef struct s_mlx
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
+}			t_mlx;
+
+typedef struct s_cub3d
+{
+	t_mlx	mlx;
+	t_img	img;
+	int		width;
+	int		height;
 }			t_cub3d;
 
 /*	UTILS	*/

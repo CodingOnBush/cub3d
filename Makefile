@@ -6,7 +6,7 @@
 #    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/05/05 19:33:21 by momrane          ###   ########.fr        #
+#    Updated: 2024/06/13 17:01:01 by momrane          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,50 +36,60 @@ LIBS 			= $(LIBFT) $(MINILIBX)
 
 # Compilation
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -g3
+CFLAGS			= -g3#-Wall -Wextra -Werror
 MLX_FLAGS		= -Lmlx -L/$(LIB_DIR) -Imlx -lXext -lX11 -lm -lz
 
 # Sources
 PARSING		:=	$(PARSING_DIR)/parsing.c
+
 UTILS		:=	$(UTILS_DIR)/utils.c $(UTILS_DIR)/free.c
+
 SRC			:=	$(SRC_DIR)/main.c $(PARSING) $(UTILS)
 
 # Objects
 OBJ			:=	$(SRC:$(SRC_DIR)/%.c=$(BIN_DIR)/%.o)
 
-val: $(NAME)
-	@valgrind ./$(NAME)
-
 all: $(NAME)
 
+e: all
+	@./$(NAME)
+
+v: $(NAME)
+	@valgrind ./$(NAME)
+
 $(NAME): $(LIBS) $(OBJ)
-	@$(CC) -I $(INC_DIR) $(OBJ) $(LIBS) $(MLX_FLAGS) -o ./$(NAME)
+	$(CC) -I $(INC_DIR) $(OBJ) $(LIBS) $(MLX_FLAGS) -o ./$(NAME)
 	@echo "$(GREEN)cub3d compiled !$(DEF_COLOR)"
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -I $(INC_DIR) -Imlx -O3 -c $< -o $@
 
-# libft
+# ---------------------------------- LIBS ---------------------------------- #
 $(LIBFT):
 	@make -sC $(LIBFT_DIR)
 
 $(MINILIBX):
 	@make -sC $(MINILIBX_DIR) all
 
+# ---------------------------------- CLEAN ---------------------------------- #
+cleanlibs:
+	@make -sC $(LIBFT_DIR) fclean
+	@make -sC $(MINILIBX_DIR) clean
+
 clean:
-	@make -sC ./lib/mlx clean
-	@make -sC ./lib/libft clean
 	@rm -rf $(BIN_DIR)
 	@echo "$(CYAN)Binaries files has been cleaned !$(DEF_COLOR)"
 
-fclean: clean
-	@make -sC ./lib/mlx clean
-	@make -sC ./lib/libft fclean
+fclean:
 	@rm -f $(NAME)
 	@echo "$(CYAN)The exec files has been cleaned !$(DEF_COLOR)"
 
 re: fclean clean all
+	@echo "$(GREEN)bin files cleaned and exec rebuilt !$(DEF_COLOR)"
+
+refull: cleanlibs re
 	@echo "$(GREEN)Everything cleaned and rebuilt !$(DEF_COLOR)"
 
-.PHONY: all clean fclean re
+# ---------------------------------- PHONY ---------------------------------- #
+.PHONY: all clean fclean re refull v cleanlibs e
