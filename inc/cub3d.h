@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/05/05 19:28:43 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/13 15:29:57 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,10 @@
 
 // open
 # include <sys/stat.h>
-# include <fcntl.h>
-// close - read - write
-# include <unistd.h>
-// printf - perror
-# include <stdio.h>
-// malloc - free - exit
-# include <stdlib.h>
-// strerror 
+# include <fcntl.h>		// close - read - write
+# include <unistd.h>	// printf - perror
+# include <stdio.h>		// malloc - free - exit
+# include <stdlib.h>	// strerror 
 # include <string.h>
 // lib math - "Toutes les fonctions de la lib math (-lm man man 3 math)""
 // minilibx - "Toutes les fonctions de la MinilibX"
