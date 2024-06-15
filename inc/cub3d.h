@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: allblue <allblue@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/13 19:04:36 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/15 17:51:37 by allblue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,23 @@ typedef struct s_mlx
 	void	*win_ptr;
 }			t_mlx;
 
+typedef struct s_cst
+{
+	double	ms;
+	double	rs;
+	int		width;
+	int		height;
+	double	planeX;
+	double	planeY;
+	double	dirX;
+	double	dirY;
+}			t_cst;
+
 typedef struct s_cub3d
 {
 	t_mlx	mlx;
 	t_img	img;
-	int		width;
-	int		height;
+	t_cst	cst;
 }			t_cub3d;
 
 /*	UTILS	*/
