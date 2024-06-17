@@ -6,7 +6,7 @@
 #    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/06/17 14:33:24 by momrane          ###   ########.fr        #
+#    Updated: 2024/06/17 17:09:16 by momrane          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,11 +81,12 @@ clean:
 	@rm -rf $(BIN_DIR)
 	@echo "$(CYAN)Binaries files has been cleaned !$(DEF_COLOR)"
 
-fclean:
+fclean: cleanlibs clean
 	@rm -f $(NAME)
 	@echo "$(CYAN)The exec files has been cleaned !$(DEF_COLOR)"
 
-re: fclean clean all
+re: clean all
+	@rm -f $(NAME)
 	@echo "$(GREEN)bin files cleaned and exec rebuilt !$(DEF_COLOR)"
 
 refull: cleanlibs re

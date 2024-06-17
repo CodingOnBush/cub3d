@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/17 15:01:16 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/17 16:56:30 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,31 +122,53 @@ int	render(t_cub3d *c)
 		double cameraX = ((2 * col) / (double)c->cst.width) - 1;
 		double rayDirX = c->cst.dirX + c->cst.planeX * cameraX;
 		double rayDirY = c->cst.dirY + c->cst.planeY * cameraX;
-		int mapX = (int)(posX);
-		int mapY = (int)(posY);
-		double sideDistX;
-		double sideDistY;
-		double deltaDistX = (rayDirX == 0) ? 1e30 : fabs(1 / rayDirX);
-		double deltaDistY = (rayDirY == 0) ? 1e30 : fabs(1 / rayDirY);
+		int mapX = (int)posX;
+		int mapY = (int)posY;
+		double	sideDistX;
+		double	sideDistY;
+		double	deltaDistX;
+		double	deltaDistY;
+		
+		if (rayDirX == 0)
+			deltaDistX = 1e30;
+		else
+			deltaDistX = fabs(1 / rayDirX);
+
+		if (rayDirY == 0)
+			deltaDistY = 1e30;
+		else
+			deltaDistY = fabs(1 / rayDirY);
+		
+		
+
 		double perpWallDist;
 		int stepX;
 		int stepY;
 		int hit = 0;
 		int side;
 
-		stepX = 1;
-		stepY = 1;
 		if(rayDirX < 0)
 			stepX = -1;
+		else
+			stepX = 1;
+		
 		if(rayDirY < 0)
 			stepY = -1;
+		else
+			stepY = 1;
 
-		sideDistX = (mapX + 1.0 - posX) * deltaDistX;
-		sideDistY = (mapY + 1.0 - posY) * deltaDistY;
+			
+		
 		if(rayDirX < 0)
 			sideDistX = (posX - mapX) * deltaDistX;
+		else
+			sideDistX = (mapX + 1.0 - posX) * deltaDistX;
+
 		if(rayDirY < 0)
 			sideDistY = (posY - mapY) * deltaDistY;
+		else
+			sideDistY = (mapY + 1.0 - posY) * deltaDistY;
+		
 
 		//perform DDA
 		while(hit == 0)
@@ -160,6 +182,7 @@ int	render(t_cub3d *c)
 			}
 			else
 			{
+				printf("HEYYYY\n");
 			  sideDistY += deltaDistY;
 			  mapY += stepY;
 			  side = 1;
@@ -170,9 +193,10 @@ int	render(t_cub3d *c)
 		}
 
 		//Calculate distance projected on camera direction (Euclidean distance would give fisheye effect!)
-		perpWallDist = (sideDistY - deltaDistY);
 		if(side == 0)
 			perpWallDist = (sideDistX - deltaDistX);
+		else
+			perpWallDist = (sideDistY - deltaDistY);
 
 		ft_draw_column(c, col, perpWallDist);
 	}
@@ -198,13 +222,13 @@ int	main(int ac, char **av)
 
 	env.cst.width = 640;
 	env.cst.height = 480;
+	env.cst.ms = 0.5;
+	env.cst.rs = 0.5;
+	
 	env.cst.planeX = 0;
 	env.cst.planeY = 0.66;
 	env.cst.dirX = -1;
 	env.cst.dirY = 0;
-	
-	env.cst.ms = 0.5;
-	env.cst.rs = 0.5;
 	
 	env.mlx.mlx_ptr = mlx_init();
 	if (!(env.mlx.mlx_ptr))
