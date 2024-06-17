@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/17 16:56:30 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/17 18:41:37 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,14 @@ int worldMap[24][24]=
 
 double posX = 22, posY = 12;  //col and y start position
 
+
+static void	ft_pixel_put(t_img img, int col, int y, int color)
+{
+	char	*dst;
+
+	dst = img.addr + (y * img.line_len + col * (img.bpp / 8));
+	*(unsigned int *)dst = color;
+}
 
 
 
@@ -115,8 +123,14 @@ int	ft_key_hook(int keycode, t_cub3d *c)
 
 int	render(t_cub3d *c)
 {
+	int	w = 64;
+	int	h = 64;
 	c->img.mlx_img = mlx_new_image(c->mlx.mlx_ptr, c->cst.width, c->cst.height);
 	c->img.addr = mlx_get_data_addr(c->img.mlx_img, &c->img.bpp, &c->img.line_len, &c->img.endian);
+	
+	c->buf.mlx_img = mlx_xpm_file_to_image(c->mlx.mlx_ptr, "redbrick.xpm", &w, &h);
+	c->buf.addr = mlx_get_data_addr(c->buf.mlx_img, &c->buf.bpp, &c->buf.line_len, &c->buf.endian);
+	
 	for (int col = 0; col < c->cst.width; col++)
 	{
 		double cameraX = ((2 * col) / (double)c->cst.width) - 1;
@@ -182,7 +196,6 @@ int	render(t_cub3d *c)
 			}
 			else
 			{
-				printf("HEYYYY\n");
 			  sideDistY += deltaDistY;
 			  mapY += stepY;
 			  side = 1;
@@ -202,8 +215,31 @@ int	render(t_cub3d *c)
 	}
 
 
+	/*
+	
+	static void	ft_pixel_put(t_img img, int col, int y, int color)
+	char	*dst;
+
+	dst = img.addr + (y * img.line_len + col * (img.bpp / 8));
+	*(unsigned int *)dst = color;
+	
+	*/
+	
+	// char *tmp;
+	// int i = 0;
+	// for (int x = 0; x < 64; x++)
+	// {
+	// 	for (int y = 0; y < 64; y++)
+	// 	{
+	// 		tmp = (unsigned int *)(c->buf.addr + (y * c->buf.line_len + x * (c->buf.bpp / 8)));
+	// 		ft_pixel_put(c->img, x, y, *(unsigned int *)tmp);
+	// 		i++;
+	// 	}
+	// }
+
 	mlx_put_image_to_window(c->mlx.mlx_ptr, c->mlx.win_ptr, c->img.mlx_img, 0, 0);
 	mlx_destroy_image(c->mlx.mlx_ptr, c->img.mlx_img);
+	mlx_destroy_image(c->mlx.mlx_ptr, c->buf.mlx_img);
 
 	
 	return (0);

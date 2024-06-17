@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/17 14:58:22 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/17 17:48:13 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_cub3d
 {
 	t_mlx	mlx;
 	t_img	img;
+	t_img	buf;
 	t_cst	cst;
 	t_sim	sim;
 }			t_cub3d;

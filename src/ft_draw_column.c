@@ -30,7 +30,7 @@ void	ft_draw_column(t_cub3d *c, int x, double perpWallDist)
 	}
 	while (i < drawEnd)
 	{
-		ft_pixel_put(c->img, x, i, 0x000000);
+		ft_pixel_put(c->img, x, i, *(unsigned int *)(c->buf.addr + (i * c->buf.line_len + x * (c->buf.bpp / 8))));
 		i++;
 	}
 	while (i < c->cst.height)
