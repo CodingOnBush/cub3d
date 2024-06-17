@@ -6,7 +6,7 @@
 /*   By: allblue <allblue@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/15 17:51:37 by allblue          ###   ########.fr       */
+/*   Updated: 2024/06/17 09:47:02 by allblue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,27 @@ typedef struct s_cst
 	double	rs;
 	int		width;
 	int		height;
-	double	planeX;
-	double	planeY;
-	double	dirX;
-	double	dirY;
+	double	planeX;	//the 2d raycaster version of camera plane
+	double	planeY;	//the 2d raycaster version of camera plane
+	double	dirX;	//initial direction vector
+	double	dirY;	//initial direction vector
 }			t_cst;
+
+typedef struct s_sim
+{
+	char	**map;	// map
+	int		mapw;	// map width
+	int		maph;	// map height
+	double	px;		// x position of the player
+	double	py;		// y position of the player
+}		t_sim;
 
 typedef struct s_cub3d
 {
 	t_mlx	mlx;
 	t_img	img;
 	t_cst	cst;
+	t_sim	sim;
 }			t_cub3d;
 
 /*	UTILS	*/

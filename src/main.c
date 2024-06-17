@@ -6,7 +6,7 @@
 /*   By: allblue <allblue@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/15 17:54:26 by allblue          ###   ########.fr       */
+/*   Updated: 2024/06/17 09:54:28 by allblue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,6 @@ static int	ft_win_cross(t_cub3d *param)
 	exit(0);
 	return (0);
 }
-
-
-#define mapWidth 24
-#define mapHeight 24
-// #define screenWidth 640
-// #define screenHeight 480
 
 int worldMap[24][24]=
 {
@@ -57,15 +51,6 @@ int worldMap[24][24]=
 };
 
 double posX = 22, posY = 12;  //x and y start position
-// double dirX = -1, dirY = 0; //initial direction vector
-// double planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
-
-// double time = 0; //time of current frame
-// double oldTime = 0; //time of previous frame
-
-// double moveSpeed = 0.1; //the constant value is in squares/second
-// double rotSpeed = 0.1; //the constant value is in radians/second
-
 
 void	ft_pixel_put(t_img img, int x, int y, int color)
 {
@@ -126,7 +111,7 @@ int	render(t_cub3d *c)
 	c->img.addr = mlx_get_data_addr(c->img.mlx_img, &c->img.bpp, &c->img.line_len, &c->img.endian);
 	for (size_t x = 0; x < c->cst.width; x++)
 	{
-		double cameraX = 2 * x / (double)c->cst.width - 1; 
+		double cameraX = 2 * x / (double)c->cst.width - 1;
 		double rayDirX = c->cst.dirX + c->cst.planeX * cameraX;
 		double rayDirY = c->cst.dirY + c->cst.planeY * cameraX;
 		int mapX = (int)(posX);
@@ -141,26 +126,19 @@ int	render(t_cub3d *c)
 		int hit = 0;
 		int side;
 
+		stepX = 1;
+		stepY = 1;
 		if(rayDirX < 0)
-		{
 			stepX = -1;
-			sideDistX = (posX - mapX) * deltaDistX;
-		}
-		else
-		{
-			stepX = 1;
-			sideDistX = (mapX + 1.0 - posX) * deltaDistX;
-		}
 		if(rayDirY < 0)
-		{
 			stepY = -1;
+
+		sideDistX = (mapX + 1.0 - posX) * deltaDistX;
+		sideDistY = (mapY + 1.0 - posY) * deltaDistY;
+		if(rayDirX < 0)
+			sideDistX = (posX - mapX) * deltaDistX;
+		if(rayDirY < 0)
 			sideDistY = (posY - mapY) * deltaDistY;
-		}
-		else
-		{
-			stepY = 1;
-			sideDistY = (mapY + 1.0 - posY) * deltaDistY;
-		}
 
 		//perform DDA
 		while(hit == 0)
