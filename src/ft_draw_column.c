@@ -1,6 +1,14 @@
 #include "../inc/cub3d.h"
 
-void	ft_draw_column(t_cub3d c, int x, double perpWallDist)
+static void	ft_pixel_put(t_img img, int col, int y, int color)
+{
+	char	*dst;
+
+	dst = img.addr + (y * img.line_len + col * (img.bpp / 8));
+	*(unsigned int *)dst = color;
+}
+
+void	ft_draw_column(t_cub3d *c, int x, double perpWallDist)
 {
 	int lineHeight;
 	int drawStart;
@@ -8,17 +16,26 @@ void	ft_draw_column(t_cub3d c, int x, double perpWallDist)
 	int	i;
 
 	i = 0;
-	lineHeight = (int)(c.cst.height / perpWallDist);
-	drawStart = (-lineHeight / 2) + (c.cst.height / 2);
-	drawEnd = lineHeight / 2 + c.cst.height / 2;
+	lineHeight = (int)(c->cst.height / perpWallDist);
+	drawStart = (-lineHeight / 2) + (c->cst.height / 2);
+	drawEnd = lineHeight / 2 + c->cst.height / 2;
 	if(drawStart < 0)
 		drawStart = 0;
-	if(drawEnd >= c.cst.height)
-		drawEnd = c.cst.height - 1;
+	if(drawEnd >= c->cst.height)
+		drawEnd = c->cst.height - 1;
 	while (i < drawStart)
-		ft_pixel_put(c.img, x, i++, 0xFF0000);
+	{
+		ft_pixel_put(c->img, x, i, 0xFFFFFF);
+		i++;
+	}
 	while (i < drawEnd)
-		ft_pixel_put(c.img, x, i++, 0x00FF00);
-	while (i < c.cst.height)
-		ft_pixel_put(c.img, x, i++, 0x00FF00);
+	{
+		ft_pixel_put(c->img, x, i, 0x000000);
+		i++;
+	}
+	while (i < c->cst.height)
+	{
+		ft_pixel_put(c->img, x, i, 0xFFFFFF);
+		i++;
+	}
 }

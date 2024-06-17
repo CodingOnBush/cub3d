@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allblue <allblue@student.42.fr>            +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/17 09:47:02 by allblue          ###   ########.fr       */
+/*   Updated: 2024/06/17 14:58:22 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # define SUCCESS 0
 # define FAILURE 1
 
+# define M_PI 3.14159265358979323846
+
 typedef struct s_img
 {
     void	*mlx_img;	// what is returned by mlx_new_image()
@@ -39,7 +41,7 @@ typedef struct s_img
     int		bpp; /* bits per pixel */
     int		line_len;
     int		endian;
-}	t_img;
+}			t_img;
 
 typedef struct s_mlx
 {
@@ -49,10 +51,11 @@ typedef struct s_mlx
 
 typedef struct s_cst
 {
-	double	ms;
-	double	rs;
-	int		width;
-	int		height;
+	double	ms;		// move speed
+	double	rs;		// rotation speed
+	int		width;	// window width
+	int		height;	// window height
+	
 	double	planeX;	//the 2d raycaster version of camera plane
 	double	planeY;	//the 2d raycaster version of camera plane
 	double	dirX;	//initial direction vector
@@ -66,7 +69,7 @@ typedef struct s_sim
 	int		maph;	// map height
 	double	px;		// x position of the player
 	double	py;		// y position of the player
-}		t_sim;
+}			t_sim;
 
 typedef struct s_cub3d
 {
@@ -82,5 +85,7 @@ void	ft_free_cube3d(t_cub3d *cub3d);
 
 /*	PARSING	*/
 int		ft_parsing(int ac, char **av);
+
+void	ft_draw_column(t_cub3d *c, int x, double perpWallDist);
 
 #endif

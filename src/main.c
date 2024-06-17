@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allblue <allblue@student.42.fr>            +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/17 09:54:28 by allblue          ###   ########.fr       */
+/*   Updated: 2024/06/17 15:01:16 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,9 @@ int worldMap[24][24]=
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
 
-double posX = 22, posY = 12;  //x and y start position
+double posX = 22, posY = 12;  //col and y start position
 
-void	ft_pixel_put(t_img img, int x, int y, int color)
-{
-	char	*dst;
 
-	dst = img.addr + (y * img.line_len + x * (img.bpp / 8));
-	*(unsigned int *)dst = color;
-}
 
 
 int	ft_key_hook(int keycode, t_cub3d *c)
@@ -102,6 +96,20 @@ int	ft_key_hook(int keycode, t_cub3d *c)
 		ft_free_cube3d(c);
 		exit(0);
 	}
+	else if (keycode == XK_a)
+	{
+		c->cst.planeY += 0.2;
+	}
+	else if (keycode == XK_s)
+	{
+		c->cst.planeY -= 0.2;
+	}
+	
+	printf("posX = %f, posY = %f\n", posX, posY);
+	printf("planeX = %f, planeY = %f\n", c->cst.planeX, c->cst.planeY);
+	printf("dirX = %f, dirY = %f\n\n", c->cst.dirX, c->cst.dirY);
+	printf("planeX = %f, planeY = %f\n", c->cst.planeX, c->cst.planeY);
+	printf("degrees = %f\n", atan(sqrt(pow(c->cst.planeX, 2) + pow(c->cst.planeY, 2))) * 180 / M_PI);
 	return (0);
 }
 
@@ -109,9 +117,9 @@ int	render(t_cub3d *c)
 {
 	c->img.mlx_img = mlx_new_image(c->mlx.mlx_ptr, c->cst.width, c->cst.height);
 	c->img.addr = mlx_get_data_addr(c->img.mlx_img, &c->img.bpp, &c->img.line_len, &c->img.endian);
-	for (size_t x = 0; x < c->cst.width; x++)
+	for (int col = 0; col < c->cst.width; col++)
 	{
-		double cameraX = 2 * x / (double)c->cst.width - 1;
+		double cameraX = ((2 * col) / (double)c->cst.width) - 1;
 		double rayDirX = c->cst.dirX + c->cst.planeX * cameraX;
 		double rayDirY = c->cst.dirY + c->cst.planeY * cameraX;
 		int mapX = (int)(posX);
@@ -143,7 +151,7 @@ int	render(t_cub3d *c)
 		//perform DDA
 		while(hit == 0)
 		{
-			//jump to next map square, either in x-direction, or in y-direction
+			//jump to next map square, either in col-direction, or in y-direction
 			if(sideDistX < sideDistY)
 			{
 			  sideDistX += deltaDistX;
@@ -166,7 +174,7 @@ int	render(t_cub3d *c)
 		if(side == 0)
 			perpWallDist = (sideDistX - deltaDistX);
 
-		ft_draw_column(c, x, perpWallDist);
+		ft_draw_column(c, col, perpWallDist);
 	}
 
 
@@ -194,6 +202,10 @@ int	main(int ac, char **av)
 	env.cst.planeY = 0.66;
 	env.cst.dirX = -1;
 	env.cst.dirY = 0;
+	
+	env.cst.ms = 0.5;
+	env.cst.rs = 0.5;
+	
 	env.mlx.mlx_ptr = mlx_init();
 	if (!(env.mlx.mlx_ptr))
 	{

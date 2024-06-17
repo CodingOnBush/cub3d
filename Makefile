@@ -6,7 +6,7 @@
 #    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/06/13 17:01:01 by momrane          ###   ########.fr        #
+#    Updated: 2024/06/17 14:33:24 by momrane          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ PARSING		:=	$(PARSING_DIR)/parsing.c
 
 UTILS		:=	$(UTILS_DIR)/utils.c $(UTILS_DIR)/free.c
 
-SRC			:=	$(SRC_DIR)/main.c $(PARSING) $(UTILS)
+SRC			:=	$(SRC_DIR)/main.c $(SRC_DIR)/ft_draw_column.c $(PARSING) $(UTILS)
 
 # Objects
 OBJ			:=	$(SRC:$(SRC_DIR)/%.c=$(BIN_DIR)/%.o)
