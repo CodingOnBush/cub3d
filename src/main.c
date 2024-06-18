@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/17 18:41:37 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/18 13:39:16 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,8 @@ int	main(int ac, char **av)
 	env.cst.dirX = -1;
 	env.cst.dirY = 0;
 	
+	if (ft_parsing(ac, av) == FAILURE)
+		return (FAILURE);
 	env.mlx.mlx_ptr = mlx_init();
 	if (!(env.mlx.mlx_ptr))
 	{

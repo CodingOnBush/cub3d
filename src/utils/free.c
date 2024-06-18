@@ -6,7 +6,7 @@
 /*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 19:27:46 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/18 11:54:12 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:18:36 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,24 @@
 
 void	free_data(t_data *data)
 {
-	
+	int i;
+
+	i = 0;
+	while(data->file_info[i])
+	{
+		free(data->file_info[i]);
+		i++;
+	}
+	if (data->file_info)
+		free(data->file_info);
+	if (data->no)
+		free(data->no);
+	if (data->so)
+		free(data->so);
+	if (data->we)
+		free(data->we);
+	if (data->ea)
+		free(data->ea);
 }
 
 void	ft_free_cube3d(t_cub3d *c)

@@ -30,9 +30,6 @@ void	ft_draw_column(t_cub3d *c, int x, double perpWallDist)
 	}
 	while (i < drawEnd)
 	{
-		printf("address: %p\n", c->buf.addr);
-		printf("line_len: %d\n", c->buf.line_len);
-		printf("i * line_len: %d\n", i * c->buf.line_len);
 		ft_pixel_put(c->img, x, i, *(unsigned int *)(c->buf.addr + (i * c->buf.line_len + x * (c->buf.bpp / 8))));
 		i++;
 	}

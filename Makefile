@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
+#    By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/06/17 17:09:16 by momrane          ###   ########.fr        #
+#    Updated: 2024/06/18 15:40:42 by vvaudain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ CFLAGS			= -g3#-Wall -Wextra -Werror
 MLX_FLAGS		= -Lmlx -L/$(LIB_DIR) -Imlx -lXext -lX11 -lm -lz
 
 # Sources
-PARSING		:=	$(PARSING_DIR)/parsing.c
+PARSING		:=	$(PARSING_DIR)/parsing.c $(PARSING_DIR)/parsing_utils.c
 
 UTILS		:=	$(UTILS_DIR)/utils.c $(UTILS_DIR)/free.c
 
@@ -86,7 +86,6 @@ fclean: cleanlibs clean
 	@echo "$(CYAN)The exec files has been cleaned !$(DEF_COLOR)"
 
 re: clean all
-	@rm -f $(NAME)
 	@echo "$(GREEN)bin files cleaned and exec rebuilt !$(DEF_COLOR)"
 
 refull: cleanlibs re
