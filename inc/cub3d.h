@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/17 17:48:13 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/18 11:57:08 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,24 @@ typedef struct s_sim
 	double	py;		// y position of the player
 }			t_sim;
 
+typedef struct s_color
+{
+	int	r;
+	int	g;
+	int	b;
+}			t_color;
+
+typedef struct s_data
+{
+	char 	**file_info;
+	char	*no; //to free
+	char	*so;
+	char	*we;
+	char	*ea;
+	t_color	*f;
+	t_color	*c;
+}			t_data;
+
 typedef struct s_cub3d
 {
 	t_mlx	mlx;
@@ -78,10 +96,12 @@ typedef struct s_cub3d
 	t_img	buf;
 	t_cst	cst;
 	t_sim	sim;
+	t_data	*data;
 }			t_cub3d;
 
 /*	UTILS	*/
 int		ft_strcmp(char *s1, char *s2);
+void	free_data(t_data *data);
 void	ft_free_cube3d(t_cub3d *cub3d);
 
 /*	PARSING	*/
