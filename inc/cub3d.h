@@ -6,7 +6,7 @@
 /*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/18 15:40:08 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:53:33 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	ft_set_color(char *line, t_color *color);
 int		ft_isspace(char c);
 
 /*	PARSING	*/
-int		ft_parsing(int ac, char **av);
+int		ft_parsing(int ac, char **av, t_cub3d *c);
 void	ft_draw_column(t_cub3d *c, int x, double perpWallDist);
 
 #endif
