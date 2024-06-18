@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/05 18:36:20 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/13 14:24:54 by momrane          ###   ########.fr       */
+/*   Created: 2024/05/05 19:27:46 by momrane           #+#    #+#             */
+/*   Updated: 2024/06/18 13:18:36 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/cub3d.h"
+#include "../inc/cub3d.h"
 
-int	ft_strcmp(char *s1, char *s2)
+void	ft_free_cube3d(t_cub3d *c)
 {
-	if (!s1 || !s2)
-		return (1);
-	while (*s1 && *s2)
+	if (!(c->mlx.mlx_ptr))
+		return ;
+	if (c->mlx.win_ptr)
 	{
-		if (*s1 != *s2)
-			return (1);
-		s1++;
-		s2++;
+		mlx_clear_window(c->mlx.mlx_ptr, c->mlx.win_ptr);
+		mlx_destroy_window(c->mlx.mlx_ptr, c->mlx.win_ptr);
 	}
-	if (*s1 != *s2)
-		return (1);
-	return (0);
+	mlx_destroy_display(c->mlx.mlx_ptr);
+	free(c->mlx.mlx_ptr);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/18 11:57:08 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/06/18 17:24:59 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,15 @@
 // lib math - "Toutes les fonctions de la lib math (-lm man man 3 math)""
 // minilibx - "Toutes les fonctions de la MinilibX"
 
+#include <math.h>
+#include <stdbool.h>
+
 # define SUCCESS 0
 # define FAILURE 1
 
 # define M_PI 3.14159265358979323846
+
+extern int worldMap[24][24];
 
 typedef struct s_img
 {
@@ -41,6 +46,8 @@ typedef struct s_img
     int		bpp; /* bits per pixel */
     int		line_len;
     int		endian;
+	int		w;
+	int		h;
 }			t_img;
 
 typedef struct s_mlx
@@ -78,16 +85,24 @@ typedef struct s_color
 	int	b;
 }			t_color;
 
-typedef struct s_data
+typedef struct s_ray
 {
-	char 	**file_info;
-	char	*no; //to free
-	char	*so;
-	char	*we;
-	char	*ea;
-	t_color	*f;
-	t_color	*c;
-}			t_data;
+	double 	cameraX;
+	double 	rayDirX;
+	double	rayDirY;
+	int		mapX;
+	int 	mapY;
+	double	sideDistX;
+	double	sideDistY;
+	double	deltaDistX;
+	double	deltaDistY;
+	double	perpWallDist;
+	int 	stepX;
+	int 	stepY;
+	int 	hit;
+	int 	side;
+	int 	texCol;
+}			t_ray;
 
 typedef struct s_cub3d
 {
@@ -96,17 +111,25 @@ typedef struct s_cub3d
 	t_img	buf;
 	t_cst	cst;
 	t_sim	sim;
-	t_data	*data;
+	t_ray	ray;
 }			t_cub3d;
 
-/*	UTILS	*/
-int		ft_strcmp(char *s1, char *s2);
-void	free_data(t_data *data);
+/*	FREE	*/
 void	ft_free_cube3d(t_cub3d *cub3d);
 
-/*	PARSING	*/
-int		ft_parsing(int ac, char **av);
+void	ft_pixel_put(t_cub3d *c, int col, int y, int color);
+void	ft_draw_column(t_cub3d *c, int col, double perpWallDist);
+void	ft_draw_texture(t_cub3d *c, t_img tex, int zoom);
 
-void	ft_draw_column(t_cub3d *c, int x, double perpWallDist);
+int	ft_win_cross(t_cub3d *param);
+int	ft_key_hook(int keycode, t_cub3d *c);
+
+/*	INIT	*/
+void	ft_init_cst(t_cst *cst);
+void	ft_init_ray(t_ray *ray);
+void	ft_init_sim(t_sim *sim);
+
+double	ft_get_perp_wall_dist(t_cub3d *c, int col);
+
 
 #endif
