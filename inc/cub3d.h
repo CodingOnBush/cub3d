@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/18 15:53:33 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:51:50 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,14 @@ typedef struct s_color
 
 typedef struct s_data
 {
-	char 	**file_info;
+	char 	**file_content;
 	char	*no; //to free
 	char	*so;
 	char	*we;
 	char	*ea;
 	t_color	*f;
 	t_color	*c;
+	int		i;
 }			t_data;
 
 typedef struct s_cub3d
@@ -103,15 +104,17 @@ typedef struct s_cub3d
 int		ft_strcmp(char *s1, char *s2);
 void	free_data(t_data *data);
 void	ft_free_cube3d(t_cub3d *cub3d);
+void	ft_free_split(char **split);
+void	ft_free_sim(t_sim *sim);
 
-/*	PARSING UTILS	*/
-int		ft_count_lines(char *file);
-char	*ft_get_texture(char *line);
-void	ft_set_color(char *line, t_color *color);
-int		ft_isspace(char c);
+// /*	PARSING UTILS	*/
+// int		ft_count_lines(char *file);
+// char	*ft_get_texture(char *line);
+// void	ft_set_color(char *line, t_color *color);
+// int		ft_isspace(char c);
 
 /*	PARSING	*/
-int		ft_parsing(int ac, char **av, t_cub3d *c);
+int	ft_parsing(int ac, char **av, t_cub3d *c, t_data *data);
 void	ft_draw_column(t_cub3d *c, int x, double perpWallDist);
 
 #endif

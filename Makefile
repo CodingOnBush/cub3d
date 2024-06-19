@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+         #
+#    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/06/18 15:40:42 by vvaudain         ###   ########.fr        #
+#    Updated: 2024/06/19 14:16:15 by momrane          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ CFLAGS			= -g3#-Wall -Wextra -Werror
 MLX_FLAGS		= -Lmlx -L/$(LIB_DIR) -Imlx -lXext -lX11 -lm -lz
 
 # Sources
-PARSING		:=	$(PARSING_DIR)/parsing.c $(PARSING_DIR)/parsing_utils.c
+PARSING		:=	$(PARSING_DIR)/parsing.c
 
 UTILS		:=	$(UTILS_DIR)/utils.c $(UTILS_DIR)/free.c
 

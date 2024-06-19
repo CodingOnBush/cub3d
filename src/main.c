@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/18 15:52:59 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:52:12 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ static void	ft_pixel_put(t_img img, int col, int y, int color)
 	dst = img.addr + (y * img.line_len + col * (img.bpp / 8));
 	*(unsigned int *)dst = color;
 }
-
-
 
 int	ft_key_hook(int keycode, t_cub3d *c)
 {
@@ -266,7 +264,7 @@ int	main(int ac, char **av)
 	env.cst.dirX = -1;
 	env.cst.dirY = 0;
 	
-	if (ft_parsing(ac, av, &env) == FAILURE)
+	if (ft_parsing(ac, av, &env, &(env.data)) == FAILURE)
 		return (FAILURE);
 	env.mlx.mlx_ptr = mlx_init();
 	if (!(env.mlx.mlx_ptr))
