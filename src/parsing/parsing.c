@@ -6,7 +6,7 @@
 /*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:37:40 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/18 16:47:16 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/06/19 11:47:20 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,9 @@ static	void	ft_create_map(int i, int nb_lines, t_data *data, t_cub3d *c)
 	char	**map;
 	int		longest_line;
 	int		j;
+	int		k;
 	
+	printf("COUCOU\n");
 	map = malloc(sizeof(char *) * (nb_lines - i + 1));
 	if (!map)
 		return ;
@@ -109,16 +111,18 @@ static	void	ft_create_map(int i, int nb_lines, t_data *data, t_cub3d *c)
 		j++;
 	}
 	map[j] = NULL;
-	while (i < nb_lines)
+	k = 0;
+	while (k < nb_lines - i)
 	{
 		j = 0;
-		while (data->file_info[i][j] != '\0')
+		while (data->file_info[k][j] != '\0' && j < longest_line && k < nb_lines)
 		{
-			if (data->file_info[i][j] != ' ')
-				map[i][j] = data->file_info[i][j];
+			if (data->file_info[k][j] != ' ')
+				map[k][j] = data->file_info[i + k][j];
 			j++;
 		}
-		i++;
+		printf("map[%d] = %s\n", k, map[k]);
+		k++;
 	}
 }
 
@@ -131,8 +135,8 @@ static int	ft_parse_map(char **file_info, int nb_lines, t_data *data, t_cub3d *c
 	while (i < nb_lines)
 	{
 		j = 0;
-		// while (file_info[i][j] == ' ' || file_info[i][j] == '\t')
-		// 	j++;
+		if (file_info[i][j] == '\n')
+			i++;
 		if (file_info[i][j] == 'N' && file_info[i][j + 1] == 'O')
 			data->no = ft_get_texture(file_info[i]);
 		else if (file_info[i][j] == 'S' && file_info[i][j + 1] == 'O')
@@ -145,13 +149,11 @@ static int	ft_parse_map(char **file_info, int nb_lines, t_data *data, t_cub3d *c
 			ft_set_color(file_info[i], data->f);
 		else if (file_info[i][j] == 'C')
 			ft_set_color(file_info[i], data->c);
-		else if (file_info[i][j] == '1' || file_info[i][j] == '0')
-			ft_create_map(i, nb_lines, data, c);
-		else if (file_info[i][j] != '\0' && file_info[i][j] != '\n')
-			i++;
 		else
-			return (printf("Error: Invalid description file\n"), FAILURE);
+			return (ft_create_map(i, nb_lines, data, c), SUCCESS);
 		i++;
+		// else
+		// 	return (printf("Error: Invalid description file\n"), FAILURE);
 	}
 	return (SUCCESS);
 }
@@ -181,7 +183,7 @@ int	ft_parsing(int ac, char **av, t_cub3d *c)
 	if (!data.file_info)
 		return (FAILURE);
 	ft_fill_map(data.file_info, av[1], nb_lines);
-	print_file_info(data.file_info);
+	// print_file_info(data.file_info);
 	if (ft_parse_map(data.file_info, nb_lines, &data, c) == FAILURE)
 		return (FAILURE);
 	free_data(&data);
