@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
+#    By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/17 15:35:38 by momrane           #+#    #+#              #
-#    Updated: 2024/03/12 16:35:20 by momrane          ###   ########.fr        #
+#    Updated: 2024/06/18 13:22:28 by vvaudain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ INC_DIR :=	./inc
 AR 		:=	ar rcs
 CC 		:=	cc
 FLAGS 	:=	-Wall -Werror -Wextra
-HEADER	:=	$(INC_DIR)/libft.h
+HEADER	:=	$(INC_DIR)/libft.h \
+			$(INC_DIR)/get_next_line.h
 
 # Sources
 SRC 	:=	$(wildcard $(SRC_DIR)/*.c)

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/18 17:24:59 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/19 17:17:55 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,18 @@ typedef struct s_color
 	int	b;
 }			t_color;
 
+typedef struct s_data
+{
+	char 	**file_content;
+	char	*no; //to free
+	char	*so;
+	char	*we;
+	char	*ea;
+	t_color	*f;
+	t_color	*c;
+	int		i;
+}			t_data;
+
 typedef struct s_ray
 {
 	double 	cameraX;
@@ -112,10 +124,22 @@ typedef struct s_cub3d
 	t_cst	cst;
 	t_sim	sim;
 	t_ray	ray;
+	t_data	data;
 }			t_cub3d;
 
 /*	FREE	*/
 void	ft_free_cube3d(t_cub3d *cub3d);
+void	ft_free_split(char **split);
+void	ft_free_sim(t_sim *sim);
+
+// /*	PARSING UTILS	*/
+// int		ft_count_lines(char *file);
+// char	*ft_get_texture(char *line);
+// void	ft_set_color(char *line, t_color *color);
+// int		ft_isspace(char c);
+
+/*	PARSING	*/
+int	ft_parsing(int ac, char **av, t_cub3d *c, t_data *data);
 
 void	ft_pixel_put(t_cub3d *c, int col, int y, int color);
 void	ft_draw_column(t_cub3d *c, int col, double perpWallDist);
@@ -130,6 +154,5 @@ void	ft_init_ray(t_ray *ray);
 void	ft_init_sim(t_sim *sim);
 
 double	ft_get_perp_wall_dist(t_cub3d *c, int col);
-
 
 #endif

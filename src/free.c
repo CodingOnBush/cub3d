@@ -6,11 +6,16 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 19:27:46 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/18 13:18:36 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/19 17:18:04 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/cub3d.h"
+#include "../../inc/cub3d.h"
+
+void	free_data(t_data *data)
+{
+	
+}
 
 void	ft_free_cube3d(t_cub3d *c)
 {
