@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 16:05:18 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/19 11:13:16 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/19 18:29:42 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ double	ft_get_perp_wall_dist(t_cub3d *c, int col)
 		c->ray.perpWallDist = (c->ray.sideDistX - c->ray.deltaDistX);
 
 	int lineHeight = (int)(c->cst.height / c->ray.perpWallDist);
+	printf("lineHeight = %d\n", lineHeight);
 	int pitch = 100;
 
 	//calculate lowest and highest pixel to fill in current stripe
@@ -102,27 +103,29 @@ double	ft_get_perp_wall_dist(t_cub3d *c, int col)
 	double step = 1.0 * c->buf.h / lineHeight;
 
 	double texPos = (drawStart - pitch - c->cst.height / 2 + lineHeight / 2) * step;
-	for(int y = 0; y < drawStart; y++)
-	{
-		ft_pixel_put(c, col, y, 0x000000);
-	}
-	for(int y = drawStart; y < drawEnd; y++)
-	{
-		// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-		int texY = (int)texPos & (c->buf.h - 1);
-		texPos += step;
-		// Uint32 color = texture[texNum][texHeight * texY + texX];
-		int color = ft_get_color(c, texX, texY);
-		//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
-		if(c->ray.side == 1)
-			color = (color >> 1) & 8355711;
-		// buffer[y][x] = color;
-		ft_pixel_put(c, col, y, color);
-	}
-	for(int y = drawEnd; y < c->cst.height; y++)
-	{
-		ft_pixel_put(c, col, y, 0xA27AB7);
-	}
+	printf("drawStart = %d, drawEnd = %d\n", drawStart, drawEnd);
+	// for(int y = 0; y < drawStart; y++)
+	// {
+	// 	printf("col = %d, y = %d\n", col, y);
+	// 	ft_pixel_put(c, col, y, 0x00FF00);
+	// }
+	// for(int y = drawStart; y < drawEnd; y++)
+	// {
+	// 	// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
+	// 	int texY = (int)texPos & (c->buf.h - 1);
+	// 	texPos += step;
+	// 	// Uint32 color = texture[texNum][texHeight * texY + texX];
+	// 	int color = ft_get_color(c, texX, texY);
+	// 	//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
+	// 	if(c->ray.side == 1)
+	// 		color = (color >> 1) & 8355711;
+	// 	// buffer[y][x] = color;
+	// 	ft_pixel_put(c, col, y, color);
+	// }
+	// for(int y = drawEnd; y < c->cst.height; y++)
+	// {
+	// 	ft_pixel_put(c, col, y, 0x00FF00);
+	// }
     
 	return (c->ray.perpWallDist);
 }

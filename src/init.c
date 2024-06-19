@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/19 11:14:00 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/19 17:37:57 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,16 @@ void	ft_init_sim(t_sim *sim)
 	sim->maph = 0;
 	sim->px = 0;
 	sim->py = 0;
+}
+
+void	ft_init_data(t_data *data)
+{
+	data->file_content = NULL;
+	data->no = NULL;
+	data->so = NULL;
+	data->we = NULL;
+	data->ea = NULL;
+	data->f = NULL;
+	data->c = NULL;
+	data->i = 0;
 }

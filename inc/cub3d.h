@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/19 17:17:55 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/19 18:15:05 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,32 +127,28 @@ typedef struct s_cub3d
 	t_data	data;
 }			t_cub3d;
 
-/*	FREE	*/
-void	ft_free_cube3d(t_cub3d *cub3d);
-void	ft_free_split(char **split);
-void	ft_free_sim(t_sim *sim);
-
-// /*	PARSING UTILS	*/
-// int		ft_count_lines(char *file);
-// char	*ft_get_texture(char *line);
-// void	ft_set_color(char *line, t_color *color);
-// int		ft_isspace(char c);
-
-/*	PARSING	*/
-int	ft_parsing(int ac, char **av, t_cub3d *c, t_data *data);
-
-void	ft_pixel_put(t_cub3d *c, int col, int y, int color);
+void	ft_pixel_put(t_cub3d *cub, int c, int r, int color);
 void	ft_draw_column(t_cub3d *c, int col, double perpWallDist);
 void	ft_draw_texture(t_cub3d *c, t_img tex, int zoom);
+
+void	free_data(t_data *data);
+void	ft_free_cube3d(t_cub3d *c);
+void	ft_free_split(char **split);
+void	ft_free_sim(t_sim *sim);
 
 int	ft_win_cross(t_cub3d *param);
 int	ft_key_hook(int keycode, t_cub3d *c);
 
-/*	INIT	*/
 void	ft_init_cst(t_cst *cst);
 void	ft_init_ray(t_ray *ray);
 void	ft_init_sim(t_sim *sim);
+void	ft_init_data(t_data *data);
+
+int	ft_parsing(t_cub3d *cub, int ac, char **av);
 
 double	ft_get_perp_wall_dist(t_cub3d *c, int col);
+
+
+
 
 #endif

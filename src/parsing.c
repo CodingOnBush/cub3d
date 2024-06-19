@@ -6,11 +6,11 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:37:40 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/19 16:52:42 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/19 18:14:35 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/cub3d.h"
+#include "../inc/cub3d.h"
 
 static int	err(char *msg, int ext)
 {
@@ -178,6 +178,7 @@ static char	**ft_create_map(int i, int nb_lines, t_data *data, t_cub3d *c)
 	int		k;
 	
 	longest_line = ft_get_longest(data->file_content, i, nb_lines);
+	// c->sim.mapw = longest_line;
 	map = malloc(sizeof(char *) * (nb_lines - i + 1));
 	if (!map)
 		return (NULL);
@@ -274,7 +275,7 @@ static int	ft_parse_assets(char **file_content, int nb_lines, t_data *data, t_cu
 	return (SUCCESS);
 }
 
-void	print_file_info(char **arr)
+static void	print_file_info(char **arr)
 {
 	int i = 0;
 	while (arr[i])
@@ -284,34 +285,28 @@ void	print_file_info(char **arr)
 	}
 }
 
-int	ft_parsing(int ac, char **av, t_cub3d *c, t_data *data)
+int	ft_parsing(t_cub3d *cub, int ac, char **av)
 {
 	int		nb_lines;
 	char	*test;
 
-	data->file_content = NULL;
-	data->no = NULL;
-	data->so = NULL;
-	data->we = NULL;
-	data->ea = NULL;
-	data->f = NULL;
-	data->c = NULL;
 	if (ac != 2)
 		return (printf("Error: Wrong number of arguments\n"), FAILURE);
 	if (ft_check_file(av[1]) == FAILURE)
 		return (FAILURE);
 	nb_lines = ft_count_lines(av[1]);
-	data->file_content = malloc(sizeof(char *) * (nb_lines + 1));
-	if (!data->file_content)
+	// cub->sim.maph = nb_lines;
+	cub->data.file_content = malloc(sizeof(char *) * (nb_lines + 1));
+	if (!cub->data.file_content)
 		return (FAILURE);
-	ft_fill_file_content(data->file_content, av[1]);
-	if (ft_parse_assets(data->file_content, nb_lines, data, c) == FAILURE)
+	ft_fill_file_content(cub->data.file_content, av[1]);
+	if (ft_parse_assets(cub->data.file_content, nb_lines, &(cub->data), cub) == FAILURE)
 	{
 		printf("Error: Parsing assets failed\n");
 		return (FAILURE);
 	}
-	c->sim.map = ft_create_map(data->i, nb_lines, data, c);
-	if (!c->sim.map)
+	cub->sim.map = ft_create_map(cub->data.i, nb_lines, &(cub->data), cub);
+	if (!cub->sim.map)
 	{
 		printf("Error: Map creation failed\n");
 		return (FAILURE);

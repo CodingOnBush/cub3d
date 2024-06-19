@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/18 17:53:52 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/19 18:26:53 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ void	ft_pixel_put(t_cub3d *cub, int c, int r, int color)
 	char	*dst;
 
 	if (c < 0 || c >= cub->cst.width || r < 0 || r >= cub->cst.height)
+	{
+		// printf("nop");
 		return ;
+	}
 	dst = cub->img.addr + (r * cub->img.line_len + c * (cub->img.bpp / 8));
 	*(unsigned int *)dst = color;
 }
