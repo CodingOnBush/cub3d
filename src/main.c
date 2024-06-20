@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 15:07:15 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 15:42:10 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,17 @@ int	main(int ac, char **av)
 	// 		printf("%c", cub.data.map[c][r]);
 	// 	printf("\n");
 	// }
-	
-	
 
-	mlx_hook(cub.mlx.win_ptr, 2, 1L << 0, ft_key_hook, &cub);
+	// printf("0:0 = %c\n", cub.data.map[0][0]);
+	// printf("0:1 = %c\n", cub.data.map[0][1]);
+	// printf("0:2 = %c\n", cub.data.map[0][2]);
+
+	// printf("0:0 = %c\n", cub.data.map[0][0]);
+	// printf("1:0 = %c\n", cub.data.map[1][0]);
+	// printf("2:0 = %c\n", cub.data.map[2][0]);
+
+	
+	mlx_hook((void *)cub.mlx.win_ptr, 2, 1L << 0, ft_key_hook, &cub);
 	mlx_loop_hook(cub.mlx.mlx_ptr, render, &cub);
 	mlx_hook(cub.mlx.win_ptr, 17, 1L << 2, ft_win_cross, &cub);
 	mlx_loop(cub.mlx.mlx_ptr);
