@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 11:51:39 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 14:32:19 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	ft_init_ray(t_ray *ray)
 
 static void	ft_init_data(t_data *data)
 {
-	data->file_content = NULL;
+	data->raw = NULL;
 	data->no = NULL;
 	data->so = NULL;
 	data->we = NULL;
@@ -56,8 +56,8 @@ static void	ft_init_data(t_data *data)
 	data->map = NULL;
 	data->mapw = 0;
 	data->maph = 0;
-	data->px = 1;
-	data->py = 1;
+	data->px = 0;
+	data->py = 0;
 }
 
 static int	ft_init_mlx(t_mlx *mlx, int width, int height)

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:37:40 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 11:50:27 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 15:06:25 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,22 @@ static int	err(char *msg, int ext)
 static int	ft_count_lines(char *file)
 {
 	int		fd;
-	int		nb_lines;
+	int		file_height;
 	char	*line;
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return (perror(file), FAILURE);
-	nb_lines = 0;
+	file_height = 0;
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		nb_lines++;
+		file_height++;
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
-	return (nb_lines);
+	return (file_height);
 }
 
 static char	*ft_get_texture(char *file_path)
@@ -100,7 +100,7 @@ static int	ft_check_file(char *file)
 	return (SUCCESS);
 }
 
-static void	ft_fill_file_content(char **tab, char *file)
+static void	ft_fill_raw(char **tab, char *file)
 {
 	int		fd;
 	int		i;
@@ -127,24 +127,22 @@ static void	ft_fill_file_content(char **tab, char *file)
 	close(fd);
 }
 
-static int	ft_get_longest(char **file_content, int i, int nb_lines)
+static int	ft_get_maxw(char **raw, int start_row, int file_height)
 {
-	int		j;
-	int		longest_line;
-	int		len;
+	int	maxw;
+	int	len;
 
-	longest_line = 0;
-	while (i < nb_lines)
+	maxw = 0;
+	len = 0;
+	while (raw[start_row] != NULL)
 	{
-		j = 0;
-		len = ft_strlen(file_content[i]);
-		while (j < len && file_content[i][j] && file_content[i][j] != '\0' && file_content[i][j] != '\n')
-			j++;
-		if (j > longest_line)
-			longest_line = j;
-		i++;
+		len = ft_strlen(raw[start_row]);
+		// printf("[%d]\t[%s]\t[%d]\n", start_row, raw[start_row], len);
+		if (len > maxw)
+			maxw = len;
+		start_row++;
 	}
-	return (longest_line);
+	return (maxw);
 }
 
 static char	*ft_alloc_and_init(int longest)
@@ -158,7 +156,7 @@ static char	*ft_alloc_and_init(int longest)
 	i = 0;
 	while (i < longest)
 	{
-		new_line[i] = '#';
+		new_line[i] = '1';
 		i++;
 	}
 	new_line[i] = '\0';
@@ -175,39 +173,50 @@ static void	ft_free_array(char **array, int j)
 	free(array);
 }
 
-static char	**ft_create_map(int i, int nb_lines, t_data *data, t_cub3d *c)
+static char	**ft_create_map(t_cub3d *cub, int start_row, int file_height)
 {
 	char	**map;
-	int		longest_line;
-	int		j;
-	int		k;
+	int		maxw;
+	int		row;
+	int		col;
 	
-	longest_line = ft_get_longest(data->file_content, i, nb_lines);
-	c->data.mapw = longest_line;
-	c->data.maph = nb_lines - i;
-	map = malloc(sizeof(char *) * (nb_lines - i + 1));
+	// printf("file_height = %d\n", file_height);
+	maxw = ft_get_maxw(cub->data.raw, start_row, file_height);
+	// printf("longest line = %d\n", maxw);
+	cub->data.mapw = maxw;
+	cub->data.maph = file_height - start_row;
+	// printf("start_row = %d\n", start_row);
+	// printf("cub->data.maph = %d\n", cub->data.maph);
+	map = malloc(sizeof(char *) * (cub->data.maph + 1));
 	if (!map)
 		return (NULL);
-	j = 0;
-	while (j < nb_lines - i)
+	row = 0;
+	while (row < cub->data.maph)
 	{
-		map[j] = ft_alloc_and_init(longest_line);
-		if (!map[j])
-			return (ft_free_array(map, j), NULL);
-		j++;
+		map[row] = ft_alloc_and_init(maxw);
+		if (!map[row])
+			return (ft_free_array(map, row), NULL);
+		row++;
 	}
-	map[j] = NULL;
-	j = 0;
-	while (j < nb_lines - i)
+	map[row] = NULL;
+	row = 0;
+	while (row < cub->data.maph)
 	{
-		k = 0;
-		while (k < ft_strlen(data->file_content[i + j]) && data->file_content[i + j][k])
+		col = 0;
+		while (col < ft_strlen(cub->data.raw[start_row + row]) && cub->data.raw[start_row + row][col])
 		{
-			if (data->file_content[i + j][k] != ' ' && data->file_content[i + j][k] != '\n')
-				map[j][k] = data->file_content[i + j][k];
-			k++;
+			if (cub->data.raw[start_row + row][col] == 'N')
+			{
+				// printf("PLAYER FOUND at [%d][%d]\n", row, col);
+				cub->data.px = row;
+				cub->data.py = col;
+				map[row][col] = '0';
+			}
+			else if (cub->data.raw[start_row + row][col] != ' ' && cub->data.raw[start_row + row][col] != '\n')
+				map[row][col] = cub->data.raw[start_row + row][col];
+			col++;
 		}
-		j++;
+		row++;
 	}
 	return (map);
 }
@@ -255,16 +264,16 @@ static int	ft_parse_data(char **split, t_data *data)
 	return (SUCCESS);
 }
 
-static int	ft_parse_assets(char **file_content, int nb_lines, t_data *data, t_cub3d *c)
+static int	ft_parse_assets(char **raw, int file_height, t_data *data, t_cub3d *c)
 {
 	char	**split;
 
 	data->i = 0;
-	while (data->i < nb_lines)
+	while (data->i < file_height)
 	{
-		if (file_content[data->i][0] != '\n')
+		if (raw[data->i][0] != '\n')
 		{
-			split = ft_split(file_content[data->i], ' ');
+			split = ft_split(raw[data->i], ' ');
 			if (!split)
 				return (err("split failed", FAILURE));
 			if (ft_parse_data(split, data) == FAILURE)
@@ -293,27 +302,29 @@ static void	print_file_info(char **arr)
 
 int	ft_parsing(t_cub3d *cub, int ac, char **av)
 {
-	int		nb_lines;
+	int		file_height;
 	char	*test;
 
 	if (ac != 2)
 		return (printf("Error: Wrong number of arguments\n"), FAILURE);
 	if (ft_check_file(av[1]) == FAILURE)
 		return (FAILURE);
-	nb_lines = ft_count_lines(av[1]);
-	cub->data.file_content = malloc(sizeof(char *) * (nb_lines + 1));
-	if (!cub->data.file_content)
+	file_height = ft_count_lines(av[1]);
+	cub->data.raw = malloc(sizeof(char *) * (file_height + 1));
+	if (!cub->data.raw)
 		return (FAILURE);
-	ft_fill_file_content(cub->data.file_content, av[1]);
-	if (ft_parse_assets(cub->data.file_content, nb_lines, &(cub->data), cub) == FAILURE)
+	ft_fill_raw(cub->data.raw, av[1]);
+	if (ft_parse_assets(cub->data.raw, file_height, &(cub->data), cub) == FAILURE)
 	{
 		printf("Error: Parsing assets failed\n");
+		ft_free_array(cub->data.raw, file_height);
 		return (FAILURE);
 	}
-	cub->data.map = ft_create_map(cub->data.i, nb_lines, &(cub->data), cub);
+	cub->data.map = ft_create_map(cub, cub->data.i, file_height);
 	if (!cub->data.map)
 	{
 		printf("Error: Map creation failed\n");
+		ft_free_array(cub->data.raw, file_height);
 		return (FAILURE);
 	}
 	return (SUCCESS);

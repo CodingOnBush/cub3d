@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 11:22:41 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 13:50:39 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ typedef struct s_color
 
 typedef struct s_data
 {
-	char 	**file_content;
+	char 	**raw;
 	char	*no; //to free
 	char	*so;
 	char	*we;

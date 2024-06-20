@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 19:27:46 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 11:41:06 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 13:50:39 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ void	free_data(t_data *data)
 
 	if (!data)
 		return ;
-	if (data->file_content)
+	if (data->raw)
 	{
 		i = 0;
-		while(data->file_content[i])
+		while(data->raw[i])
 		{
-			free(data->file_content[i]);
+			free(data->raw[i]);
 			i++;
 		}
-		free(data->file_content);
+		free(data->raw);
 	}
 	if (data->map)
 	{

@@ -20,6 +20,30 @@ C 225,30,0
 11111111 1111111 111111111111
 
 
+11111111111111111
+10000000000000001
+10000000000000001
+10000000N00000001
+10000000000000001
+10000000000000001
+11111111111111111
+
+        1111111111111111111111111
+        1000000000110000000000001
+        1011000001110000000000001
+        100100000000000000N000001
+111111111011000001110000000000001
+100000000011000001110111111111111
+11110111111111011100000010001
+11110111111111011101010010001
+11000000110101011100000010001
+10000000000000001100000010001
+10000000000000001101010010001
+1100000111010101111101111000111
+11110111 1110101 101111010001
+11111111 1111111 111111111111
+
+
 
 1111111111111111
 1N00000000000001
@@ -45,71 +69,3 @@ C 225,30,0
 1100000000000001
 1111111111111111
 
-
-
-
-
-
-
-
-
-
-
-
-
-// int	ft_key_hook(int keycode, t_cub3d *c)
-// {
-// 	double	oldDirX = c->cst.dirX;
-// 	double	oldPlaneX = c->cst.planeX;
-
-// 	if (keycode == XK_Right)
-// 	{
-// 		c->cst.dirX = c->cst.dirX * cos(-c->cst.rs) - c->cst.dirY * sin(-c->cst.rs);
-// 		c->cst.dirY = oldDirX * sin(-c->cst.rs) + c->cst.dirY * cos(-c->cst.rs);
-// 		c->cst.planeX = c->cst.planeX * cos(-c->cst.rs) - c->cst.planeY * sin(-c->cst.rs);
-// 		c->cst.planeY = oldPlaneX * sin(-c->cst.rs) + c->cst.planeY * cos(-c->cst.rs);
-// 	}
-// 	else if (keycode == XK_Left)
-// 	{
-// 		//both camera direction and camera plane must be rotated
-// 		c->cst.dirX = c->cst.dirX * cos(c->cst.rs) - c->cst.dirY * sin(c->cst.rs);
-// 		c->cst.dirY = oldDirX * sin(c->cst.rs) + c->cst.dirY * cos(c->cst.rs);
-// 		c->cst.planeX = c->cst.planeX * cos(c->cst.rs) - c->cst.planeY * sin(c->cst.rs);
-// 		c->cst.planeY = oldPlaneX * sin(c->cst.rs) + c->cst.planeY * cos(c->cst.rs);
-// 	}
-// 	else if (keycode == XK_Down)
-// 	{
-// 		printf("[%d]\n", c->data.map[(int)(c->data.px - c->cst.dirX * c->cst.ms)][(int)c->data.py]);
-// 		if(c->data.map[(int)(c->data.px - c->cst.dirX * c->cst.ms)][(int)c->data.py] != '0')
-// 		{
-// 			printf("go\n");
-// 			c->data.px -= c->cst.dirX * c->cst.ms;
-// 		}
-// 		printf("[%d]\n", c->data.map[(int)c->data.px][(int)(c->data.py - c->cst.dirY * c->cst.ms)]);
-// 		if(c->data.map[(int)c->data.px][(int)(c->data.py - c->cst.dirY * c->cst.ms)] != '0')
-// 		{
-// 			printf("go\n");
-// 			c->data.py -= c->cst.dirY * c->cst.ms;
-// 		}
-// 	}
-// 	else if (keycode == XK_Up)
-// 	{
-// 		if(c->data.map[(int)(c->data.px + c->cst.dirX * c->cst.ms)][(int)(c->data.py)] != '0')
-// 		{
-// 			printf("go\n");
-// 			c->data.px += c->cst.dirX * c->cst.ms;
-// 		}
-// 		if(c->data.map[(int)c->data.px][(int)(c->data.py + c->cst.dirY * c->cst.ms)] != '0')
-// 		{
-// 			printf("go\n");
-// 			c->data.py += c->cst.dirY * c->cst.ms;
-// 		}
-// 	}
-// 	else if (keycode == XK_Escape)
-// 	{
-// 		printf("Escape key pressed, so byeee !\n");
-// 		ft_free_cube3d(c);
-// 		exit(0);
-// 	}
-// 	return (0);
-// }
