@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 11:50:59 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 13:38:56 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	main(int ac, char **av)
 	// printf("2:0 = %c\n", cub.data.map[2][0]);
 
 	
-	mlx_key_hook(cub.mlx.win_ptr, ft_key_hook, &cub);
+	mlx_hook((void *)cub.mlx.win_ptr, 2, 1L << 0, ft_key_hook, &cub);
 	mlx_loop_hook(cub.mlx.mlx_ptr, render, &cub);
 	mlx_hook(cub.mlx.win_ptr, 17, 1L << 2, ft_win_cross, &cub);
 	mlx_loop(cub.mlx.mlx_ptr);
