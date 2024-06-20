@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 15:42:18 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 15:45:20 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_img
     int		endian;
 	int		w;
 	int		h;
+	int		type;
 }			t_img;
 
 typedef struct s_mlx
@@ -120,7 +121,7 @@ typedef struct s_cub3d
 {
 	t_cst	cst;
 	t_img	img;
-	t_img	buf;
+	t_img	buf[4];
 	t_ray	ray;
 	t_data	data;
 	t_mlx	mlx;

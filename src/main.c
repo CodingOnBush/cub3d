@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 15:42:10 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 15:57:47 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,50 @@
 //   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 // };
 
+static void	ft_load_img(t_cub3d *cub, char *path, t_img *img)
+{
+	img->mlx_img = mlx_xpm_file_to_image(cub->mlx.mlx_ptr, path, &(img->w), &(img->h));
+	img->addr = mlx_get_data_addr(img->mlx_img, &img->bpp, &img->line_len, &img->endian);
+}
+
+static void	ft_load_textures(t_cub3d *cub)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (cub->buf[i].type == NORTH)
+			ft_load_img(cub, cub->data.no, &cub->buf[i]);
+		else if (cub->buf[i].type == SOUTH)
+			ft_load_img(cub, cub->data.so, &cub->buf[i]);
+		else if (cub->buf[i].type == EAST)
+			ft_load_img(cub, cub->data.ea, &cub->buf[i]);
+		else if (cub->buf[i].type == WEST)
+			ft_load_img(cub, cub->data.we, &cub->buf[i]);
+	}
+	
+}
+
+static void	ft_destroy_textures(t_cub3d *cub)
+{
+	for (int i = 0; i < 4; i++)
+		mlx_destroy_image(cub->mlx.mlx_ptr, cub->buf[i].mlx_img);
+}
+
 static int	render(t_cub3d *c)
 {
-	c->buf.w = 0;
-	c->buf.h = 0;
-	c->img.w = 0;
-	c->img.h = 0;
 	c->img.mlx_img = mlx_new_image(c->mlx.mlx_ptr, c->cst.width, c->cst.height);
 	c->img.addr = mlx_get_data_addr(c->img.mlx_img, &c->img.bpp, &c->img.line_len, &c->img.endian);
-	c->buf.mlx_img = mlx_xpm_file_to_image(c->mlx.mlx_ptr, "redbrick.xpm", &(c->buf.w), &(c->buf.h));
-	c->buf.addr = mlx_get_data_addr(c->buf.mlx_img, &c->buf.bpp, &c->buf.line_len, &c->buf.endian);
+
+	// c->buf[0].mlx_img = mlx_xpm_file_to_image(c->mlx.mlx_ptr, "redbrick.xpm", &(c->buf[0].w), &(c->buf[0].h));
+	// c->buf[0].addr = mlx_get_data_addr(c->buf[0].mlx_img, &c->buf[0].bpp, &c->buf[0].line_len, &c->buf[0].endian);
+	
+	ft_load_textures(c);
+
 	for (int col = 0; col < c->cst.width; col++)
 		ft_draw(c, col);
 	mlx_put_image_to_window(c->mlx.mlx_ptr, c->mlx.win_ptr, c->img.mlx_img, 0, 0);
 	mlx_destroy_image(c->mlx.mlx_ptr, c->img.mlx_img);
-	mlx_destroy_image(c->mlx.mlx_ptr, c->buf.mlx_img);
+	// mlx_destroy_image(c->mlx.mlx_ptr, c->buf[0].mlx_img);
+	ft_destroy_textures(c);
 	return (0);
 }
 
@@ -76,14 +105,6 @@ int	main(int ac, char **av)
 	// 		printf("%c", cub.data.map[c][r]);
 	// 	printf("\n");
 	// }
-
-	// printf("0:0 = %c\n", cub.data.map[0][0]);
-	// printf("0:1 = %c\n", cub.data.map[0][1]);
-	// printf("0:2 = %c\n", cub.data.map[0][2]);
-
-	// printf("0:0 = %c\n", cub.data.map[0][0]);
-	// printf("1:0 = %c\n", cub.data.map[1][0]);
-	// printf("2:0 = %c\n", cub.data.map[2][0]);
 
 	
 	mlx_hook((void *)cub.mlx.win_ptr, 2, 1L << 0, ft_key_hook, &cub);

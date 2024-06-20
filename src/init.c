@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 14:32:19 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 15:53:09 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,19 +79,29 @@ static int	ft_init_mlx(t_mlx *mlx, int width, int height)
 
 static void	ft_init_img(t_img *img)
 {
-	img->w = 0;
-	img->h = 0;
 	img->mlx_img = NULL;
 	img->addr = NULL;
 	img->line_len = 0;
 	img->bpp = 0;
+	img->endian = 0;
+	img->w = 0;
+	img->h = 0;
+	img->type = -1;
+}
+
+static void	ft_init_buffers(t_cub3d *cub)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		ft_init_img(&cub->buf[i]);
+	}
 }
 
 int	ft_init_cub3d(t_cub3d *cub)
 {
 	ft_init_cst(&cub->cst);
 	ft_init_img(&cub->img);
-	ft_init_img(&cub->buf);
+	ft_init_buffers(cub);
 	ft_init_ray(&cub->ray);
 	ft_init_data(&cub->data);
 	if (ft_init_mlx(&cub->mlx, cub->cst.width, cub->cst.height) == FAILURE)
