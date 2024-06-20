@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:26:16 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/19 18:11:13 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 10:02:55 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	ft_key_hook(int keycode, t_cub3d *c)
 	double	oldDirX = c->cst.dirX;
 	double	oldPlaneX = c->cst.planeX;
 
-	printf("button pressed: %d\n", keycode);
 	if (keycode == XK_Right)
 	{
 		c->cst.dirX = c->cst.dirX * cos(-c->cst.rs) - c->cst.dirY * sin(-c->cst.rs);

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/19 18:23:58 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 10:03:37 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,9 @@ static int	render(t_cub3d *c)
 	for (int col = 0; col < c->cst.width; col++)
 	{ 
 		// ft_draw_column(c, col, ft_get_perp_wall_dist(c, col));
-		printf("col = %d\n", col);
-		ft_get_perp_wall_dist(c, col);
+		// printf("col = %d\n", col);
+		// ft_get_perp_wall_dist(c, col);
+		ft_draw(c, col);
 	}
 	
 	mlx_put_image_to_window(c->mlx.mlx_ptr, c->mlx.win_ptr, c->img.mlx_img, 0, 0);
@@ -84,8 +85,8 @@ int	main(int ac, char **av)
 	
 	cub.sim.mapw = 24;
 	cub.sim.maph = 24;
-	cub.sim.px = 1;
-	cub.sim.py = 1;
+	cub.sim.px = 4;
+	cub.sim.py = 4;
 
 	cub.buf.w = 0;
 	cub.buf.h = 0;

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/19 18:15:05 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 09:54:09 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,8 @@ void	ft_init_data(t_data *data);
 int	ft_parsing(t_cub3d *cub, int ac, char **av);
 
 double	ft_get_perp_wall_dist(t_cub3d *c, int col);
+
+void	ft_draw(t_cub3d *cub, int col);
 
 
 

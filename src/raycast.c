@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 16:05:18 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/19 18:29:42 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 10:02:35 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ double	ft_get_perp_wall_dist(t_cub3d *c, int col)
 	double step = 1.0 * c->buf.h / lineHeight;
 
 	double texPos = (drawStart - pitch - c->cst.height / 2 + lineHeight / 2) * step;
-	printf("drawStart = %d, drawEnd = %d\n", drawStart, drawEnd);
 	// for(int y = 0; y < drawStart; y++)
 	// {
 	// 	printf("col = %d, y = %d\n", col, y);
