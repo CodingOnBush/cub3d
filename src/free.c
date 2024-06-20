@@ -6,64 +6,61 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 19:27:46 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 13:50:39 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 23:33:22 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-void	free_data(t_data *data)
+static void	ft_free_file(t_file *file)
 {
-	int i;
+	int	i;
 
-	if (!data)
-		return ;
-	if (data->raw)
+	if (file->file != NULL)
 	{
 		i = 0;
-		while(data->raw[i])
-		{
-			free(data->raw[i]);
-			i++;
-		}
-		free(data->raw);
+		while (file->file[i])
+			free(file->file[i++]);
+		free(file->file);
 	}
-	if (data->map)
-	{
-		i = 0;
-		while(data->map[i])
-		{
-			free(data->map[i]);
-			i++;
-		}
-		free(data->map);
-	}
-	if (data->no)
-		free(data->no);
-	if (data->so)
-		free(data->so);
-	if (data->we)
-		free(data->we);
-	if (data->ea)
-		free(data->ea);
-	if (data->f)
-		free(data->f);
-	if (data->c)
-		free(data->c);
+	i = 0;
+	while (file->texpath[i])
+		free(file->texpath[i++]);
+	free(file->texpath);
 }
 
-void	ft_free_cube3d(t_cub3d *c)
+static void	ft_free_win(t_win *win)
 {
-	if (!(c->mlx.mlx_ptr))
-		return ;
-	if (c->mlx.win_ptr)
+	int	i;
+
+	i = 0;
+	while (i < 5)
 	{
-		mlx_clear_window(c->mlx.mlx_ptr, c->mlx.win_ptr);
-		mlx_destroy_window(c->mlx.mlx_ptr, c->mlx.win_ptr);
+		if (win->img[i].path != NULL)
+			free(win->img[i].path);
+		if (win->img[i].mlx_img != NULL)
+			mlx_destroy_image(win->mlx, win->img[i].mlx_img);
+		i++;
 	}
-	mlx_destroy_display(c->mlx.mlx_ptr);
-	free(c->mlx.mlx_ptr);
-	free_data(&c->data);
+	if (win->mlx != NULL)
+		mlx_destroy_window(win->mlx, win->win);
+	if (win->mlx != NULL)
+		free(win->mlx);
+}
+
+void	ft_free_env(t_env *env)
+{
+	int	i;
+
+	if (env->map.map != NULL)
+	{
+		i = 0;
+		while (env->map.map[i])
+			free(env->map.map[i++]);
+		free(env->map.map);
+	}
+	ft_free_file(&env->file);
+	ft_free_win(&env->win);
 }
 
 void	ft_free_split(char **split)
