@@ -6,13 +6,13 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/19 17:37:57 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 11:51:39 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-void	ft_init_cst(t_cst *cst)
+static void	ft_init_cst(t_cst *cst)
 {
 	cst->ms = 0.5;
 	cst->rs = 0.1;
@@ -24,7 +24,7 @@ void	ft_init_cst(t_cst *cst)
 	cst->dirY = 0;
 }
 
-void	ft_init_ray(t_ray *ray)
+static void	ft_init_ray(t_ray *ray)
 {
 	ray->cameraX = 0;
 	ray->rayDirX = 0;
@@ -43,16 +43,7 @@ void	ft_init_ray(t_ray *ray)
 	ray->texCol = 0;
 }
 
-void	ft_init_sim(t_sim *sim)
-{
-	sim->map = NULL;
-	sim->mapw = 0;
-	sim->maph = 0;
-	sim->px = 0;
-	sim->py = 0;
-}
-
-void	ft_init_data(t_data *data)
+static void	ft_init_data(t_data *data)
 {
 	data->file_content = NULL;
 	data->no = NULL;
@@ -62,4 +53,48 @@ void	ft_init_data(t_data *data)
 	data->f = NULL;
 	data->c = NULL;
 	data->i = 0;
+	data->map = NULL;
+	data->mapw = 0;
+	data->maph = 0;
+	data->px = 1;
+	data->py = 1;
+}
+
+static int	ft_init_mlx(t_mlx *mlx, int width, int height)
+{
+	mlx->mlx_ptr = NULL;
+	mlx->win_ptr = NULL;
+	mlx->mlx_ptr = mlx_init();
+	if (!(mlx->mlx_ptr))
+		return (printf("Error : mlx_init() failed\n"), FAILURE);
+	mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, width, height, "?");
+	if (!(mlx->win_ptr))
+	{
+		printf("Error : mlx_new_window() failed\n");
+		free(mlx->mlx_ptr);
+		return (FAILURE);
+	}
+	return (SUCCESS);
+}
+
+static void	ft_init_img(t_img *img)
+{
+	img->w = 0;
+	img->h = 0;
+	img->mlx_img = NULL;
+	img->addr = NULL;
+	img->line_len = 0;
+	img->bpp = 0;
+}
+
+int	ft_init_cub3d(t_cub3d *cub)
+{
+	ft_init_cst(&cub->cst);
+	ft_init_img(&cub->img);
+	ft_init_img(&cub->buf);
+	ft_init_ray(&cub->ray);
+	ft_init_data(&cub->data);
+	if (ft_init_mlx(&cub->mlx, cub->cst.width, cub->cst.height) == FAILURE)
+		return (FAILURE);
+	return (SUCCESS);
 }

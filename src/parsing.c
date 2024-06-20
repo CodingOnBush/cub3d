@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:37:40 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/19 18:14:35 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 11:50:27 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,14 @@ static void	ft_fill_file_content(char **tab, char *file)
 		return ;
 	}
 	i = 0;
-	line = get_next_line(fd);
-	while (line != NULL)
+	while (1)
 	{
-		tab[i] = line;
 		line = get_next_line(fd);
+		if (!line)
+			break;
+		if (line[ft_strlen(line) - 1] == '\n')
+			line[ft_strlen(line) - 1] = '\0';
+		tab[i] = line;
 		i++;
 	}
 	tab[i] = NULL;
@@ -128,12 +131,14 @@ static int	ft_get_longest(char **file_content, int i, int nb_lines)
 {
 	int		j;
 	int		longest_line;
+	int		len;
 
 	longest_line = 0;
 	while (i < nb_lines)
 	{
 		j = 0;
-		while (file_content[i][j] != '\0')
+		len = ft_strlen(file_content[i]);
+		while (j < len && file_content[i][j] && file_content[i][j] != '\0' && file_content[i][j] != '\n')
 			j++;
 		if (j > longest_line)
 			longest_line = j;
@@ -178,7 +183,8 @@ static char	**ft_create_map(int i, int nb_lines, t_data *data, t_cub3d *c)
 	int		k;
 	
 	longest_line = ft_get_longest(data->file_content, i, nb_lines);
-	// c->sim.mapw = longest_line;
+	c->data.mapw = longest_line;
+	c->data.maph = nb_lines - i;
 	map = malloc(sizeof(char *) * (nb_lines - i + 1));
 	if (!map)
 		return (NULL);
@@ -195,7 +201,7 @@ static char	**ft_create_map(int i, int nb_lines, t_data *data, t_cub3d *c)
 	while (j < nb_lines - i)
 	{
 		k = 0;
-		while (data->file_content[i + j][k] && k < longest_line)
+		while (k < ft_strlen(data->file_content[i + j]) && data->file_content[i + j][k])
 		{
 			if (data->file_content[i + j][k] != ' ' && data->file_content[i + j][k] != '\n')
 				map[j][k] = data->file_content[i + j][k];
@@ -230,6 +236,8 @@ static int	ft_parse_data(char **split, t_data *data)
 
 	len = ft_splitlen(split);
 	first = split[0];
+	if (!first)
+		return (SUCCESS);
 	if (ft_strncmp(first, "NO", 2) == 0 && len == 2)
 		data->no = ft_get_texture(split[1]);
 	else if (ft_strncmp(first, "SO", 2) == 0 && len == 2)
@@ -256,8 +264,6 @@ static int	ft_parse_assets(char **file_content, int nb_lines, t_data *data, t_cu
 	{
 		if (file_content[data->i][0] != '\n')
 		{
-			if (file_content[data->i][ft_strlen(file_content[data->i]) - 1] == '\n')
-				file_content[data->i][ft_strlen(file_content[data->i]) - 1] = ' ';
 			split = ft_split(file_content[data->i], ' ');
 			if (!split)
 				return (err("split failed", FAILURE));
@@ -295,7 +301,6 @@ int	ft_parsing(t_cub3d *cub, int ac, char **av)
 	if (ft_check_file(av[1]) == FAILURE)
 		return (FAILURE);
 	nb_lines = ft_count_lines(av[1]);
-	// cub->sim.maph = nb_lines;
 	cub->data.file_content = malloc(sizeof(char *) * (nb_lines + 1));
 	if (!cub->data.file_content)
 		return (FAILURE);
@@ -305,8 +310,8 @@ int	ft_parsing(t_cub3d *cub, int ac, char **av)
 		printf("Error: Parsing assets failed\n");
 		return (FAILURE);
 	}
-	cub->sim.map = ft_create_map(cub->data.i, nb_lines, &(cub->data), cub);
-	if (!cub->sim.map)
+	cub->data.map = ft_create_map(cub->data.i, nb_lines, &(cub->data), cub);
+	if (!cub->data.map)
 	{
 		printf("Error: Map creation failed\n");
 		return (FAILURE);

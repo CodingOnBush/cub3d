@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 19:27:46 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/19 17:29:51 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 11:41:06 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,27 @@ void	free_data(t_data *data)
 {
 	int i;
 
-	i = 0;
 	if (!data)
 		return ;
 	if (data->file_content)
 	{
+		i = 0;
 		while(data->file_content[i])
 		{
 			free(data->file_content[i]);
 			i++;
 		}
 		free(data->file_content);
+	}
+	if (data->map)
+	{
+		i = 0;
+		while(data->map[i])
+		{
+			free(data->map[i]);
+			i++;
+		}
+		free(data->map);
 	}
 	if (data->no)
 		free(data->no);
@@ -54,7 +64,6 @@ void	ft_free_cube3d(t_cub3d *c)
 	mlx_destroy_display(c->mlx.mlx_ptr);
 	free(c->mlx.mlx_ptr);
 	free_data(&c->data);
-	ft_free_sim(&c->sim);
 }
 
 void	ft_free_split(char **split)
@@ -68,19 +77,4 @@ void	ft_free_split(char **split)
 		i++;
 	}
 	free(split);
-}
-
-void	ft_free_sim(t_sim *sim)
-{
-	int i;
-
-	i = 0;
-	if (!sim->map)
-		return ;
-	while (sim->map[i])
-	{
-		free(sim->map[i]);
-		i++;
-	}
-	free(sim->map);
 }

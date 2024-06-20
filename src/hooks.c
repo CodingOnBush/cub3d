@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:26:16 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 10:02:55 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 11:25:43 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,25 @@ int	ft_key_hook(int keycode, t_cub3d *c)
 	}
 	else if (keycode == XK_Down)
 	{
-		if(worldMap[(int)(c->sim.px - c->cst.dirX * c->cst.ms)][(int)c->sim.py] == false)
-			c->sim.px -= c->cst.dirX * c->cst.ms;
-		if(worldMap[(int)c->sim.px][(int)(c->sim.py - c->cst.dirY * c->cst.ms)] == false)
-			c->sim.py -= c->cst.dirY * c->cst.ms;
+		printf("[%d]\n", c->data.map[(int)(c->data.px - c->cst.dirX * c->cst.ms)][(int)c->data.py]);
+		if(c->data.map[(int)(c->data.px - c->cst.dirX * c->cst.ms)][(int)c->data.py] != '0')
+		{
+			printf("go\n");
+			c->data.px -= c->cst.dirX * c->cst.ms;
+		}
+		printf("[%d]\n", c->data.map[(int)c->data.px][(int)(c->data.py - c->cst.dirY * c->cst.ms)]);
+		if(c->data.map[(int)c->data.px][(int)(c->data.py - c->cst.dirY * c->cst.ms)] != '0')
+		{
+			printf("go\n");
+			c->data.py -= c->cst.dirY * c->cst.ms;
+		}
 	}
 	else if (keycode == XK_Up)
 	{
-		if(worldMap[(int)(c->sim.px + c->cst.dirX * c->cst.ms)][(int)(c->sim.py)] == false)
-			c->sim.px += c->cst.dirX * c->cst.ms;
-		if(worldMap[(int)c->sim.px][(int)(c->sim.py + c->cst.dirY * c->cst.ms)] == false)
-			c->sim.py += c->cst.dirY * c->cst.ms;
+		if(c->data.map[(int)(c->data.px + c->cst.dirX * c->cst.ms)][(int)(c->data.py)] != '0')
+			c->data.px += c->cst.dirX * c->cst.ms;
+		if(c->data.map[(int)c->data.px][(int)(c->data.py + c->cst.dirY * c->cst.ms)] != '0')
+			c->data.py += c->cst.dirY * c->cst.ms;
 	}
 	else if (keycode == XK_Escape)
 	{

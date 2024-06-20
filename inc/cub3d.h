@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 09:54:09 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 11:22:41 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@
 
 # define M_PI 3.14159265358979323846
 
-extern int worldMap[24][24];
+// extern int worldMap[24][24];
 
 typedef struct s_img
 {
-    void	*mlx_img;	// what is returned by mlx_new_image()
+    void	*mlx_img;
     char	*addr;
-    int		bpp; /* bits per pixel */
+    int		bpp;
     int		line_len;
     int		endian;
 	int		w;
@@ -69,15 +69,6 @@ typedef struct s_cst
 	double	dirY;	//initial direction vector
 }			t_cst;
 
-typedef struct s_sim
-{
-	char	**map;	// map
-	int		mapw;	// map width
-	int		maph;	// map height
-	double	px;		// x position of the player
-	double	py;		// y position of the player
-}			t_sim;
-
 typedef struct s_color
 {
 	int	r;
@@ -95,6 +86,11 @@ typedef struct s_data
 	t_color	*f;
 	t_color	*c;
 	int		i;
+	char	**map;	// map
+	int		mapw;	// map width
+	int		maph;	// map height
+	double	px;		// x position of the player
+	double	py;		// y position of the player
 }			t_data;
 
 typedef struct s_ray
@@ -118,35 +114,32 @@ typedef struct s_ray
 
 typedef struct s_cub3d
 {
-	t_mlx	mlx;
+	t_cst	cst;
 	t_img	img;
 	t_img	buf;
-	t_cst	cst;
-	t_sim	sim;
 	t_ray	ray;
 	t_data	data;
+	t_mlx	mlx;
 }			t_cub3d;
 
+/*	INIT	*/
+int	ft_init_cub3d(t_cub3d *cub);
+
+
 void	ft_pixel_put(t_cub3d *cub, int c, int r, int color);
-void	ft_draw_column(t_cub3d *c, int col, double perpWallDist);
-void	ft_draw_texture(t_cub3d *c, t_img tex, int zoom);
 
 void	free_data(t_data *data);
 void	ft_free_cube3d(t_cub3d *c);
 void	ft_free_split(char **split);
-void	ft_free_sim(t_sim *sim);
+// void	ft_free_sim(t_sim *sim);
 
 int	ft_win_cross(t_cub3d *param);
 int	ft_key_hook(int keycode, t_cub3d *c);
 
-void	ft_init_cst(t_cst *cst);
-void	ft_init_ray(t_ray *ray);
-void	ft_init_sim(t_sim *sim);
-void	ft_init_data(t_data *data);
 
 int	ft_parsing(t_cub3d *cub, int ac, char **av);
 
-double	ft_get_perp_wall_dist(t_cub3d *c, int col);
+// double	ft_get_perp_wall_dist(t_cub3d *c, int col);
 
 void	ft_draw(t_cub3d *cub, int col);
 

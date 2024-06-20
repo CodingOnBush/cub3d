@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 10:02:01 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/20 11:24:03 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,10 @@ void	ft_pixel_put(t_cub3d *cub, int c, int r, int color)
 	char	*dst;
 
 	if (c < 0 || c >= cub->cst.width || r < 0 || r >= cub->cst.height)
-	{
-		// printf("nop");
 		return ;
-	}
 	dst = cub->img.addr + (r * cub->img.line_len + c * (cub->img.bpp / 8));
 	*(unsigned int *)dst = color;
 }
-
-// static int	ft_get_pixel(t_cub3d *c, int row, int lineHeight)
-// {
-// 	t_img	tex;
-// 	int		color;
-
-// 	tex = c->buf;
-// 	color = *(unsigned int *)(tex.addr + (row * tex.line_len + c->ray.texCol * (tex.bpp / 8)));
-// 	c->ray.texCol = (c->ray.texCol + 1) % tex.w;
-// 	return (color);
-// }
 
 static int	ft_get_color(t_cub3d *c, int x, int y)
 {
@@ -48,77 +34,6 @@ static int	ft_get_color(t_cub3d *c, int x, int y)
 	return (color);
 }
 
-void	ft_draw_column(t_cub3d *c, int col, double perpWallDist)
-{
-	int		lineHeight;
-	int		drawStart;
-	int		drawEnd;
-	int		row;
-	double	ratio;
-	int		color;
-
-	lineHeight = (int)(c->cst.height / perpWallDist);
-	drawStart = (-lineHeight / 2) + (c->cst.height / 2);
-	drawEnd = lineHeight / 2 + c->cst.height / 2;
-	if(drawStart < 0)
-		drawStart = 0;
-	if(drawEnd >= c->cst.height)
-		drawEnd = c->cst.height - 1;
-
-
-	
-	
-	
-	row = 0;
-	while (row < drawStart)
-	{
-		ft_pixel_put(c, col, row, 0xFFFFFF);
-		row++;
-	}
-	ratio = (drawEnd - drawStart) / c->buf.h;
-	if (ratio <= 0)
-		ratio = 1;
-	while (row < drawEnd)
-	{
-		color = ft_get_color(c, c->ray.texCol, (int)(row / ratio) % c->buf.h);
-		ft_pixel_put(c, col, row, color);
-		row++;
-	}
-	c->ray.texCol = (c->ray.texCol + 1) % c->buf.w;
-	while (row < c->cst.height)
-	{
-		ft_pixel_put(c, col, row, 0xFFFFFF);
-		row++;
-	}
-}
-
-void	ft_draw_texture(t_cub3d *c, t_img tex, int zoom)
-{
-	char	*tmp;
-	int tex_col;
-	int tex_row;
-
-	tex_col = 0;
-	while (tex_col < tex.w)
-	{
-		tex_row = 0;
-		while (tex_row < tex.h)
-		{
-			tmp = tex.addr + (tex_row * tex.line_len + tex_col * (tex.bpp / 8));
-			for (int win_col = 0; win_col < zoom; win_col++)
-			{
-				for (int win_row = 0; win_row < zoom; win_row++)
-				{
-					ft_pixel_put(c, (tex_col * zoom) + win_col, (tex_row * zoom) + win_row, *(unsigned int *)tmp);
-				}	
-			}
-			tex_row++;
-		}
-		tex_col++;
-	}
-}
-
-
 void	ft_draw(t_cub3d *cub, int col)
 {
 	//calculate ray position and direction
@@ -127,8 +42,8 @@ void	ft_draw(t_cub3d *cub, int col)
       double rayDirY = cub->cst.dirY + (cub->cst.planeY)*cameraX;
 
       //which box of the map we're in
-      int mapX = (int)(cub->sim.px);
-      int mapY = (int)(cub->sim.py);
+      int mapX = (int)(cub->data.px);
+      int mapY = (int)(cub->data.py);
 
       //length of ray from current position to next x or y-side
       double sideDistX;
@@ -150,22 +65,22 @@ void	ft_draw(t_cub3d *cub, int col)
       if(rayDirX < 0)
       {
         stepX = -1;
-        sideDistX = (cub->sim.px - mapX) * deltaDistX;
+        sideDistX = (cub->data.px - mapX) * deltaDistX;
       }
       else
       {
         stepX = 1;
-        sideDistX = (mapX + 1.0 - cub->sim.px) * deltaDistX;
+        sideDistX = (mapX + 1.0 - cub->data.px) * deltaDistX;
       }
       if(rayDirY < 0)
       {
         stepY = -1;
-        sideDistY = (cub->sim.py - mapY) * deltaDistY;
+        sideDistY = (cub->data.py - mapY) * deltaDistY;
       }
       else
       {
         stepY = 1;
-        sideDistY = (mapY + 1.0 - cub->sim.py) * deltaDistY;
+        sideDistY = (mapY + 1.0 - cub->data.py) * deltaDistY;
       }
       //perform DDA
       while (hit == 0)
@@ -184,7 +99,7 @@ void	ft_draw(t_cub3d *cub, int col)
           side = 1;
         }
         //Check if ray has hit a wall
-        if(worldMap[mapX][mapY] > 0) hit = 1;
+        if(cub->data.map[mapX][mapY] > '0') hit = 1;
       }
 
       //Calculate distance of perpendicular ray (Euclidean distance would give fisheye effect!)
@@ -204,12 +119,12 @@ void	ft_draw(t_cub3d *cub, int col)
       if(drawEnd >= (cub->cst.height)) drawEnd = (cub->cst.height) - 1;
 
       //texturing calculations
-      int texNum = worldMap[mapX][mapY] - 1; //1 subtracted from it so that texture 0 can be used!
+      int texNum = cub->data.map[mapX][mapY] - 1; //1 subtracted from it so that texture 0 can be used!
 
       //calculate value of wallX
       double wallX; //where exactly the wall was hit
-      if(side == 0) wallX = cub->sim.py + perpWallDist * rayDirY;
-      else          wallX = cub->sim.px + perpWallDist * rayDirX;
+      if(side == 0) wallX = cub->data.py + perpWallDist * rayDirY;
+      else          wallX = cub->data.px + perpWallDist * rayDirX;
       wallX -= floor((wallX));
 
       //x coordinate on the texture
