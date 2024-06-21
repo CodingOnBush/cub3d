@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/21 12:09:31 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/21 14:23:15 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ static void	ft_init_file(t_file *file)
 		file->rgbsky[i] = 0;
 		i++;
 	}
+	file->count = 0;
 }
 
 void	ft_init_env(t_env *env)

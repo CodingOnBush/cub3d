@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/21 12:04:36 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/21 14:40:27 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,16 @@
 # define SOUTH 1
 # define EAST 2
 # define WEST 3
+
+# define CEIL 0
+# define FLOOR 1
+
+# define R 0
+# define G 1
+# define B 2
+
+# define STOP 0	// Stop some action
+# define GOON 1	// Continue some action 
 
 # define M_PI 3.14159265358979323846
 
@@ -80,6 +90,8 @@ typedef struct	s_file
 	char	*texpath[4];
 	int		rgbfloor[3];
 	int		rgbsky[3];
+	int		colors[2][3];
+	int		count;
 }			t_file;
 
 typedef struct	s_map
@@ -104,12 +116,22 @@ typedef struct s_env
 {
 	t_file	file;
 	t_map	map;
+	/*
+	remove t_map struct and move its members to t_env
+	char	**map;
+	int		mapw;
+	int		maph;
+	int		px;
+	int		py;
+	*/
 	t_ray	ray;
 	t_win	win;
 }			t_env;
 
 /*	UTILS	*/
 int		ft_err(char *str, int ret);
+int		ft_splitlen(char **split);
+int	ft_get_id(char *str);
 
 /*	FREE	*/
 void	ft_free_env(t_env *env);
