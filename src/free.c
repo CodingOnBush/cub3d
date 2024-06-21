@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 19:27:46 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 23:33:22 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/21 12:12:59 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,16 @@ static void	ft_free_file(t_file *file)
 {
 	int	i;
 
-	if (file->file != NULL)
+	if (file->content != NULL)
 	{
 		i = 0;
-		while (file->file[i])
-			free(file->file[i++]);
-		free(file->file);
+		while (file->content[i])
+			free(file->content[i++]);
+		free(file->content);
 	}
 	i = 0;
 	while (file->texpath[i])
 		free(file->texpath[i++]);
-	free(file->texpath);
 }
 
 static void	ft_free_win(t_win *win)
@@ -68,10 +67,9 @@ void	ft_free_split(char **split)
 	int i;
 
 	i = 0;
+	if (!split)
+		return ;
 	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
+		free(split[i++]);
 	free(split);
 }

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 23:31:54 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/21 11:45:01 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,10 @@ int	main(int ac, char **av)
 
 	if (ac != 2)
 		return (ft_putstr_fd("Usage : ./cub3d <map.file>\n", 2), FAILURE);
-	if (ft_parsing(&env, av[1]) == FAILURE)
-		return (FAILURE);
 	ft_init_env(&env);
+	if (ft_parsing(&env, av[1]) == FAILURE)
+		return (ft_free_env(&env), FAILURE);
+
 
 	printf("map size = %d x %d\n", env.map.mapw, env.map.maph);
 

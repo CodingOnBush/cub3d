@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 23:33:35 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/21 12:09:31 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ static void	ft_init_file(t_file *file)
 {
 	int i;
 
-	file->file = NULL;
-	file->filew = 0;
+	file->content = NULL;
+	file->width = 0;
 	file->height = 0;
 	i = 0;
 	while (i < 4)

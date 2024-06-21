@@ -6,7 +6,7 @@
 #    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/06/20 23:31:54 by momrane          ###   ########.fr        #
+#    Updated: 2024/06/21 11:23:01 by momrane          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,10 +46,10 @@ OBJ			:=	$(SRC:$(SRC_DIR)/%.c=$(BIN_DIR)/%.o)
 all: $(NAME)
 
 e: all
-	@./$(NAME) japancoridor.file
+	@./$(NAME) japancoridor.cub
 
 v: $(NAME)
-	@valgrind --leak-check=full ./$(NAME) japancoridor.file
+	@valgrind --leak-check=full ./$(NAME) japancoridor.cub
 
 $(NAME): $(LIBS) $(OBJ)
 	$(CC) -I $(INC_DIR) $(OBJ) $(LIBS) $(MLX_FLAGS) -o ./$(NAME)

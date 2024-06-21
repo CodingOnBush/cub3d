@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:37:40 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 23:31:54 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/21 12:25:36 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	ft_check_file(char *file)
 	ext = ft_strchr(file, '.');
 	if (!ext)
 		return (ft_err("No file extension", FAILURE));
-	if (ft_strncmp(ext, ".file", 4) != 0)
+	if (ft_strncmp(ext, ".cub", 4) != 0)
 		return (ft_err("Invalid file extension", FAILURE));
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
@@ -295,36 +295,116 @@ static int	ft_count_lines(char *file)
 // 	}
 // }
 
-static int	ft_fill_file(char **file, char *cubfile)
+static int	ft_get_all_lines(t_env *env, char *cubfile)
 {
-	int		fd;
-	int		i;
-	char	*line;
+	int	fd;
+	int	row;
+	int	len;
 
 	fd = open(cubfile, O_RDONLY);
 	if (fd == -1)
 		return (perror(cubfile), FAILURE);
+	env->file.height = ft_count_lines(cubfile);	
+	env->file.content = (char **)malloc(sizeof(char *) * (env->file.height + 1));
+	if (!env->file.content)
+		return (FAILURE);
+	row = 0;
+	while (row < env->file.height)
+	{
+		env->file.content[row] = get_next_line(fd);
+		len = ft_strlen(env->file.content[row]);
+		if (len > 0 && env->file.content[row][len - 1] == '\n')
+			env->file.content[row][len - 1] = '\0';
+		// printf("[%d]\t[%s]\n", row, env->file.content[row]);
+		row++;
+	}
+	env->file.content[row] = NULL;
+	close(fd);
+	return (SUCCESS);
+}
+
+static void	ft_print_split(char **split)
+{
+	int i = 0;
+	if (!split)
+	{
+		printf("split is NULL\n");
+		return ;
+	}
+	while (split[i])
+	{
+		printf("[%s] | ", split[i]);
+		i++;
+	}
+	if (split[i] == NULL)
+		printf("[NULL]");
+	printf("\n\n");
+}
+
+static int	ft_get_infos(t_env *env, char **split)
+{
+	printf("Split = ");
+	ft_print_split(split);
 	
+	int	i;
+
+	if (!split)
+		return (SUCCESS);
+	if (!split[0])
+		return (ft_free_split(split), SUCCESS);
+	i = 0;
+	while (i < 4)
+	{
+		if ()
+		i++;
+	}
+
+
+	ft_free_split(split);
+	return (FAILURE);
+}
+
+static int	ft_get_map(t_env *env, char *line)
+{
+	printf("line = [%s]\n", line);
+	return (SUCCESS);
+}
+
+static int	ft_analyze_file(t_env *env, char *cubfile)
+{
+	char	**content;
+	char	**split;
+	int		fd;
+
+	content = env->file.content;
+	fd = open(cubfile, O_RDONLY);
+	if (fd == -1)
+		return (perror(cubfile), FAILURE);
+	while (*content != NULL)
+	{
+		split = ft_split(*content, ' ');
+		if (ft_get_infos(env, split) == FAILURE)
+			break;
+		content++;
+	}
+	while (*content != NULL)
+	{
+		if (ft_get_map(env, *content) == FAILURE)
+			return (close(fd), FAILURE);
+		content++;
+	}
+	close(fd);
+	return (SUCCESS);
 }
 
 int	ft_parsing(t_env *env, char *cubfile)
 {
-	// char	*test;
-
 	if (ft_check_file(cubfile) == FAILURE)
 		return (FAILURE);
-	env->file.height = ft_count_lines(cubfile);
-	printf("file height = %d\n", env->file.height);
-	printf("file width = %d\n", env->file.filew);
-	env->file.file = malloc(sizeof(char *) * (env->file.height + 1));
-	if (!env->file.file)
+	if (ft_get_all_lines(env, cubfile) == FAILURE)
 		return (FAILURE);
-	if (ft_fill_file(env->file.file, cubfile) == FAILURE)
-	{
-		ft_free_array(env->file.file, env->file.height);
+	if (ft_analyze_file(env, cubfile) == FAILURE)
 		return (FAILURE);
-	}
-	
 	
 	// file->data.raw = malloc(sizeof(char *) * (file_height + 1));
 	// if (!file->data.raw)

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 23:32:59 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/21 12:04:36 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ typedef struct s_img
 
 typedef struct	s_file
 {
-	char	**file;
-	int		filew;
+	char	**content;
+	int		width;
 	int		height;
 	char	*texpath[4];
 	int		rgbfloor[3];
@@ -113,6 +113,7 @@ int		ft_err(char *str, int ret);
 
 /*	FREE	*/
 void	ft_free_env(t_env *env);
+void	ft_free_split(char **split);
 
 /*	INIT	*/
 void	ft_init_env(t_env *env);
