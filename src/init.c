@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/21 14:23:15 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 13:13:23 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ static int	ft_init_win(t_win *win)
 
 	win->winw = 640;
 	win->winh = 640;
-	win->mlx = NULL;
-	win->win = NULL;
+	win->mlx_ptr = NULL;
+	win->win_ptr = NULL;
 	i = 0;
 	while (i < 5)
 		ft_init_img(&win->img[i++]);
@@ -86,11 +86,11 @@ static void	ft_init_file(t_file *file)
 void	ft_init_env(t_env *env)
 {
 	ft_init_file(&env->file);
-	env->map.map = NULL;
-	env->map.mapw = 0;
-	env->map.maph = 0;
-	env->map.px = 0;
-	env->map.py = 0;
+	env->map = NULL;
+	env->mapw = 0;
+	env->maph = 0;
+	env->px = 0;
+	env->py = 0;
 	ft_init_ray(&env->ray);
 	ft_init_win(&env->win);
 }

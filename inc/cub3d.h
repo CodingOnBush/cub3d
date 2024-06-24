@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/21 14:40:27 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 13:13:07 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,19 +94,10 @@ typedef struct	s_file
 	int		count;
 }			t_file;
 
-typedef struct	s_map
-{
-	char	**map;
-	int		mapw;
-	int		maph;
-	int		px;
-	int		py;
-}			t_map;
-
 typedef struct	s_win
 {
-	void	*mlx;
-	void	*win;
+	void	*mlx_ptr;
+	void	*win_ptr;
 	int		winw;
 	int		winh;
 	t_img	img[5];
@@ -115,15 +106,11 @@ typedef struct	s_win
 typedef struct s_env
 {
 	t_file	file;
-	t_map	map;
-	/*
-	remove t_map struct and move its members to t_env
 	char	**map;
 	int		mapw;
 	int		maph;
 	int		px;
 	int		py;
-	*/
 	t_ray	ray;
 	t_win	win;
 }			t_env;
@@ -142,5 +129,9 @@ void	ft_init_env(t_env *env);
 
 /*	PARSING	*/
 int		ft_parsing(t_env *env, char *cubfile);
+
+/*	HOOKS	*/
+int	ft_win_cross(t_env *param);
+int	ft_key_hook(int keycode, t_env *env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:37:40 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 12:51:19 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 13:10:58 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,26 +162,26 @@ static int	ft_create_map(t_env *env, char **content)
 	int		col;
 	char	*line;
 
-	env->map.map = (char **)malloc(sizeof(char *) * env->map.maph);
-	if (!env->map.map)
+	env->map = (char **)malloc(sizeof(char *) * env->maph);
+	if (!env->map)
 		return (FAILURE);
 	row = 0;
-	while (row < env->map.maph)
+	while (row < env->maph)
 	{
-		env->map.map[row] = malloc(sizeof(char) * env->map.mapw);
-		if (!env->map.map[row])
-			return (ft_free_array(env->map.map, row), FAILURE);
+		env->map[row] = malloc(sizeof(char) * env->mapw);
+		if (!env->map[row])
+			return (ft_free_array(env->map, row), FAILURE);
 		col = 0;
 		line = *content;
 		while (*line != '\0')
 		{
-			env->map.map[row][col] = *line;
+			env->map[row][col] = *line;
 			col++;
 			line++;
 		}
-		while (col < env->map.mapw)
+		while (col < env->mapw)
 		{
-			env->map.map[row][col] = '#';
+			env->map[row][col] = '#';
 			col++;
 		}
 		content++;
@@ -196,12 +196,12 @@ static void	ft_print_map(t_env *env)
 	int		row;
 	int		col;
 
-	map = env->map.map;
+	map = env->map;
 	row = 0;
-	while (row < env->map.maph)
+	while (row < env->maph)
 	{
 		col = 0;
-		while (col < env->map.mapw)
+		while (col < env->mapw)
 		{
 			printf("%c", map[row][col]);
 			col++;
@@ -217,10 +217,10 @@ static void	ft_set_mapsizes(t_env *env, char **content)
 		content++;
 	while (*content != NULL)
 	{
-		if (ft_strlen(*content) > env->map.mapw)
-			env->map.mapw = ft_strlen(*content);
+		if (ft_strlen(*content) > env->mapw)
+			env->mapw = ft_strlen(*content);
 		content++;
-		env->map.maph++;
+		env->maph++;
 	}
 }
 
@@ -240,8 +240,8 @@ static int	ft_analyze_file(t_env *env)
 	if (env->file.count != 6)
 		return (ft_err("Wrong infos about game", FAILURE));
 	ft_set_mapsizes(env, content);// ici on set les tailles de la map
-	// printf("mapw = %d\n", env->map.mapw);
-	// printf("maph = %d\n", env->map.maph);
+	// printf("mapw = %d\n", env->mapw);
+	// printf("maph = %d\n", env->maph);
 	// ensuite on crée la map et on la remplit en se promenant dans le tableau content
 	if (ft_create_map(env, content) == FAILURE)
 		return (FAILURE);
@@ -258,15 +258,15 @@ static int	ft_check_map(t_env *env)
 	int		row;
 	int		col;
 
-	map = env->map.map;
+	map = env->map;
 	if (map == NULL || map[0] == NULL)
 		return (ft_err("Map empty", FAILURE));
 	col = 0;
 	row = 0;
-	while (row < env->map.maph)
+	while (row < env->maph)
 	{
 		col = 0;
-		while (col < env->map.mapw)
+		while (col < env->mapw)
 		{
 			if (ft_strchr(" 01NSEW#", map[row][col]) == NULL)
 				return (ft_err("Invalid character in map", FAILURE));
