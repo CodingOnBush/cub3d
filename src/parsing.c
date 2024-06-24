@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:37:40 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 17:01:13 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 19:08:37 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,12 +222,12 @@ static void	ft_fill_map(t_env *env, char **content)
 
 	map = env->map;
 	row = 0;
-	while (row < env->maph)
+	while (row < env->maph && content[row] != NULL)
 	{
 		col = 0;
 		while (col < env->mapw && content[row][col] != '\0')
 		{
-			map[col][row] = content[row][col];
+			map[row][col] = content[row][col];
 			col++;
 		}
 		row++;
@@ -336,11 +336,12 @@ int	ft_parsing(t_env *env, char *cubfile)
 		return (FAILURE);
 	if (ft_check_map(env) == FAILURE)
 		return (FAILURE);
+	ft_print_file_infos(env);
 	
 	// ft_print_file_infos(env);
 	// ft_print_map(env);
 	ft_find_player(env);
+	printf("px = [%d], py = [%d]\n", env->px, env->py);
 	ft_set_images_path(env);
-	// printf("px = [%d], py = [%d]\n", env->px, env->py);
 	return (SUCCESS);
 }
