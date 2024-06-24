@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 13:29:01 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/06/24 13:38:56 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-void	ft_pixel_put(t_cub3d *cub, int c, int r, int color)
-{
-	char	*dst;
+// void	ft_pixel_put(t_env *env, int c, int r, int color)
+// {
+// 	char	*dst;
 
 	// if (c < 0 || c >= cub->cst.width || r < 0 || r >= cub->cst.height)
 	// 	return ;
@@ -22,37 +22,37 @@ void	ft_pixel_put(t_cub3d *cub, int c, int r, int color)
 	*(unsigned int *)dst = color;
 }
 
-static int ft_get_ns_wall(int px, int py, int x, int y){
-  if (py <= y)
-    return (SOUTH);
-  else
-    return (NORTH);
-}
+// static int ft_get_ns_wall(int px, int py, int x, int y){
+//   if (py <= y)
+//     return (SOUTH);
+//   else
+//     return (NORTH);
+// }
 
-static int ft_get_ew_wall(int px, int py, int x, int y){
-  if (px <= x)
-    return (EAST);
-  else
-    return (WEST);
+// static int ft_get_ew_wall(int px, int py, int x, int y){
+//   if (px <= x)
+//     return (EAST);
+//   else
+//     return (WEST);
   
-}
+// }
 
-static int	ft_get_color_tex(t_cub3d *c, int x, int y, int type)
-{
-	t_img	tex;
-	int		color;
+// static int	ft_get_color_tex(t_env *c, int x, int y, int type)
+// {
+// 	t_img	tex;
+// 	int		color;
 
-	tex = c->buf[type];
-	if (x < 0 || x >= tex.w || y < 0 || y >= tex.h)
-		return (0);
-	color = *(unsigned int *)(tex.addr + (y * tex.line_len + x * (tex.bpp / 8)));
-	return (color);
-}
+// 	tex = c->buf[type];
+// 	if (x < 0 || x >= tex.w || y < 0 || y >= tex.h)
+// 		return (0);
+// 	color = *(unsigned int *)(tex.addr + (y * tex.line_len + x * (tex.bpp / 8)));
+// 	return (color);
+// }
 
-static int	ft_get_color(t_cub3d *c, int texX, int texY, int wall)
-{
-	t_img	tex;
-	int		color;
+// static int	ft_get_color(t_env *c, int texX, int texY, int wall)
+// {
+// 	t_img	tex;
+// 	int		color;
   
 	color = ft_get_color_tex(c, texX, texY, wall);
 	return (color);
@@ -86,21 +86,21 @@ void	ft_draw(t_cub3d *cub, int col)
 	// int mapX = (int)(cub->data.px);
 	// int mapY = (int)(cub->data.py);
 
-	//length of ray from current position to next x or y-side
-	double sideDistX;
-	double sideDistY;
+// 	//length of ray from current position to next x or y-side
+// 	double sideDistX;
+// 	double sideDistY;
 
 	//length of ray from one x or y-side to next x or y-side
 	double deltaDistX = (cub->ray.rayDirX == 0) ? 1e30 : fabs(1 / cub->ray.rayDirX);
 	double deltaDistY = (cub->ray.rayDirY == 0) ? 1e30 : fabs(1 / cub->ray.rayDirY);
 	double perpWallDist;
 
-	//what direction to step in x or y-direction (either +1 or -1)
-	int stepX;
-	int stepY;
+// 	//what direction to step in x or y-direction (either +1 or -1)
+// 	int stepX;
+// 	int stepY;
 
-	int hit = 0; //was there a wall hit?
-	int side; //was a NS or a EW wall hit?
+// 	int hit = 0; //was there a wall hit?
+// 	int side; //was a NS or a EW wall hit?
 
 	//calculate step and initial sideDist
 	if(cub->ray.rayDirX < 0)
@@ -143,21 +143,21 @@ void	ft_draw(t_cub3d *cub, int col)
 		if(cub->data.map[cub->ray.mapX][cub->ray.mapY] > '0') hit = 1;
 	}
 
-	//Calculate distance of perpendicular ray (Euclidean distance would give fisheye effect!)
-	if(side == 0) perpWallDist = (sideDistX - deltaDistX);
-	else          perpWallDist = (sideDistY - deltaDistY);
+// 	//Calculate distance of perpendicular ray (Euclidean distance would give fisheye effect!)
+// 	if(side == 0) perpWallDist = (sideDistX - deltaDistX);
+// 	else          perpWallDist = (sideDistY - deltaDistY);
 
-	//Calculate height of line to draw on screen
-	int lineHeight = (int)(cub->cst.height / perpWallDist);
+// 	//Calculate height of line to draw on screen
+// 	int lineHeight = (int)(file->cst.height / perpWallDist);
 
 
-	int pitch = 100;
+// 	int pitch = 100;
 
-	//calculate lowest and highest pixel to fill in current stripe
-	int drawStart = -lineHeight / 2 + (cub->cst.height) / 2 + pitch;
-	if(drawStart < 0) drawStart = 0;
-	int drawEnd = lineHeight / 2 + (cub->cst.height) / 2 + pitch;
-	if(drawEnd >= (cub->cst.height)) drawEnd = (cub->cst.height) - 1;
+// 	//calculate lowest and highest pixel to fill in current stripe
+// 	int drawStart = -lineHeight / 2 + (file->cst.height) / 2 + pitch;
+// 	if(drawStart < 0) drawStart = 0;
+// 	int drawEnd = lineHeight / 2 + (file->cst.height) / 2 + pitch;
+// 	if(drawEnd >= (file->cst.height)) drawEnd = (file->cst.height) - 1;
 
 	//texturing calculations
 	int texNum = cub->data.map[cub->ray.mapX][cub->ray.mapY] - 1; //1 subtracted from it so that texture 0 can be used!
@@ -197,7 +197,7 @@ void	ft_draw(t_cub3d *cub, int col)
 		// Uint32 color = texture[texNum][cub->buf[0].h * texY + texX];
 		// int color = ft_get_color(cub, texX, texY);
 
-		int wall;
+// 		int wall;
 
 		if (side == 1)
 			wall = ft_get_ns_wall(cub->data.px, cub->data.py, cub->ray.mapX, cub->ray.mapY);
