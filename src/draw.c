@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 16:07:30 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 11:13:23 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,33 +55,14 @@ static int	ft_get_color(t_cub3d *c, int texX, int texY, int wall)
 	int		color;
   
 	color = ft_get_color_tex(c, texX, texY, wall);
-//   if (wall == NORTH)
-//   {
-//     // color = 0x00FF0000; //red
-//   }
-  
-
-  
-//   else if (wall == SOUTH)
-//   {
-//     color = 0x0000FF00; //green
-// 	// color = ft_get_color_tex(c, SOUTH);
-//   }
-//   else if (wall == EAST)
-//   {
-//     color = 0x000000FF; //blue
-// 	// color = ft_get_color_tex(c, EAST);
-//   }
-//   else if (wall == WEST)
-//   {
-//     color = 0x00FFFF00; //yellow
-// 	// color = ft_get_color_tex(c, WEST);
-//   }
 	return (color);
 }
 
 void	ft_draw(t_cub3d *cub, int col)
 {
+	int	y;
+	int	color;
+
 	//calculate ray position and direction
 	double cameraX = 2 * col / (double)cub->cst.width - 1; //x-coordinate in camera space
 	double rayDirX = cub->cst.dirX + (cub->cst.planeX)*cameraX;
@@ -173,23 +154,30 @@ void	ft_draw(t_cub3d *cub, int col)
       else          wallX = cub->data.px + perpWallDist * rayDirX;
       wallX -= floor((wallX));
     //   printf("wallX = %f\n", wallX);
-      //x coordinate on the texture
-      int texX = (int)(wallX * (double)(cub->buf[0].w));
-      if(side == 0 && rayDirX > 0) texX = cub->buf[0].w - texX - 1;
-      if(side == 1 && rayDirY < 0) texX = cub->buf[0].w - texX - 1;
+	//x coordinate on the texture
+	int texX = (int)(wallX * (double)(cub->buf[0].w));
+	if(side == 0 && rayDirX > 0) texX = cub->buf[0].w - texX - 1;
+	if(side == 1 && rayDirY < 0) texX = cub->buf[0].w - texX - 1;
 
-      // TODO: an integer-only bresenham or DDA like algorithm could make the texture coordinate stepping faster
-      // How much to increase the texture coordinate per screen pixel
-      double step = 1.0 * cub->buf[0].h / lineHeight;
-      // Starting texture coordinate
-      double texPos = (drawStart - pitch - (cub->cst.height) / 2 + lineHeight / 2) * step;
-      for(int y = drawStart; y < drawEnd; y++)
-      {
-        // Cast the texture coordinate to integer, and mask with (cub->buf[0].h - 1) in case of overflow
-        int texY = (int)texPos & (cub->buf[0].h - 1);
-        texPos += step;
-        // Uint32 color = texture[texNum][cub->buf[0].h * texY + texX];
-        // int color = ft_get_color(cub, texX, texY);
+	// TODO: an integer-only bresenham or DDA like algorithm could make the texture coordinate stepping faster
+	// How much to increase the texture coordinate per screen pixel
+	double step = 1.0 * cub->buf[0].h / lineHeight;
+	// Starting texture coordinate
+	double texPos = (drawStart - pitch - (cub->cst.height) / 2 + lineHeight / 2) * step;
+	y = 0;
+	while (y < drawStart)
+	{
+		color = (cub->data.f->r << 16 | cub->data.f->g << 8 | cub->data.f->b);
+		ft_pixel_put(cub, col, y, color);
+		y++;
+	}
+	while (y < drawEnd)
+	{
+		// Cast the texture coordinate to integer, and mask with (cub->buf[0].h - 1) in case of overflow
+		int texY = (int)texPos & (cub->buf[0].h - 1);
+		texPos += step;
+		// Uint32 color = texture[texNum][cub->buf[0].h * texY + texX];
+		// int color = ft_get_color(cub, texX, texY);
 
 		int wall;
 
@@ -198,10 +186,38 @@ void	ft_draw(t_cub3d *cub, int col)
 		else
 			wall = ft_get_ew_wall(cub->data.px, cub->data.py, mapX, mapY);
 
-        int color = ft_get_color(cub, texX, texY, wall);
+		int color = ft_get_color(cub, texX, texY, wall);
 		//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
 		if(side == 1) color = (color >> 1) & 8355711;
 		// buffer[y][x] = color;
 		ft_pixel_put(cub, col, y, color);
+		y++;
 	}
+	while (y < cub->cst.height)
+	{
+		ft_pixel_put(cub, col, y, color);
+		color = (cub->data.c->r << 16 | cub->data.c->g << 8 | cub->data.c->b);
+		y++;
+	}
+	// for(int y = drawStart; y < drawEnd; y++)
+	// {
+	// 	// Cast the texture coordinate to integer, and mask with (cub->buf[0].h - 1) in case of overflow
+	// 	int texY = (int)texPos & (cub->buf[0].h - 1);
+	// 	texPos += step;
+	// 	// Uint32 color = texture[texNum][cub->buf[0].h * texY + texX];
+	// 	// int color = ft_get_color(cub, texX, texY);
+
+	// 	int wall;
+
+	// 	if (side == 1)
+	// 		wall = ft_get_ns_wall(cub->data.px, cub->data.py, mapX, mapY);
+	// 	else
+	// 		wall = ft_get_ew_wall(cub->data.px, cub->data.py, mapX, mapY);
+
+	// 	int color = ft_get_color(cub, texX, texY, wall);
+	// 	//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
+	// 	if(side == 1) color = (color >> 1) & 8355711;
+	// 	// buffer[y][x] = color;
+	// 	ft_pixel_put(cub, col, y, color);
+	// }
 }
