@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 14:16:29 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 15:14:37 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,10 @@ static int	ft_init_win(t_win *win)
 	win->win_ptr = NULL;
 	i = 0;
 	while (i < 5)
-		ft_init_img(&win->img[i++]);
+	{
+		ft_init_img(&win->img[i]);
+		i++;
+	}
 	return (SUCCESS);
 }
 

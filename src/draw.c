@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 13:58:54 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 15:39:20 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	ft_pixel_put(t_env *env, int c, int r, int color)
 {
 	char	*dst;
 
-	// if (c < 0 || c >= env->cst.width || r < 0 || r >= env->win.winh)
-	// 	return ;
-	dst = env->win.img[0].addr + (r * env->win.img[0].llen + c * (env->win.img[0].bpp / 8));
+	if (c < 0 || c >= env->win.winw || r < 0 || r >= env->win.winh)
+		return ;
+	dst = env->win.img[CANVAS].addr + (r * env->win.img[CANVAS].llen + c * (env->win.img[CANVAS].bpp / 8));
 	*(unsigned int *)dst = color;
 }
 
@@ -123,6 +123,8 @@ void	ft_draw(t_env *env, int col)
 		sideDistY = (env->ray.mapY + 1.0 - env->py) * deltaDistY;
 	}
 	//perform DDA
+	// printf("map size = %d, %d\n", env->maph, env->mapw);
+	// printf("stepX = %d, stepY = %d\n", stepX, stepY);
 	while (hit == 0)
 	{
 		//jump to next map square, either in x-direction, or in y-direction
@@ -139,6 +141,8 @@ void	ft_draw(t_env *env, int col)
 			side = 1;
 		}
 		// Check if ray has hit a wall
+		// printf("mapX = %d, mapY = %d\n", env->ray.mapX, env->ray.mapY);
+		// printf("map[mapX][mapY] = [%c]\n", env->map[env->ray.mapX][env->ray.mapY]);
 		if(env->map[env->ray.mapX][env->ray.mapY] > '0') hit = 1;
 	}
 
@@ -178,8 +182,8 @@ void	ft_draw(t_env *env, int col)
 	// Starting texture coordinate
 	double texPos = (drawStart - pitch - (env->win.winh) / 2 + lineHeight / 2) * step;
 	y = 0;
-	printf("drawStart = %d\n", drawStart);
-	printf("drawEnd = %d\n", drawEnd);
+	// printf("drawStart = %d\n", drawStart);
+	// printf("drawEnd = %d\n", drawEnd);
 	if (drawStart > env->win.winh || drawEnd < 0)
 		return ;
 	while (y < drawStart)

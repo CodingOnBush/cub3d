@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 14:24:22 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 15:40:25 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,25 +46,36 @@ static void	ft_print_map(t_env env)
 	int 	row = 0;
 	char	**map = env.map;
 
-	while (col < env.maph)
+	while (row < env.maph)
 	{
-		row = 0;
-		while (row < env.mapw)
+		col = 0;
+		while (col < env.mapw)
 		{
 			printf("%c", map[col][row]);
-			row++;
+			col++;
 		}
 		printf("\n");
-		col++;
+		row++;
 	}
 }
 
 
-// static void	ft_load_img(t_cub3d *cub, char *path, t_img *img)
-// {
-// 	img->mlx_img = mlx_xpm_file_to_image(cub->mlx.mlx_ptr, path, &(img->w), &(img->h));
-// 	img->addr = mlx_get_data_addr(img->mlx_img, &img->bpp, &img->line_len, &img->endian);
-// }
+static void	ft_load_img(t_env *env, int type)
+{
+	t_img	*img;
+
+	img = &(env->win.img[type]);
+	// printf("path : %s\n", img->path);
+	img->mlx_img = mlx_xpm_file_to_image(env->win.mlx_ptr, img->path, &(img->imgw), &(img->imgh));
+	// printf("imgw: %d\n", img->imgw);
+	// printf("imgh: %d\n", img->imgh);
+	
+	// printf("mlx_img: %p\n", img->mlx_img);
+	img->addr = mlx_get_data_addr(img->mlx_img, &img->bpp, &img->llen, &img->endian);
+	// printf("bpp: %d\n", img->bpp);
+	// printf("llen: %d\n", img->llen);
+	// printf("endian: %d\n", img->endian);
+}
 
 // static void	ft_load_textures(t_cub3d *cub)
 // {
@@ -90,18 +101,31 @@ static void	ft_print_map(t_env env)
 
 static int	render(t_env *env)
 {
-	env->win.img->mlx_img = mlx_new_image(env->win.mlx_ptr, env->file.width, env->file.height);
-	env->win.img[0].addr = mlx_get_data_addr(env->win.img->mlx_img, &env->win.img[0].bpp, &env->win.img[0].llen, &env->win.img[0].endian);
+	t_img	*canva;
 
-	// env->buf[0].mlx_img = mlx_xpm_file_to_image(env->win.mlx_ptr, "redbrick.xpm", &(env->buf[0].w), &(env->buf[0].h));
-	// env->buf[0].addr = mlx_get_data_addr(env->buf[0].mlx_img, &env->buf[0].bpp, &env->buf[0].line_len, &env->buf[0].endian);
-	
-	// ft_load_textures(env);
+	canva = &(env->win.img[CANVAS]);
+	canva->mlx_img = mlx_new_image(env->win.mlx_ptr, env->win.winw, env->win.winh);
+	canva->addr = mlx_get_data_addr(canva->mlx_img, &canva->bpp, &canva->llen, &canva->endian);
 
-	for (int col = 0; col < env->file.width; col++)
+	ft_load_img(env, NORTH);
+	ft_load_img(env, SOUTH);
+	ft_load_img(env, EAST);
+	ft_load_img(env, WEST);
+
+	// printf("file width: %d\n", env->win.winw);
+	for (int col = 0; col < env->win.winw; col++)
+	{
+		// printf("coucou\n");
 		ft_draw(env, col);
-	mlx_put_image_to_window(env->win.mlx_ptr, env->win.win_ptr, env->win.img->mlx_img, 0, 0);
-	mlx_destroy_image(env->win.mlx_ptr, env->win.img->mlx_img);
+	}
+	mlx_put_image_to_window(env->win.mlx_ptr, env->win.win_ptr, canva->mlx_img, 0, 0);
+	
+	mlx_destroy_image(env->win.mlx_ptr, canva->mlx_img);
+	mlx_destroy_image(env->win.mlx_ptr, env->win.img[NORTH].mlx_img);
+	mlx_destroy_image(env->win.mlx_ptr, env->win.img[SOUTH].mlx_img);
+	mlx_destroy_image(env->win.mlx_ptr, env->win.img[EAST].mlx_img);
+	mlx_destroy_image(env->win.mlx_ptr, env->win.img[WEST].mlx_img);
+	
 	// mlx_destroy_image(env->win.mlx_ptr, env->buf[0].mlx_img);
 	// ft_destroy_textures(env);
 	return (0);
@@ -119,6 +143,7 @@ static int	ft_launch_game(t_env *env)
 		free(env->win.mlx_ptr);
 		return (ft_err("mlx_new_window() failed", FAILURE));
 	}
+	ft_print_map(*env);
 	mlx_hook((void *)env->win.win_ptr, 2, 1L << 0, ft_key_hook, env);
 	mlx_loop_hook(env->win.mlx_ptr, render, env);
 	mlx_hook(env->win.win_ptr, 17, 1L << 2, ft_win_cross, env);

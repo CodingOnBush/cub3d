@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:37:40 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 14:18:13 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 15:41:44 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,37 +154,28 @@ static void	ft_free_array(char **array, int row)
 	free(array);
 }
 
-static int	ft_create_map(t_env *env, char **content)
+static int	ft_create_map(t_env *env)
 {
 	char	**cpy;
 	int		row;
 	int		col;
-	char	*line;
 
-	env->map = (char **)malloc(sizeof(char *) * env->maph);
+	env->map = (char **)malloc(sizeof(char *) * env->mapw);
 	if (!env->map)
 		return (FAILURE);
-	row = 0;
-	while (row < env->maph)
+	col = 0;
+	while (col < env->mapw)
 	{
-		env->map[row] = malloc(sizeof(char) * env->mapw);
-		if (!env->map[row])
-			return (ft_free_array(env->map, row), FAILURE);
-		col = 0;
-		line = *content;
-		while (*line != '\0')
+		env->map[col] = malloc(sizeof(char) * env->maph);
+		if (!env->map[col])
+			return (ft_free_array(env->map, col), FAILURE);
+		row = 0;
+		while (row < env->maph)
 		{
-			env->map[row][col] = *line;
-			col++;
-			line++;
+			env->map[col][row] = ' ';
+			row++;
 		}
-		while (col < env->mapw)
-		{
-			env->map[row][col] = ' ';
-			col++;
-		}
-		content++;
-		row++;
+		col++;
 	}
 	return (SUCCESS);
 }
@@ -202,7 +193,7 @@ static void	ft_print_map(t_env *env)
 		col = 0;
 		while (col < env->mapw)
 		{
-			printf("%c", map[row][col]);
+			printf("%c", map[col][row]);
 			col++;
 		}
 		printf("\n");
@@ -220,6 +211,26 @@ static void	ft_set_mapsizes(t_env *env, char **content)
 			env->mapw = ft_strlen(*content);
 		content++;
 		env->maph++;
+	}
+}
+
+static void	ft_fill_map(t_env *env, char **content)
+{
+	char	**map;
+	int		row;
+	int		col;
+
+	map = env->map;
+	row = 0;
+	while (row < env->maph)
+	{
+		col = 0;
+		while (col < env->mapw && content[row][col] != '\0')
+		{
+			map[col][row] = content[row][col];
+			col++;
+		}
+		row++;
 	}
 }
 
@@ -243,8 +254,9 @@ static int	ft_analyze_file(t_env *env)
 	if (env->file.count != 6)
 		return (ft_err("Wrong infos about game", FAILURE));
 	ft_set_mapsizes(env, content);
-	if (ft_create_map(env, content) == FAILURE)
+	if (ft_create_map(env) == FAILURE)
 		return (FAILURE);
+	ft_fill_map(env, content);
 	return (SUCCESS);
 }
 
@@ -259,18 +271,57 @@ static int	ft_check_map(t_env *env)
 		return (ft_err("Map empty", FAILURE));
 	col = 0;
 	row = 0;
-	while (row < env->maph)
+	while (col < env->mapw)
 	{
-		col = 0;
-		while (col < env->mapw)
+		row = 0;
+		while (row < env->maph)
 		{
-			if (ft_strchr(" 01NSEW", map[row][col]) == NULL)
+			if (ft_strchr(" 01NSEW", map[col][row]) == NULL)
 				return (ft_err("Invalid character in map", FAILURE));
-			col++;
+			row++;
 		}
-		row++;
+		col++;
 	}
 	return (SUCCESS);
+}
+
+static void	ft_find_player(t_env *env)
+{
+	char	**map;
+	int		row;
+	int		col;
+
+	map = env->map;
+	col = 0;
+	while (col < env->mapw)
+	{
+		row = 0;
+		while (row < env->maph)
+		{
+			if (ft_strchr("NSEW", map[col][row]) != NULL)
+			{
+				env->px = col;
+				env->py = row;
+				return ;
+			}
+			row++;
+		}
+		col++;
+	}
+}
+
+static void	ft_set_images_path(t_env *env)
+{
+	t_img	*images;
+	int		i;
+
+	images = env->win.img;
+	i = 0;
+	while (i < 5)
+	{
+		images[i].path = ft_strdup(env->file.texpath[i]);
+		i++;
+	}
 }
 
 int	ft_parsing(t_env *env, char *cubfile)
@@ -283,6 +334,11 @@ int	ft_parsing(t_env *env, char *cubfile)
 		return (FAILURE);
 	if (ft_check_map(env) == FAILURE)
 		return (FAILURE);
-	ft_print_file_infos(env);
+	
+	// ft_print_file_infos(env);
+	// ft_print_map(env);
+	ft_find_player(env);
+	ft_set_images_path(env);
+	// printf("px = [%d], py = [%d]\n", env->px, env->py);
 	return (SUCCESS);
 }

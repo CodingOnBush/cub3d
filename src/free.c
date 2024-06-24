@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 19:27:46 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 14:18:52 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 15:42:49 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ static void	ft_free_win(t_win *win)
 	i = 0;
 	while (i < 5)
 	{
+		// if (win->img[i].mlx_img != NULL)
+		// 	mlx_destroy_image(win->mlx_ptr, win->img[i].mlx_img);
 		if (win->img[i].path != NULL)
 			free(win->img[i].path);
-		if (win->img[i].mlx_img != NULL)
-			mlx_destroy_image(win->mlx_ptr, win->img[i].mlx_img);
 		i++;
 	}
 	if (win->mlx_ptr != NULL)
@@ -54,15 +54,15 @@ static void	ft_free_win(t_win *win)
 
 void	ft_free_env(t_env *env)
 {
-	int	row;
+	int	col;
 
 	if (env->map != NULL)
 	{
-		row = 0;
-		while (row < env->maph)
+		col = 0;
+		while (col < env->mapw)
 		{
-			free(env->map[row]);
-			row++;
+			free(env->map[col]);
+			col++;
 		}
 		free(env->map);
 	}
