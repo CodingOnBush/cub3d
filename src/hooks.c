@@ -6,7 +6,7 @@
 /*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:26:16 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 18:16:49 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/06/24 13:36:39 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	ft_win_cross(t_cub3d *param)
 
 int	ft_key_hook(int keycode, t_cub3d *c)
 {
+	double	oldPx;
+	double	oldPy;
 	if (keycode == XK_Right)
 	{
 		double oldDirX = c->cst.dirX;
@@ -43,30 +45,70 @@ int	ft_key_hook(int keycode, t_cub3d *c)
 	else if (keycode == XK_a || keycode == XK_A)
 	{
 		if (c->data.map[(int)(c->data.px - c->cst.planeX * c->cst.ms)][(int)(c->data.py)] == '0')
+		{
+			oldPx = c->data.px;
 			c->data.px -= c->cst.planeX * c->cst.ms;
+			if (c->data.px < 0)
+				c->data.px = oldPx;
+		}
 		if (c->data.map[(int)(c->data.px)][(int)(c->data.py - c->cst.planeY * c->cst.ms)] == '0')
+		{
+			oldPy = c->data.py;	
 			c->data.py -= c->cst.planeY * c->cst.ms;
+			if (c->data.py < 0)
+				c->data.py = oldPy;
+		}
 	}
 	else if (keycode == XK_d || keycode == XK_D)
 	{
 		if (c->data.map[(int)(c->data.px + c->cst.planeX * c->cst.ms)][(int)(c->data.py)] == '0')
+		{
+			oldPx = c->data.px;
 			c->data.px += c->cst.planeX * c->cst.ms;
+			if (c->data.px > c->cst.width)
+				c->data.px = oldPx;
+		}
 		if (c->data.map[(int)(c->data.px)][(int)(c->data.py + c->cst.planeY * c->cst.ms)] == '0')
+		{
+			oldPy = c->data.py;
 			c->data.py += c->cst.planeY * c->cst.ms;
+			if (c->data.py > c->cst.height)
+				c->data.py = oldPy;
+		}
 	}
 	else if (keycode == XK_w || keycode == XK_W)
 	{
 		if(c->data.map[(int)(c->data.px + c->cst.dirX * c->cst.ms)][(int)(c->data.py)] == '0')
+		{
+			oldPx = c->data.px;
 			c->data.px += c->cst.dirX * c->cst.ms;
+			if (c->data.px > c->cst.width)
+				c->data.px = oldPx;
+		}
 		if(c->data.map[(int)(c->data.px)][(int)(c->data.py + c->cst.dirY * c->cst.ms)] == '0')
+		{
+			oldPy = c->data.py;
 			c->data.py += c->cst.dirY * c->cst.ms;
+			if (c->data.py > c->cst.height)
+				c->data.py = oldPy;
+		}
 	}
 	else if (keycode == XK_s || keycode == XK_S)
 	{
 		if(c->data.map[(int)(c->data.px - c->cst.dirX * c->cst.ms)][(int)(c->data.py)] == '0')
+		{
+			oldPx = c->data.px;
 			c->data.px -= c->cst.dirX * c->cst.ms;
+			if (c->data.px < 0)
+				c->data.px = oldPx;
+		}
 		if(c->data.map[(int)(c->data.px)][(int)(c->data.py - c->cst.dirY * c->cst.ms)] == '0')
+		{
+			oldPy = c->data.py;
 			c->data.py -= c->cst.dirY * c->cst.ms;
+			if (c->data.py < 0)
+				c->data.py = oldPy;
+		}
 	}
 	// else if (keycode == XK_Escape)
 	// {
