@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 19:27:46 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/21 12:12:59 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 11:14:45 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,16 @@ static void	ft_free_win(t_win *win)
 
 void	ft_free_env(t_env *env)
 {
-	int	i;
+	int	row;
 
 	if (env->map.map != NULL)
 	{
-		i = 0;
-		while (env->map.map[i])
-			free(env->map.map[i++]);
+		row = 0;
+		while (row < env->map.maph)
+		{
+			free(env->map.map[row]);
+			row++;
+		}
 		free(env->map.map);
 	}
 	ft_free_file(&env->file);

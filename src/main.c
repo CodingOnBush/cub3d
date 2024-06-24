@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/21 11:45:01 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 12:47:17 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,18 @@
 
 static void	ft_print_map(t_env env)
 {
-	int col = 0;
-	int row = 0;
+	int 	col = 0;
+	int 	row = 0;
+	char	**map = env.map.map;
 
 	while (col < env.map.maph)
 	{
 		row = 0;
 		while (row < env.map.mapw)
-			printf("%c", env.map.map[col][row++]);
+		{
+			printf("%c", map[col][row]);
+			row++;
+		}
 		printf("\n");
 		col++;
 	}
@@ -129,11 +133,9 @@ int	main(int ac, char **av)
 	ft_init_env(&env);
 	if (ft_parsing(&env, av[1]) == FAILURE)
 		return (ft_free_env(&env), FAILURE);
-
-
-	printf("map size = %d x %d\n", env.map.mapw, env.map.maph);
-
+	
 	ft_print_map(env);
+	
 	
 	// if (ft_launch_game(&env) == FAILURE)
 	// 	return (FAILURE);
