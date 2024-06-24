@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 15:40:25 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 17:13:58 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,16 +118,16 @@ static int	render(t_env *env)
 		// printf("coucou\n");
 		ft_draw(env, col);
 	}
+	
 	mlx_put_image_to_window(env->win.mlx_ptr, env->win.win_ptr, canva->mlx_img, 0, 0);
+	
+	// mlx_put_image_to_window(env->win.mlx_ptr, env->win.win_ptr, env->win.img[NORTH].mlx_img, 90, 90);
 	
 	mlx_destroy_image(env->win.mlx_ptr, canva->mlx_img);
 	mlx_destroy_image(env->win.mlx_ptr, env->win.img[NORTH].mlx_img);
 	mlx_destroy_image(env->win.mlx_ptr, env->win.img[SOUTH].mlx_img);
 	mlx_destroy_image(env->win.mlx_ptr, env->win.img[EAST].mlx_img);
 	mlx_destroy_image(env->win.mlx_ptr, env->win.img[WEST].mlx_img);
-	
-	// mlx_destroy_image(env->win.mlx_ptr, env->buf[0].mlx_img);
-	// ft_destroy_textures(env);
 	return (0);
 }
 
@@ -137,7 +137,7 @@ static int	ft_launch_game(t_env *env)
 	env->win.mlx_ptr = mlx_init();
 	if (!(env->win.mlx_ptr))
 		return (ft_err("mlx_init() failed", FAILURE));
-	env->win.win_ptr = mlx_new_window(env->win.mlx_ptr, env->win.winw, env->win.winh, "❤️ CUB42D ❤️");
+	env->win.win_ptr = mlx_new_window(env->win.mlx_ptr, env->win.winw, env->win.winh, "CUB42D");
 	if (!(env->win.win_ptr))
 	{
 		free(env->win.mlx_ptr);

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 15:14:37 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 17:03:48 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ static void	ft_init_ray(t_ray *ray)
 	ray->deltaDistY = 0;
 	ray->perpWallDist = 0;
 	ray->planeX = 0;
-	ray->planeY = 0;
-	ray->dirX = 0;
+	ray->planeY = 0.66;
+	ray->dirX = -1;
 	ray->dirY = 0;
-	ray->ms = 0;
-	ray->rs = 0;
+	ray->ms = 0.5;
+	ray->rs = 0.1;
 	ray->mapX = 0;
 	ray->mapY = 0;
 	ray->stepX = 0;

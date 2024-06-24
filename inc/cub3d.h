@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 14:24:49 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 17:01:21 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ typedef struct s_env
 	int		maph;
 	int		px;
 	int		py;
+	char	dir;
 	t_ray	ray;
 	t_win	win;
 }			t_env;
