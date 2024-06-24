@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:26:16 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 13:39:08 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 14:01:23 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,91 +44,91 @@ int	ft_key_hook(int keycode, t_env *env)
 	}
 	else if (keycode == XK_a || keycode == XK_A)
 	{
-		if (c->data.map[(int)(c->data.px - c->cst.planeX * c->cst.ms)][(int)(c->data.py)] == '0')
+		if (env->map[(int)(env->px - env->ray.planeX * env->ray.ms)][(int)(env->py)] == '0')
 		{
-			oldPx = c->data.px;
-			c->data.px -= c->cst.planeX * c->cst.ms;
-			if (c->data.px < 0)
-				c->data.px = oldPx;
+			oldPx = env->px;
+			env->px -= env->ray.planeX * env->ray.ms;
+			if (env->px < 0)
+				env->px = oldPx;
 		}
-		if (c->data.map[(int)(c->data.px)][(int)(c->data.py - c->cst.planeY * c->cst.ms)] == '0')
+		if (env->map[(int)(env->px)][(int)(env->py - env->ray.planeY * env->ray.ms)] == '0')
 		{
-			oldPy = c->data.py;	
-			c->data.py -= c->cst.planeY * c->cst.ms;
-			if (c->data.py < 0)
-				c->data.py = oldPy;
+			oldPy = env->py;	
+			env->py -= env->ray.planeY * env->ray.ms;
+			if (env->py < 0)
+				env->py = oldPy;
 		}
 	}
 	else if (keycode == XK_d || keycode == XK_D)
 	{
-		if (c->data.map[(int)(c->data.px + c->cst.planeX * c->cst.ms)][(int)(c->data.py)] == '0')
+		if (env->map[(int)(env->px + env->ray.planeX * env->ray.ms)][(int)(env->py)] == '0')
 		{
-			oldPx = c->data.px;
-			c->data.px += c->cst.planeX * c->cst.ms;
-			if (c->data.px > c->cst.width)
-				c->data.px = oldPx;
+			oldPx = env->px;
+			env->px += env->ray.planeX * env->ray.ms;
+			if (env->px > env->win.winw)
+				env->px = oldPx;
 		}
-		if (c->data.map[(int)(c->data.px)][(int)(c->data.py + c->cst.planeY * c->cst.ms)] == '0')
+		if (env->map[(int)(env->px)][(int)(env->py + env->ray.planeY * env->ray.ms)] == '0')
 		{
-			oldPy = c->data.py;
-			c->data.py += c->cst.planeY * c->cst.ms;
-			if (c->data.py > c->cst.height)
-				c->data.py = oldPy;
+			oldPy = env->py;
+			env->py += env->ray.planeY * env->ray.ms;
+			if (env->py > env->win.winh)
+				env->py = oldPy;
 		}
 	}
 	else if (keycode == XK_w || keycode == XK_W)
 	{
-		if(c->data.map[(int)(c->data.px + c->cst.dirX * c->cst.ms)][(int)(c->data.py)] == '0')
+		if(env->map[(int)(env->px + env->ray.dirX * env->ray.ms)][(int)(env->py)] == '0')
 		{
-			oldPx = c->data.px;
-			c->data.px += c->cst.dirX * c->cst.ms;
-			if (c->data.px > c->cst.width)
-				c->data.px = oldPx;
+			oldPx = env->px;
+			env->px += env->ray.dirX * env->ray.ms;
+			if (env->px > env->win.winw)
+				env->px = oldPx;
 		}
-		if(c->data.map[(int)(c->data.px)][(int)(c->data.py + c->cst.dirY * c->cst.ms)] == '0')
+		if(env->map[(int)(env->px)][(int)(env->py + env->ray.dirY * env->ray.ms)] == '0')
 		{
-			oldPy = c->data.py;
-			c->data.py += c->cst.dirY * c->cst.ms;
-			if (c->data.py > c->cst.height)
-				c->data.py = oldPy;
+			oldPy = env->py;
+			env->py += env->ray.dirY * env->ray.ms;
+			if (env->py > env->win.winh)
+				env->py = oldPy;
 		}
 	}
 	else if (keycode == XK_s || keycode == XK_S)
 	{
-		if(c->data.map[(int)(c->data.px - c->cst.dirX * c->cst.ms)][(int)(c->data.py)] == '0')
+		if(env->map[(int)(env->px - env->ray.dirX * env->ray.ms)][(int)(env->py)] == '0')
 		{
-			oldPx = c->data.px;
-			c->data.px -= c->cst.dirX * c->cst.ms;
-			if (c->data.px < 0)
-				c->data.px = oldPx;
+			oldPx = env->px;
+			env->px -= env->ray.dirX * env->ray.ms;
+			if (env->px < 0)
+				env->px = oldPx;
 		}
-		if(c->data.map[(int)(c->data.px)][(int)(c->data.py - c->cst.dirY * c->cst.ms)] == '0')
+		if(env->map[(int)(env->px)][(int)(env->py - env->ray.dirY * env->ray.ms)] == '0')
 		{
-			oldPy = c->data.py;
-			c->data.py -= c->cst.dirY * c->cst.ms;
-			if (c->data.py < 0)
-				c->data.py = oldPy;
+			oldPy = env->py;
+			env->py -= env->ray.dirY * env->ray.ms;
+			if (env->py < 0)
+				env->py = oldPy;
 		}
 	}
 	// else if (keycode == XK_Escape)
 	// {
 	// 	printf("Escape key pressed, so byeee !\n");
-	// 	ft_free_cube3d(c);
+	// 	ft_free_cube3d(env);
 	// 	exit(0);
 	// }
 	// else if (keycode == XK_Down)
 	// {
-	// 	if(c->data.map[(int)(c->data.px - c->cst.dirX * c->cst.ms)][(int)(c->data.py)] == '0')
-	// 		c->data.px -= c->cst.dirX * c->cst.ms;
-	// 	if(c->data.map[(int)(c->data.px)][(int)(c->data.py - c->cst.dirY * c->cst.ms)] == '0')
-	// 		c->data.py -= c->cst.dirY * c->cst.ms;
+	// 	if(env->map[(int)(env->px - env->ray.dirX * env->ray.ms)][(int)(env->py)] == '0')
+	// 		env->px -= env->ray.dirX * env->ray.ms;
+	// 	if(env->map[(int)(env->px)][(int)(env->py - env->ray.dirY * env->ray.ms)] == '0')
+	// 		env->py -= env->ray.dirY * env->ray.ms;
 	// }
 	// else if (keycode == XK_Up)
 	// {
-	// 	if(c->data.map[(int)(c->data.px + c->cst.dirX * c->cst.ms)][(int)(c->data.py)] == '0')
-	// 		c->data.px += c->cst.dirX * c->cst.ms;
-	// 	if(c->data.map[(int)(c->data.px)][(int)(c->data.py + c->cst.dirY * c->cst.ms)] == '0')
-	// 		c->data.py += c->cst.dirY * c->cst.ms;
+	// 	if(env->map[(int)(env->px + env->ray.dirX * env->ray.ms)][(int)(env->py)] == '0')
+	// 		env->px += env->ray.dirX * env->ray.ms;
+	// 	if(env->map[(int)(env->px)][(int)(env->py + env->ray.dirY * env->ray.ms)] == '0')
+	// 		env->py += env->ray.dirY * env->ray.ms;
 	// }
 	else if (keycode == XK_Escape)
 	{

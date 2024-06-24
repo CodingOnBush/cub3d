@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 19:27:46 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 13:13:15 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 14:18:52 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,13 @@ static void	ft_free_file(t_file *file)
 		free(file->content);
 	}
 	i = 0;
-	while (file->texpath[i])
-		free(file->texpath[i++]);
+	while (file->texpath[i] != NULL)
+	{
+		free(file->texpath[i]);
+		i++;
+	}
+	if (file->texpath != NULL)
+		free(file->texpath);
 }
 
 static void	ft_free_win(t_win *win)

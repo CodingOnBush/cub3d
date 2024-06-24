@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 13:13:07 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 14:24:49 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # define SOUTH 1
 # define EAST 2
 # define WEST 3
+
+# define CANVAS 4
 
 # define CEIL 0
 # define FLOOR 1
@@ -87,9 +89,7 @@ typedef struct	s_file
 	char	**content;
 	int		width;
 	int		height;
-	char	*texpath[4];
-	int		rgbfloor[3];
-	int		rgbsky[3];
+	char	**texpath;
 	int		colors[2][3];
 	int		count;
 }			t_file;
@@ -133,5 +133,8 @@ int		ft_parsing(t_env *env, char *cubfile);
 /*	HOOKS	*/
 int	ft_win_cross(t_env *param);
 int	ft_key_hook(int keycode, t_env *env);
+
+/*	DRAW	*/
+void	ft_draw(t_env *env, int col);
 
 #endif

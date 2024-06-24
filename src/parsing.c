@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:37:40 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 13:10:58 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 14:18:13 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ static int	ft_get_all_lines(t_env *env, char *cubfile)
 		len = ft_strlen(env->file.content[row]);
 		if (len > 0 && env->file.content[row][len - 1] == '\n')
 			env->file.content[row][len - 1] = '\0';
-		// printf("[%d]\t[%s]\n", row, env->file.content[row]);
 		row++;
 	}
 	env->file.content[row] = NULL;
@@ -181,7 +180,7 @@ static int	ft_create_map(t_env *env, char **content)
 		}
 		while (col < env->mapw)
 		{
-			env->map[row][col] = '#';
+			env->map[row][col] = ' ';
 			col++;
 		}
 		content++;
@@ -230,6 +229,10 @@ static int	ft_analyze_file(t_env *env)
 	char	**split;
 
 	content = env->file.content;
+	env->file.texpath = (char **)malloc(sizeof(char *) * 5);
+	if (!env->file.texpath)
+		return (FAILURE);
+	env->file.texpath[4] = NULL;
 	while (*content != NULL)
 	{
 		split = ft_split(*content, ' ');
@@ -239,16 +242,9 @@ static int	ft_analyze_file(t_env *env)
 	}
 	if (env->file.count != 6)
 		return (ft_err("Wrong infos about game", FAILURE));
-	ft_set_mapsizes(env, content);// ici on set les tailles de la map
-	// printf("mapw = %d\n", env->mapw);
-	// printf("maph = %d\n", env->maph);
-	// ensuite on crée la map et on la remplit en se promenant dans le tableau content
+	ft_set_mapsizes(env, content);
 	if (ft_create_map(env, content) == FAILURE)
 		return (FAILURE);
-	
-	// if (ft_create_map(env, content) == FAILURE)
-	// 	return (FAILURE);
-	// ft_print_map(env);
 	return (SUCCESS);
 }
 
@@ -268,7 +264,7 @@ static int	ft_check_map(t_env *env)
 		col = 0;
 		while (col < env->mapw)
 		{
-			if (ft_strchr(" 01NSEW#", map[row][col]) == NULL)
+			if (ft_strchr(" 01NSEW", map[row][col]) == NULL)
 				return (ft_err("Invalid character in map", FAILURE));
 			col++;
 		}
@@ -287,5 +283,6 @@ int	ft_parsing(t_env *env, char *cubfile)
 		return (FAILURE);
 	if (ft_check_map(env) == FAILURE)
 		return (FAILURE);
+	ft_print_file_infos(env);
 	return (SUCCESS);
 }

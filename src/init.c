@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 13:13:23 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/24 14:16:29 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,13 @@ static void	ft_init_file(t_file *file)
 	file->content = NULL;
 	file->width = 0;
 	file->height = 0;
-	i = 0;
-	while (i < 4)
-		file->texpath[i++] = NULL;
+	file->texpath = NULL;
 	i = 0;
 	while (i < 3)
 	{
-		file->rgbfloor[i] = 0;
-		file->rgbsky[i] = 0;
+		file->colors[i][R] = -1;
+		file->colors[i][G] = -1;
+		file->colors[i][B] = -1;
 		i++;
 	}
 	file->count = 0;
