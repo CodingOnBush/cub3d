@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 09:26:29 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 10:33:47 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,8 +301,8 @@ static void	ft_find_player(t_env *env)
 		{
 			if (ft_strchr("NSEW", map[col][row]) != NULL)
 			{
-				env->px = col;
-				env->py = row;
+				env->px = col + 0.5;
+				env->py = row + 0.5;
 				env->pdir = map[col][row];
 				map[col][row] = '0';
 				return ;
