@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:37:40 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 15:49:04 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 07:25:26 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,15 +228,15 @@ static int	ft_data_is_full(t_data *data)
 	return (FAILURE);
 }
 
-static int	ft_splitlen(char **split)
-{
-	int i;
+// static int	ft_splitlen(char **split)
+// {
+// 	int i;
 
-	i = 0;
-	while (split[i] != NULL)
-		i++;
-	return (i);
-}
+// 	i = 0;
+// 	while (split[i] != NULL)
+// 		i++;
+// 	return (i);
+// }
 
 static int	ft_parse_data(char **split, t_data *data, t_cub3d *c)
 {
@@ -250,22 +250,22 @@ static int	ft_parse_data(char **split, t_data *data, t_cub3d *c)
 	if (ft_strncmp(first, "NO", 2) == 0 && len == 2)
 	{
 		data->no = ft_get_texture(split[1]);
-		c->buf[0].type = NORTH;
+		// c->buf[0].type = NORTH;
 	}
 	else if (ft_strncmp(first, "SO", 2) == 0 && len == 2)
 	{
 		data->so = ft_get_texture(split[1]);
-		c->buf[1].type = SOUTH;
+		// c->buf[1].type = SOUTH;
 	}
 	else if (ft_strncmp(first, "WE", 2) == 0 && len == 2)
 	{
 		data->we = ft_get_texture(split[1]);
-		c->buf[2].type = WEST;
+		// c->buf[2].type = WEST;
 	}
 	else if (ft_strncmp(first, "EA", 2) == 0 && len == 2)
 	{
 		data->ea = ft_get_texture(split[1]);
-		c->buf[3].type = EAST;
+		// c->buf[3].type = EAST;
 	}
 	else if (ft_strncmp(first, "F", 1) == 0 && len == 4)
 		ft_set_color(data, split, 'F');
