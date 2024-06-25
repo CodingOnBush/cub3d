@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 15:53:09 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 07:02:30 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static void	ft_init_cst(t_cst *cst)
 {
 	cst->ms = 0.5;
 	cst->rs = 0.1;
-	cst->width = 640;
-	cst->height = 640;
+	cst->width = 1640;
+	cst->height = 1640;
 	cst->planeX = 0;
 	cst->planeY = 0.66;
 	cst->dirX = -1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/24 13:29:01 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/06/25 06:43:51 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,8 +179,8 @@ void	ft_draw(t_cub3d *cub, int col)
 	// Starting texture coordinate
 	double texPos = (drawStart - pitch - (cub->cst.height) / 2 + lineHeight / 2) * step;
 	y = 0;
-	printf("drawStart = %d\n", drawStart);
-	printf("drawEnd = %d\n", drawEnd);
+	// printf("drawStart = %d\n", drawStart);
+	// printf("drawEnd = %d\n", drawEnd);
 	if (drawStart > cub->cst.height || drawEnd < 0)
 		return ;
 	while (y < drawStart)
