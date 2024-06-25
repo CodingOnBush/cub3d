@@ -1,69 +1,66 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   free2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/05 19:27:46 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/20 13:50:39 by momrane          ###   ########.fr       */
+/*   Created: 2024/06/25 07:48:17 by momrane           #+#    #+#             */
+/*   Updated: 2024/06/25 13:42:41 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-void	free_data(t_data *data)
+static void	ft_free_file(t_file *file)
 {
-	int i;
+	int	i;
 
-	if (!data)
-		return ;
-	if (data->raw)
+	if (file->content != NULL)
 	{
 		i = 0;
-		while(data->raw[i])
-		{
-			free(data->raw[i]);
-			i++;
-		}
-		free(data->raw);
+		while (file->content[i])
+			free(file->content[i++]);
+		free(file->content);
 	}
-	if (data->map)
-	{
-		i = 0;
-		while(data->map[i])
-		{
-			free(data->map[i]);
-			i++;
-		}
-		free(data->map);
-	}
-	if (data->no)
-		free(data->no);
-	if (data->so)
-		free(data->so);
-	if (data->we)
-		free(data->we);
-	if (data->ea)
-		free(data->ea);
-	if (data->f)
-		free(data->f);
-	if (data->c)
-		free(data->c);
 }
 
-void	ft_free_cube3d(t_cub3d *c)
+void	ft_free_env(t_env *env)
 {
-	if (!(c->mlx.mlx_ptr))
-		return ;
-	if (c->mlx.win_ptr)
+	int	col;
+
+	ft_free_file(&env->file);
+	
+	if (env->map != NULL)
 	{
-		mlx_clear_window(c->mlx.mlx_ptr, c->mlx.win_ptr);
-		mlx_destroy_window(c->mlx.mlx_ptr, c->mlx.win_ptr);
+		col = 0;
+		while (col < env->mapw)
+		{
+			free(env->map[col]);
+			col++;
+		}
+		free(env->map);
 	}
-	mlx_destroy_display(c->mlx.mlx_ptr);
-	free(c->mlx.mlx_ptr);
-	free_data(&c->data);
+
+	int	i;
+
+	i = 0;
+	while (i < 5)
+	{
+		if (env->img[i].path)
+			free(env->img[i].path);
+		if (env->img[i].mlx_img && env->mlx_ptr)
+			mlx_destroy_image(env->mlx_ptr, env->img[i].mlx_img);
+		i++;
+	}
+	if (env->mlx_ptr && env->win_ptr)
+		mlx_destroy_window(env->mlx_ptr, env->win_ptr);
+	
+	if (env->mlx_ptr)
+	{
+		mlx_destroy_display(env->mlx_ptr);
+		free(env->mlx_ptr);
+	}
 }
 
 void	ft_free_split(char **split)
@@ -71,10 +68,9 @@ void	ft_free_split(char **split)
 	int i;
 
 	i = 0;
+	if (!split)
+		return ;
 	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
+		free(split[i++]);
 	free(split);
 }

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 13:40:54 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 13:56:50 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	ft_render(t_env *env)
 	col = 0;
 	while (col < env->winw)
 	{
-		ft_draw2(env, col);
+		ft_draw(env, col);
 		col++;
 	}
 	mlx_put_image_to_window(env->mlx_ptr, env->win_ptr, env->img[CANVAS].mlx_img, 0, 0);
@@ -36,7 +36,7 @@ int	main(int ac, char **av)
 	
 	
 	ft_init_env(&env);
-	if (ft_parsing2(&env, av[1]) == FAILURE)
+	if (ft_parsing(&env, av[1]) == FAILURE)
 		return (ft_free_env(&env), FAILURE);
 	env.mlx_ptr = mlx_init();
 	env.win_ptr = mlx_new_window(env.mlx_ptr, env.winw, env.winh, "cub3d");
@@ -52,7 +52,7 @@ int	main(int ac, char **av)
 	env.img[EAST].mlx_img = mlx_xpm_file_to_image(env.mlx_ptr, env.img[EAST].path, &env.img[EAST].imgw, &env.img[EAST].imgh);
 	env.img[EAST].addr = mlx_get_data_addr(env.img[EAST].mlx_img, &env.img[EAST].bpp, &env.img[EAST].llen, &env.img[EAST].endian);
 	
-	mlx_hook((void *)env.win_ptr, 2, 1L << 0, ft_key_hook2, &env);
+	mlx_hook((void *)env.win_ptr, 2, 1L << 0, ft_key_hook, &env);
 	mlx_loop_hook(env.mlx_ptr, ft_render, &env);
 	mlx_hook(env.win_ptr, 17, 1L << 2, ft_win_cross, &env);
 	mlx_loop(env.mlx_ptr);

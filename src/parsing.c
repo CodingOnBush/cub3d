@@ -5,83 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/05 18:37:40 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 07:25:26 by momrane          ###   ########.fr       */
+/*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
+/*   Updated: 2024/06/25 14:43:29 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../inc/cub3d.h"
-
-static int	err(char *msg, int ext)
-{
-	printf("Error: %s\n", msg);
-	return (ext);
-}
-
-static int	ft_count_lines(char *file)
-{
-	int		fd;
-	int		file_height;
-	char	*line;
-
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-		return (perror(file), FAILURE);
-	file_height = 0;
-	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		file_height++;
-		free(line);
-		line = get_next_line(fd);
-	}
-	close(fd);
-	return (file_height);
-}
-
-static char	*ft_get_texture(char *file_path)
-{
-	int		fd;
-
-	if (!file_path)
-		return (NULL);
-	fd = open(file_path, O_RDONLY);
-	if (fd == -1)
-		return (perror(file_path), NULL);
-	close(fd);
-	return (ft_strdup(file_path));
-}
-
-static void	ft_set_color(t_data *data, char **split, char c)
-{	
-	if (!split)
-		return ;
-	if (c == 'F')
-	{
-		data->f = malloc(sizeof(t_color));
-		if (!data->f)
-			return ;
-		data->f->r = ft_atoi(split[1]);
-		data->f->g = ft_atoi(split[2]);
-		data->f->b = ft_atoi(split[3]);
-	}
-	else if (c == 'C')
-	{
-		data->c = malloc(sizeof(t_color));
-		if (!data->c)
-			return ;
-		data->c->r = ft_atoi(split[1]);
-		data->c->g = ft_atoi(split[2]);
-		data->c->b = ft_atoi(split[3]);
-	}
-}
-
-static int	ft_isspace(char c)
-{
-	if ((c >= 9 && c <= 13) || c == ' ')
-		return (1);
-	return (0);
-}
 
 static int	ft_check_file(char *file)
 {
@@ -89,10 +19,10 @@ static int	ft_check_file(char *file)
 	char	*ext;
 
 	ext = ft_strchr(file, '.');
-	if (ext == NULL)
-		return (printf("Error: Wrong file extension\n"), FAILURE);
+	if (!ext)
+		return (ft_err("No file extension", FAILURE));
 	if (ft_strncmp(ext, ".cub", 4) != 0)
-		return (printf("Error: Wrong file extension\n"), FAILURE);
+		return (ft_err("Invalid file extension", FAILURE));
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return (perror(file), FAILURE);
@@ -100,244 +30,401 @@ static int	ft_check_file(char *file)
 	return (SUCCESS);
 }
 
-static void	ft_fill_raw(char **tab, char *file)
+static int	ft_count_lines(char *file)
 {
 	int		fd;
-	int		i;
+	int		count;
 	char	*line;
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-	{
-		perror(file);
-		return ;
-	}
-	i = 0;
+		return (perror(file), FAILURE);
+	count = 0;
 	while (1)
 	{
 		line = get_next_line(fd);
 		if (!line)
-			break;
-		if (line[ft_strlen(line) - 1] == '\n')
-			line[ft_strlen(line) - 1] = '\0';
-		tab[i] = line;
-		i++;
+			break ;
+		count++;
+		free(line);
 	}
-	tab[i] = NULL;
 	close(fd);
+	return (count);
 }
 
-static int	ft_get_maxw(char **raw, int start_row, int file_height)
+static int	ft_get_all_lines(t_env *env, char *cubfile)
 {
-	int	maxw;
+	int	fd;
+	int	row;
 	int	len;
 
-	maxw = 0;
-	len = 0;
-	while (raw[start_row] != NULL)
+	fd = open(cubfile, O_RDONLY);
+	if (fd == -1)
+		return (perror(cubfile), FAILURE);
+	env->file.height = ft_count_lines(cubfile);
+	env->file.content = (char **)malloc(sizeof(char *) * (env->file.height
+				+ 1));
+	if (!env->file.content)
+		return (FAILURE);
+	row = 0;
+	while (row < env->file.height)
 	{
-		len = ft_strlen(raw[start_row]);
-		// printf("[%d]\t[%s]\t[%d]\n", start_row, raw[start_row], len);
-		if (len > maxw)
-			maxw = len;
-		start_row++;
+		env->file.content[row] = get_next_line(fd);
+		len = ft_strlen(env->file.content[row]);
+		if (len > 0 && env->file.content[row][len - 1] == '\n')
+			env->file.content[row][len - 1] = '\0';
+		// printf("line = [%s]\n", env->file.content[row]);
+		row++;
 	}
-	return (maxw);
+	env->file.content[row] = NULL;
+	close(fd);
+	return (SUCCESS);
 }
 
-static char	*ft_alloc_and_init(int longest)
+static void	ft_print_split(char **split)
 {
-	char	*new_line;
-	int		i;
+	int	i;
 
-	new_line = malloc(sizeof(char) * (longest + 1));
-	if (!new_line)
-		return (NULL);
 	i = 0;
-	while (i < longest)
+	if (!split)
 	{
-		new_line[i] = '1';
+		printf("split is NULL\n");
+		return ;
+	}
+	while (split[i])
+	{
+		printf("[%s] | ", split[i]);
 		i++;
 	}
-	new_line[i] = '\0';
-	return (new_line);
+	if (split[i] == NULL)
+		printf("[NULL]");
+	printf("\n\n");
 }
 
-static void	ft_free_array(char **array, int j)
+static int	ft_get_infos(t_env *env, char **split)
 {
-	while (j >= 0)
+	printf("split %p\n", split);
+	if (!split)
+		return (GOON);
+	if (!split[0] && env->file.count == 6)
+		return (ft_free_split(split), STOP);
+	if (!split[0])
+		return (ft_free_split(split), GOON);
+	if (ft_splitlen(split) == 2 && ft_get_id(split[0]) != -1)
 	{
-		free(array[j]);
-		j--;
+		env->img[ft_get_id(split[0])].path = ft_strdup(split[1]);
+		env->file.count++;
 	}
+	else if (ft_splitlen(split) == 4 && ft_get_id(split[0]) == CEIL || ft_get_id(split[0]) == FLOOR)
+	{
+		env->file.colors[ft_get_id(split[0])][R] = ft_atoi(split[1]);
+		env->file.colors[ft_get_id(split[0])][G] = ft_atoi(split[2]);
+		env->file.colors[ft_get_id(split[0])][B] = ft_atoi(split[3]);
+		env->file.count++;
+	}
+	else
+		return (ft_free_split(split), STOP);
+	return (ft_free_split(split), GOON);
+}
+
+static int	ft_get_map(t_env *env, char *line)
+{
+	printf("line = [%s]\n", line);
+	int	mapw;
+	int	len;
+
+	mapw = 0;
+	while (line[mapw])
+		mapw++;
+	return (SUCCESS);
+}
+
+static void	ft_print_file_infos(t_env *env)
+{
+	printf("NO = [%s]\n", env->img[NORTH].path);
+	printf("SO = [%s]\n", env->img[SOUTH].path);
+	printf("WE = [%s]\n", env->img[WEST].path);
+	printf("EA = [%s]\n", env->img[EAST].path);
+	printf("FLOOR = [%d, %d, %d]\n", env->file.colors[FLOOR][R], env->file.colors[FLOOR][G], env->file.colors[FLOOR][B]);
+	printf("CEIL = [%d, %d, %d]\n", env->file.colors[CEIL][R], env->file.colors[CEIL][G], env->file.colors[CEIL][B]);
+}
+
+static void	ft_free_array(char **array, int row)
+{
+	int	i;
+
+	i = 0;
+	while (i < row)
+		free(array[i++]);
 	free(array);
 }
 
-static char	**ft_create_map(t_cub3d *cub, int start_row, int file_height)
+static int	ft_create_map(t_env *env)
 {
-	char	**map;
-	int		maxw;
+	char	**cpy;
 	int		row;
 	int		col;
-	
-	// printf("file_height = %d\n", file_height);
-	maxw = ft_get_maxw(cub->data.raw, start_row, file_height);
-	// printf("longest line = %d\n", maxw);
-	cub->data.mapw = maxw;
-	cub->data.maph = file_height - start_row;
-	// printf("start_row = %d\n", start_row);
-	// printf("cub->data.maph = %d\n", cub->data.maph);
-	map = malloc(sizeof(char *) * (cub->data.maph + 1));
-	if (!map)
-		return (NULL);
-	row = 0;
-	while (row < cub->data.maph)
+
+	env->map = (char **)malloc(sizeof(char *) * env->mapw);
+	if (!env->map)
+		return (FAILURE);
+	col = 0;
+	while (col < env->mapw)
 	{
-		map[row] = ft_alloc_and_init(maxw);
-		if (!map[row])
-			return (ft_free_array(map, row), NULL);
-		row++;
+		env->map[col] = malloc(sizeof(char) * env->maph);
+		if (!env->map[col])
+			return (ft_free_array(env->map, col), FAILURE);
+		row = 0;
+		while (row < env->maph)
+		{
+			env->map[col][row] = ' ';
+			row++;
+		}
+		col++;
 	}
-	map[row] = NULL;
+	return (SUCCESS);
+}
+
+static void	ft_print_map(t_env *env)
+{
+	char	**map;
+	int		row;
+	int		col;
+
+	map = env->map;
 	row = 0;
-	while (row < cub->data.maph)
+	while (row < env->maph)
 	{
 		col = 0;
-		while (col < ft_strlen(cub->data.raw[start_row + row]) && cub->data.raw[start_row + row][col])
+		while (col < env->mapw)
 		{
-			if (cub->data.raw[start_row + row][col] == 'N')
-			{
-				// printf("PLAYER FOUND at [%d][%d]\n", row, col);
-				cub->data.px = row;
-				cub->data.py = col;
-				map[row][col] = '0';
-			}
-			else if (cub->data.raw[start_row + row][col] != ' ' && cub->data.raw[start_row + row][col] != '\n')
-				map[row][col] = cub->data.raw[start_row + row][col];
+			printf("[%c]", map[col][row]);
+			col++;
+		}
+		printf("\n");
+		row++;
+	}
+}
+
+static void	ft_set_mapsizes(t_env *env, char **content)
+{
+	if (!content || !*content)
+		return ;
+	printf("content = [%s]\n", *content);
+	while (**content == '\n')
+		content++;
+	while (*content != NULL)
+	{
+		if (ft_strlen(*content) > env->mapw)
+			env->mapw = ft_strlen(*content);
+		content++;
+		env->maph++;
+	}
+}
+
+static void	ft_fill_map(t_env *env, char **content)
+{
+	char	**map;
+	int		row;
+	int		col;
+
+	map = env->map;
+	row = 0;
+	while (row < env->maph)
+	{
+		col = 0;
+		while (col < env->mapw && content[row][col] != '\0')
+		{
+			map[col][row] = content[row][col];
 			col++;
 		}
 		row++;
 	}
-	return (map);
 }
 
-static int	ft_data_is_full(t_data *data)
+static int	ft_analyze_file(t_env *env)
 {
-	if (data->no && data->so && data->we && data->ea && data->f && data->c)
-		return (SUCCESS);
-	return (FAILURE);
-}
-
-// static int	ft_splitlen(char **split)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while (split[i] != NULL)
-// 		i++;
-// 	return (i);
-// }
-
-static int	ft_parse_data(char **split, t_data *data, t_cub3d *c)
-{
-	char	*first;
-	int		len;
-
-	len = ft_splitlen(split);
-	first = split[0];
-	if (!first)
-		return (SUCCESS);
-	if (ft_strncmp(first, "NO", 2) == 0 && len == 2)
-	{
-		data->no = ft_get_texture(split[1]);
-		// c->buf[0].type = NORTH;
-	}
-	else if (ft_strncmp(first, "SO", 2) == 0 && len == 2)
-	{
-		data->so = ft_get_texture(split[1]);
-		// c->buf[1].type = SOUTH;
-	}
-	else if (ft_strncmp(first, "WE", 2) == 0 && len == 2)
-	{
-		data->we = ft_get_texture(split[1]);
-		// c->buf[2].type = WEST;
-	}
-	else if (ft_strncmp(first, "EA", 2) == 0 && len == 2)
-	{
-		data->ea = ft_get_texture(split[1]);
-		// c->buf[3].type = EAST;
-	}
-	else if (ft_strncmp(first, "F", 1) == 0 && len == 4)
-		ft_set_color(data, split, 'F');
-	else if (ft_strncmp(first, "C", 1) == 0 && len == 4)
-		ft_set_color(data, split, 'C');
-	else
-		return (FAILURE);
-	return (SUCCESS);
-}
-
-static int	ft_parse_assets(char **raw, int file_height, t_data *data, t_cub3d *c)
-{
+	char	**content;
 	char	**split;
 
-	data->i = 0;
-	while (data->i < file_height)
+	content = env->file.content;
+	while (*content != NULL)
 	{
-		if (raw[data->i][0] != '\n')
-		{
-			split = ft_split(raw[data->i], ' ');
-			if (!split)
-				return (err("split failed", FAILURE));
-			if (ft_parse_data(split, data, c) == FAILURE)
-			{
-				ft_free_split(split);
-				break;
-			}
-			ft_free_split(split);
-		}
-		data->i++;
+		split = ft_split(*content, ' ');
+		if (ft_get_infos(env, split) == STOP)
+			break ;
+		printf("CONTENT = [%s]\n", *content);
+
+		content++;
 	}
-	if (ft_data_is_full(data) == FAILURE)
-		return (err("data is not full", FAILURE));
+	if (env->file.count != 6)
+		return (ft_err("Wrong infos about game", FAILURE));
+	ft_set_mapsizes(env, content);
+	printf("mapw = [%d], maph = [%d]\n", env->mapw, env->maph);
+	if (env->mapw == 0 || env->maph == 0)
+		return (ft_err("Map empty", FAILURE));
+	if (env->mapw < 3 || env->maph < 3)
+		return (ft_err("Map too small", FAILURE));
+	if (ft_create_map(env) == FAILURE)
+		return (FAILURE);
+	ft_fill_map(env, content);
 	return (SUCCESS);
 }
 
-static void	print_file_info(char **arr)
+static int	ft_check_map(t_env *env)
 {
-	int i = 0;
-	while (arr[i])
+	char	**map;
+	int		row;
+	int		col;
+
+	map = env->map;
+	if (map == NULL || map[0] == NULL)
+		return (ft_err("Map empty", FAILURE));
+	col = 0;
+	row = 0;
+	while (col < env->mapw)
 	{
-		printf("[%d]\t[%s]\n", i, arr[i]);
-		i++;
+		row = 0;
+		while (row < env->maph)
+		{
+			if (ft_strchr(" 01NSEW", map[col][row]) == NULL)
+				return (ft_err("Invalid character in map", FAILURE));
+			row++;
+		}
+		col++;
 	}
+	return (SUCCESS);
 }
 
-int	ft_parsing(t_cub3d *cub, int ac, char **av)
+static int	ft_find_player(t_env *env)
 {
-	int		file_height;
-	char	*test;
+	char	**map;
+	int		row;
+	int		col;
 
-	if (ac != 2)
-		return (printf("Error: Wrong number of arguments\n"), FAILURE);
-	if (ft_check_file(av[1]) == FAILURE)
-		return (FAILURE);
-	file_height = ft_count_lines(av[1]);
-	cub->data.raw = malloc(sizeof(char *) * (file_height + 1));
-	if (!cub->data.raw)
-		return (FAILURE);
-	ft_fill_raw(cub->data.raw, av[1]);
-	if (ft_parse_assets(cub->data.raw, file_height, &(cub->data), cub) == FAILURE)
+	map = env->map;
+	col = 0;
+	while (col < env->mapw)
 	{
-		printf("Error: Parsing assets failed\n");
-		ft_free_array(cub->data.raw, file_height);
-		return (FAILURE);
+		row = 0;
+		while (row < env->maph)
+		{
+			if (ft_strchr("NSEW", map[col][row]) != NULL)
+			{
+				env->px = col + 0.5;
+				env->py = row + 0.5;
+				env->pdir = map[col][row];
+				map[col][row] = '0';
+				ft_update_dir(env);
+				return (SUCCESS);
+			}
+			row++;
+		}
+		col++;
 	}
-	cub->data.map = ft_create_map(cub, cub->data.i, file_height);
-	if (!cub->data.map)
+	return (ft_err("No player in map", FAILURE));
+}
+
+static int	ft_check_textures(t_env *env)
+{
+	int	i;
+	int	fd;
+
+	i = 0;
+	while (i < 4)
 	{
-		printf("Error: Map creation failed\n");
-		ft_free_array(cub->data.raw, file_height);
-		return (FAILURE);
+		printf("path = [%s]\n", env->img[i].path);
+		if (env->img[i].path == NULL)
+			return (ft_err("Missing texture", FAILURE));
+		fd = open(env->img[i].path, O_RDONLY);
+		if (fd == -1)
+			return (perror(env->img[i].path), FAILURE);
+		close(fd);
+		i++;
 	}
+	return (SUCCESS);
+}
+
+static int	ft_check_col(char **map, int col, int maph)
+{
+	int	row;
+
+	row = 0;
+	while (row < maph && map[col][row] == ' ')
+		row++;
+	if (row == maph)
+		return (SUCCESS);
+	if (map[col][row] != '1')
+		return (FAILURE);
+	else if (map[col][row] == '1')
+		return (SUCCESS);
+	return (SUCCESS);
+}
+
+static int	ft_check_row(char **map, int row, int mapw)
+{
+	int	col;
+
+	col = 0;
+	while (col < mapw && map[col][row] == ' ')
+		col++;
+	if (col == mapw)
+		return (SUCCESS);
+	if (map[col][row] != '1')
+		return (FAILURE);
+	else if (map[col][row] == '1')
+		return (SUCCESS);
+	return (SUCCESS);
+}
+
+static int	ft_map_is_closed(t_env *env)
+{
+	char	**map;
+	int		row;
+	int		col;
+
+	map = env->map;
+	col = 0;
+	while (col < env->mapw)
+	{
+		if (ft_check_col(map, col, env->maph) == FAILURE)
+			return (ft_err("Map is not closed", FAILURE));
+		col++;
+	}
+	row = 0;
+	while (row < env->maph)
+	{
+		if (ft_check_row(map, row, env->mapw) == FAILURE)
+			return (ft_err("Map is not closed", FAILURE));
+		row++;
+	}
+	return (SUCCESS);
+}
+
+int	ft_parsing(t_env *env, char *cubfile)
+{
+	if (ft_check_file(cubfile) == FAILURE)
+		return (FAILURE);
+	if (ft_get_all_lines(env, cubfile) == FAILURE)
+		return (FAILURE);
+	if (ft_analyze_file(env) == FAILURE)
+		return (FAILURE);
+	if (ft_check_map(env) == FAILURE)
+		return (FAILURE);
+	
+	ft_print_file_infos(env);
+	
+	if (ft_find_player(env) == FAILURE)
+		return (FAILURE);
+	
+	printf("px = [%f], py = [%f]\n", env->px, env->py);
+	
+	if (ft_check_textures(env) == FAILURE)
+		return (FAILURE);
+	
+	ft_print_map(env);
+	
+	if (ft_map_is_closed(env) == FAILURE)
+		return (FAILURE);
 	return (SUCCESS);
 }
