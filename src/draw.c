@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 10:24:06 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 10:57:36 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ static void	ft_pixel_put2(t_env *env, int c, int r, int color)
 
 static int ft_get_ns_wall(int px, int py, int x, int y){
   if (py <= y)
-    return (SOUTH);
-  else
     return (NORTH);
+  else
+    return (SOUTH);
 }
 
 static int ft_get_ew_wall(int px, int py, int x, int y){
