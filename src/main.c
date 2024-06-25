@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 09:29:27 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 13:05:38 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@
 
 static int	render(t_cub3d *c)
 {
+	int	col;
 	c->img.mlx_img = mlx_new_image(c->mlx.mlx_ptr, c->cst.width, c->cst.height);
 	c->img.addr = mlx_get_data_addr(c->img.mlx_img, &c->img.bpp, &c->img.llen, &c->img.endian);
 
@@ -77,9 +78,12 @@ static int	render(t_cub3d *c)
 	// c->buf[0].addr = mlx_get_data_addr(c->buf[0].mlx_img, &c->buf[0].bpp, &c->buf[0].line_len, &c->buf[0].endian);
 	
 	// ft_load_textures(c);
-
-	for (int col = 0; col < c->cst.width; col++)
+	col = 0;
+	while (col < c->cst.width)
+	{
 		ft_draw(c, col);
+		col++;
+	}
 	mlx_put_image_to_window(c->mlx.mlx_ptr, c->mlx.win_ptr, c->img.mlx_img, 0, 0);
 	mlx_destroy_image(c->mlx.mlx_ptr, c->img.mlx_img);
 	// mlx_destroy_image(c->mlx.mlx_ptr, c->buf[0].mlx_img);
@@ -89,30 +93,24 @@ static int	render(t_cub3d *c)
 
 static int	render2(t_env *env)
 {
+	int	col;
 
 	env->img[CANVAS].mlx_img = mlx_new_image(env->mlx_ptr, env->winw, env->winh);
 	env->img[CANVAS].addr = mlx_get_data_addr(env->img[CANVAS].mlx_img, &env->img[CANVAS].bpp, &env->img[CANVAS].llen, &env->img[CANVAS].endian);
-
 	env->img[NORTH].mlx_img = mlx_xpm_file_to_image(env->mlx_ptr, env->img[NORTH].path, &env->img[NORTH].imgw, &env->img[NORTH].imgh);
 	env->img[NORTH].addr = mlx_get_data_addr(env->img[NORTH].mlx_img, &env->img[NORTH].bpp, &env->img[NORTH].llen, &env->img[NORTH].endian);
-
 	env->img[SOUTH].mlx_img = mlx_xpm_file_to_image(env->mlx_ptr, env->img[SOUTH].path, &env->img[SOUTH].imgw, &env->img[SOUTH].imgh);
 	env->img[SOUTH].addr = mlx_get_data_addr(env->img[SOUTH].mlx_img, &env->img[SOUTH].bpp, &env->img[SOUTH].llen, &env->img[SOUTH].endian);
-
 	env->img[WEST].mlx_img = mlx_xpm_file_to_image(env->mlx_ptr, env->img[WEST].path, &env->img[WEST].imgw, &env->img[WEST].imgh);
 	env->img[WEST].addr = mlx_get_data_addr(env->img[WEST].mlx_img, &env->img[WEST].bpp, &env->img[WEST].llen, &env->img[WEST].endian);
-
 	env->img[EAST].mlx_img = mlx_xpm_file_to_image(env->mlx_ptr, env->img[EAST].path, &env->img[EAST].imgw, &env->img[EAST].imgh);
 	env->img[EAST].addr = mlx_get_data_addr(env->img[EAST].mlx_img, &env->img[EAST].bpp, &env->img[EAST].llen, &env->img[EAST].endian);
-
-
-	for (int col = 0; col < env->winw; col++)
+	col = 0;
+	while (col < env->winw)
 	{
 		ft_draw2(env, col);
+		col++;
 	}
-	
-
-
 	mlx_put_image_to_window(env->mlx_ptr, env->win_ptr, env->img[CANVAS].mlx_img, 0, 0);
 	
 	// mlx_put_image_to_window(env->mlx_ptr, env->win_ptr, env->img[NORTH].mlx_img, 0, 0);

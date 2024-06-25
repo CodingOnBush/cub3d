@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 11:58:28 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 12:56:49 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,13 @@ static void	ft_init_img(t_img *img)
 
 static void	ft_init_buffers(t_cub3d *cub)
 {
-	for (int i = 0; i < 4; i++)
+	int	i;
+
+	i = 0;
+	while (i < 4)
 	{
 		ft_init_img(&cub->buf[i]);
+		i++;
 	}
 }
 
