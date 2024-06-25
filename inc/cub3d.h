@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 11:58:22 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 13:31:53 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,6 @@ typedef struct	s_file
 	char	**content;
 	int		width;
 	int		height;
-	// char	**texpath;
 	int		colors[2][3];
 	int		count;
 }			t_file;
@@ -211,12 +210,12 @@ typedef struct s_cub3d
 typedef struct s_env
 {
 	t_file	file;
+	char	**map;
+	t_img	img[5];
 	void	*mlx_ptr;
 	void	*win_ptr;
 	int		winw;
 	int		winh;
-	t_img	img[5];
-	char	**map;
 	int		mapw;
 	int		maph;
 	double	px;

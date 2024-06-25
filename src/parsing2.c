@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 11:58:51 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 13:18:05 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,6 +314,26 @@ static void	ft_find_player(t_env *env)
 	}
 }
 
+static int	ft_check_textures(t_env *env)
+{
+	int	i;
+	int	fd;
+
+	i = 0;
+	while (i < 4)
+	{
+		printf("path = [%s]\n", env->img[i].path);
+		if (env->img[i].path == NULL)
+			return (ft_err("Missing texture", FAILURE));
+		fd = open(env->img[i].path, O_RDONLY);
+		if (fd == -1)
+			return (perror(env->img[i].path), FAILURE);
+		close(fd);
+		i++;
+	}
+	return (SUCCESS);
+}
+
 int	ft_parsing2(t_env *env, char *cubfile)
 {
 	if (ft_check_file(cubfile) == FAILURE)
@@ -329,5 +349,7 @@ int	ft_parsing2(t_env *env, char *cubfile)
 	ft_print_map(env);
 	ft_find_player(env);
 	printf("px = [%f], py = [%f]\n", env->px, env->py);
+	if (ft_check_textures(env) == FAILURE)
+		return (FAILURE);
 	return (SUCCESS);
 }

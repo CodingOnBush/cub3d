@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:48:17 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 10:05:30 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 13:39:33 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	ft_free_env(t_env *env)
 {
 	int	col;
 
+	ft_free_file(&env->file);
+	
 	if (env->map != NULL)
 	{
 		col = 0;
@@ -39,22 +41,26 @@ void	ft_free_env(t_env *env)
 		}
 		free(env->map);
 	}
+
 	int	i;
 
 	i = 0;
 	while (i < 5)
 	{
-		// if (env->img[i].mlx_img != NULL)
-		// mlx_destroy_image(env->mlx_ptr, env->img[i].mlx_img);
-		if (env->img[i].path != NULL)
+		if (env->img[i].path)
 			free(env->img[i].path);
+		if (env->img[i].mlx_img && env->mlx_ptr)
+			mlx_destroy_image(env->mlx_ptr, env->img[i].mlx_img);
 		i++;
 	}
-	if (env->mlx_ptr != NULL)
+	if (env->mlx_ptr && env->win_ptr)
 		mlx_destroy_window(env->mlx_ptr, env->win_ptr);
-	if (env->mlx_ptr != NULL)
+	
+	if (env->mlx_ptr)
+	{
+		mlx_destroy_display(env->mlx_ptr);
 		free(env->mlx_ptr);
-	ft_free_file(&env->file);
+	}
 }
 
 // void	ft_free_split(char **split)
