@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 13:58:04 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 16:43:34 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,10 @@
 # define GOON 1	// Continue some action 
 
 # define M_PI 3.14159265358979323846
+
+// # define KeyPressMask 1L<<0
+// # define KeyReleaseMask 1L<<1
+
 
 typedef struct s_ray
 {
@@ -110,6 +114,12 @@ typedef struct s_env
 	double	px;
 	double	py;
 	char	pdir;
+	int		up;
+	int		down;
+	int		left;
+	int		right;
+	int		rotleft;
+	int		rotright;
 	t_ray	ray;
 }			t_env;
 
@@ -126,15 +136,19 @@ int		ft_parsing(t_env *env, char *cubfile);
 void	ft_init_env(t_env *env);
 
 /*	DRAW	*/
-void	ft_draw(t_env *env, int col);
+int		ft_render(t_env *env);
 
 /*	HOOKS	*/
 int		ft_win_cross(t_env *env);
 int		ft_key_hook(int keycode, t_env *env);
+int		ft_key_released(int keycode, t_env *env);
+int		ft_key_pressed(int keycode, t_env *env);
 
 /*	FREE	*/
 void	ft_free_env(t_env *env);
 void	ft_free_split(char **split);
 
+/*	MLX	*/
+void	ft_load_images(t_env *env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 14:43:29 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 16:41:58 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static void	ft_print_split(char **split)
 
 static int	ft_get_infos(t_env *env, char **split)
 {
-	printf("split %p\n", split);
+	// printf("split %p\n", split);
 	if (!split)
 		return (GOON);
 	if (!split[0] && env->file.count == 6)
@@ -129,7 +129,7 @@ static int	ft_get_infos(t_env *env, char **split)
 
 static int	ft_get_map(t_env *env, char *line)
 {
-	printf("line = [%s]\n", line);
+	// printf("line = [%s]\n", line);
 	int	mapw;
 	int	len;
 
@@ -210,7 +210,7 @@ static void	ft_set_mapsizes(t_env *env, char **content)
 {
 	if (!content || !*content)
 		return ;
-	printf("content = [%s]\n", *content);
+	// printf("content = [%s]\n", *content);
 	while (**content == '\n')
 		content++;
 	while (*content != NULL)
@@ -253,14 +253,14 @@ static int	ft_analyze_file(t_env *env)
 		split = ft_split(*content, ' ');
 		if (ft_get_infos(env, split) == STOP)
 			break ;
-		printf("CONTENT = [%s]\n", *content);
+		// printf("CONTENT = [%s]\n", *content);
 
 		content++;
 	}
 	if (env->file.count != 6)
 		return (ft_err("Wrong infos about game", FAILURE));
 	ft_set_mapsizes(env, content);
-	printf("mapw = [%d], maph = [%d]\n", env->mapw, env->maph);
+	// printf("mapw = [%d], maph = [%d]\n", env->mapw, env->maph);
 	if (env->mapw == 0 || env->maph == 0)
 		return (ft_err("Map empty", FAILURE));
 	if (env->mapw < 3 || env->maph < 3)
@@ -333,7 +333,7 @@ static int	ft_check_textures(t_env *env)
 	i = 0;
 	while (i < 4)
 	{
-		printf("path = [%s]\n", env->img[i].path);
+		// printf("path = [%s]\n", env->img[i].path);
 		if (env->img[i].path == NULL)
 			return (ft_err("Missing texture", FAILURE));
 		fd = open(env->img[i].path, O_RDONLY);
@@ -412,17 +412,17 @@ int	ft_parsing(t_env *env, char *cubfile)
 	if (ft_check_map(env) == FAILURE)
 		return (FAILURE);
 	
-	ft_print_file_infos(env);
+	// ft_print_file_infos(env);
 	
 	if (ft_find_player(env) == FAILURE)
 		return (FAILURE);
 	
-	printf("px = [%f], py = [%f]\n", env->px, env->py);
+	// printf("px = [%f], py = [%f]\n", env->px, env->py);
 	
 	if (ft_check_textures(env) == FAILURE)
 		return (FAILURE);
 	
-	ft_print_map(env);
+	// ft_print_map(env);
 	
 	if (ft_map_is_closed(env) == FAILURE)
 		return (FAILURE);

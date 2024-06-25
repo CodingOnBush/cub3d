@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 15:19:59 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 16:53:09 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	ft_get_color2(t_env *e, int texX, int texY, int wall)
 	return (color);
 }
 
-void	ft_draw(t_env *env, int col)
+static void	ft_draw(t_env *env, int col)
 {
 	int	y;
 	int	color;
@@ -242,7 +242,93 @@ void	ft_draw(t_env *env, int col)
 	}
 }
 
+static void	ft_move(t_env *env)
+{
+	double	stepHorizontalX;
+	double	stepHorizontalY;
+	double	stepVerticalX;
+	double	stepVerticalY;
 
+	stepHorizontalX = env->ray.planeX * env->ray.ms;
+	stepHorizontalY = env->ray.planeY * env->ray.ms;
+	stepVerticalX = env->ray.dirX * env->ray.ms;
+	stepVerticalY = env->ray.dirY * env->ray.ms;
+	if (env->down)
+	{
+		// printf("down\n");
+		if(env->map[(int)(env->px - stepVerticalX)][(int)(env->py)] == '0')
+			env->px -= stepVerticalX;
+		if(env->map[(int)(env->px)][(int)(env->py - stepVerticalY)] == '0')
+			env->py -= stepVerticalY;
+	}
+	if (env->up)
+	{
+		// printf("up\n");
+		if(env->map[(int)(env->px + stepVerticalX)][(int)(env->py)] == '0')
+			env->px += stepVerticalX;
+		if(env->map[(int)(env->px)][(int)(env->py + stepVerticalY)] == '0')
+			env->py += stepVerticalY;
+	}
+	if (env->left)
+	{
+		// printf("left\n");
+		if (env->map[(int)(env->px - stepHorizontalX)][(int)(env->py)] == '0')
+			env->px -= stepHorizontalX;
+		if (env->map[(int)(env->px)][(int)(env->py - stepHorizontalY)] == '0')
+			env->py -= stepHorizontalY;
+	}
+	if (env->right)
+	{
+		// printf("right\n");
+		if (env->map[(int)(env->px + stepHorizontalX)][(int)(env->py)] == '0')
+			env->px += stepHorizontalX;
+		if (env->map[(int)(env->px)][(int)(env->py + stepHorizontalY)] == '0')
+			env->py += stepHorizontalY;
+	}
+}
+
+static void	ft_rotate(t_env *env)
+{
+	if (env->rotleft)
+	{
+		// printf("rot left\n");
+		double oldDirX = env->ray.dirX;
+		env->ray.dirX = env->ray.dirX * cos(env->ray.rs) - env->ray.dirY * sin(env->ray.rs);
+		env->ray.dirY = oldDirX * sin(env->ray.rs) + env->ray.dirY * cos(env->ray.rs);
+		double oldPlaneX = env->ray.planeX;
+		env->ray.planeX = env->ray.planeX * cos(env->ray.rs) - env->ray.planeY * sin(env->ray.rs);
+		env->ray.planeY = oldPlaneX * sin(env->ray.rs) + env->ray.planeY * cos(env->ray.rs);
+	}
+	if (env->rotright)
+	{
+		// printf("rot right\n");
+		double oldDirX = env->ray.dirX;
+		env->ray.dirX = env->ray.dirX * cos(-env->ray.rs) - env->ray.dirY * sin(-env->ray.rs);
+		env->ray.dirY = oldDirX * sin(-env->ray.rs) + env->ray.dirY * cos(-env->ray.rs);
+		double oldPlaneX = env->ray.planeX;
+		env->ray.planeX = env->ray.planeX * cos(-env->ray.rs) - env->ray.planeY * sin(-env->ray.rs);
+		env->ray.planeY = oldPlaneX * sin(-env->ray.rs) + env->ray.planeY * cos(-env->ray.rs);
+	}
+}
+
+int	ft_render(t_env *env)
+{
+	int	col;
+
+	col = 0;
+	if (env->down || env->up || env->left || env->right)
+		ft_move(env);
+	if (env->rotleft || env->rotright)
+		ft_rotate(env);
+	while (col < env->winw)
+	{
+		ft_draw(env, col);
+		col++;
+	}
+	if (env->mlx_ptr && env->win_ptr && env->img[CANVAS].mlx_img)
+		mlx_put_image_to_window(env->mlx_ptr, env->win_ptr, env->img[CANVAS].mlx_img, 0, 0);
+	return (0);
+}
 
 
 

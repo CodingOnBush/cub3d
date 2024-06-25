@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 15:12:16 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 16:52:33 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,18 @@ static void	ft_init_ray(t_ray *ray)
 	ray->cameraX = 0;
 	ray->rayDirX = 0;
 	ray->rayDirY = 0;
+	ray->mapX = 0;
+	ray->mapY = 0;
 	ray->sideDistX = 0;
 	ray->sideDistY = 0;
 	ray->deltaDistX = 0;
 	ray->deltaDistY = 0;
 	ray->perpWallDist = 0;
+	ray->stepX = 0;
+	ray->stepY = 0;
+	ray->hit = 0;
+	ray->side = 0;
+	ray->texCol = 0;
 	
 	// WEST
 	// ray->planeX = 0;
@@ -47,15 +54,8 @@ static void	ft_init_ray(t_ray *ray)
 	ray->dirX = 0;
 	ray->dirY = 1;
 	
-	ray->ms = 0.5;
+	ray->ms = 0.15;
 	ray->rs = 0.05;
-	ray->mapX = 0;
-	ray->mapY = 0;
-	ray->stepX = 0;
-	ray->stepY = 0;
-	ray->hit = 0;
-	ray->side = 0;
-	ray->texCol = 0;
 }
 
 static void	ft_init_img(t_img *img)
@@ -94,19 +94,23 @@ void	ft_init_env(t_env *env)
 
 	ft_init_file(&env->file);
 	env->map = NULL;
+	i = 0;
+	while (i < 5)
+		ft_init_img(&env->img[i++]);
+	env->mlx_ptr = NULL;
+	env->win_ptr = NULL;
+	env->winw = 900;
+	env->winh = 900;
 	env->mapw = 0;
 	env->maph = 0;
 	env->px = 0;
 	env->py = 0;
-	env->winw = 900;
-	env->winh = 900;
-	env->mlx_ptr = NULL;
-	env->win_ptr = NULL;
-	i = 0;
-	while (i < 5)
-	{
-		ft_init_img(&env->img[i]);
-		i++;
-	}
+	env->pdir = 0;
+	env->up = 0;
+	env->down = 0;
+	env->left = 0;
+	env->right = 0;
+	env->rotleft = 0;
+	env->rotright = 0;
 	ft_init_ray(&env->ray);
 }
