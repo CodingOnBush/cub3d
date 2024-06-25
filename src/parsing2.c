@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 10:33:47 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 11:58:51 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,6 +305,7 @@ static void	ft_find_player(t_env *env)
 				env->py = row + 0.5;
 				env->pdir = map[col][row];
 				map[col][row] = '0';
+				ft_update_dir(env);
 				return ;
 			}
 			row++;

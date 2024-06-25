@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:24:35 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 07:24:48 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 11:58:05 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,36 @@ int	ft_get_id(char *str)
 	if (ft_strncmp(str, "F", 2) == 0)
 		return (FLOOR);
 	return (-1);
+}
+
+void	ft_update_dir(t_env *env)
+{
+	if (env->pdir == 'N')
+	{
+		env->ray.planeX = 0.66;
+		env->ray.planeY = 0;
+		env->ray.dirX = 0;
+		env->ray.dirY = 1;
+	}
+	else if (env->pdir == 'S')
+	{
+		env->ray.planeX = -0.66;
+		env->ray.planeY = 0;
+		env->ray.dirX = 0;
+		env->ray.dirY = -1;
+	}
+	else if (env->pdir == 'W')
+	{
+		env->ray.planeX = 0;
+		env->ray.planeY = 0.66;
+		env->ray.dirX = -1;
+		env->ray.dirY = 0;
+	}
+	else if (env->pdir == 'E')
+	{
+		env->ray.planeX = 0;
+		env->ray.planeY = -0.66;
+		env->ray.dirX = 1;
+		env->ray.dirY = 0;
+	}
 }

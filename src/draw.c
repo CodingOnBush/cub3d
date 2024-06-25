@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 10:57:36 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/06/25 11:59:47 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,6 +291,14 @@ void	ft_draw2(t_env *env, int col)
 	double	rayDirY = env->ray.dirY + (env->ray.planeY)*(cameraX);
 	int		mapX = (int)(env->px);
 	int		mapY = (int)(env->py);
+
+	// printf("rayDirX = %f\n", rayDirX);
+	// printf("dirX = %f\n", env->ray.dirX);
+	// printf("planeX = %f\n", env->ray.planeX);
+
+	// printf("rayDirY = %f\n", rayDirY);
+	// printf("dirY = %f\n", env->ray.dirY);
+	// printf("planeY = %f\n\n", env->ray.planeY);
 	// //calculate ray position and direction
 	// double cameraX = 2 * col / (double)cub->cst.width - 1; //x-coordinate in camera space
 	// double rayDirX = cub->cst.dirX + (cub->cst.planeX)*cameraX;

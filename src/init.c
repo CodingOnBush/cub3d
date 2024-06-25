@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 10:47:23 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/06/25 11:58:28 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ int	ft_init_cub3d(t_cub3d *cub)
 	return (SUCCESS);
 }
 
-
 static void	ft_init_ray2(t_ray *ray)
 {
 	ray->cameraX = 0;
@@ -120,10 +119,31 @@ static void	ft_init_ray2(t_ray *ray)
 	ray->deltaDistX = 0;
 	ray->deltaDistY = 0;
 	ray->perpWallDist = 0;
-	ray->planeX = 0;
-	ray->planeY = 0.66;
-	ray->dirX = -1;
-	ray->dirY = 0;
+	
+	// WEST
+	// ray->planeX = 0;
+	// ray->planeY = 0.66;
+	// ray->dirX = -1;
+	// ray->dirY = 0;
+	
+	// SOUTH
+	// ray->planeX = -0.66;
+	// ray->planeY = 0;
+	// ray->dirX = 0;
+	// ray->dirY = -1;
+
+	// EAST
+	// ray->planeX = 0;
+	// ray->planeY = -0.66;
+	// ray->dirX = 1;
+	// ray->dirY = 0;
+
+	// NORTH
+	ray->planeX = 0.66;
+	ray->planeY = 0;
+	ray->dirX = 0;
+	ray->dirY = 1;
+	
 	ray->ms = 0.5;
 	ray->rs = 0.1;
 	ray->mapX = 0;

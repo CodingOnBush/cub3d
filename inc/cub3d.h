@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 09:03:18 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/25 11:58:22 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,6 +260,8 @@ int	ft_key_hook2(int keycode, t_env *env);
 
 void	ft_draw2(t_env *env, int col);
 
+
+void	ft_update_dir(t_env *env);
 
 
 
