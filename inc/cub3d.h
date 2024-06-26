@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 16:43:34 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/26 12:31:26 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <math.h>
 # include "../lib/libft/inc/libft.h"
-# include "../lib/mlx/mlx.h"
+# include "../lib/minilibx-linux/mlx.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
 # include <sys/stat.h>
@@ -128,6 +128,7 @@ int		ft_err(char *str, int ret);
 int		ft_splitlen(char **split);
 int		ft_get_id(char *str);
 void	ft_update_dir(t_env *env);
+int		ft_strcmp(const char *s1, const char *s2);
 
 /*	PARSING	*/
 int		ft_parsing(t_env *env, char *cubfile);

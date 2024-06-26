@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:24:35 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 15:08:38 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/26 12:31:12 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	ft_splitlen(char **split)
 
 int	ft_get_id(char *str)
 {
+	if (!str)
+		return (-1);
 	if (ft_strncmp(str, "WE", 2) == 0)
 		return (WEST);
 	if (ft_strncmp(str, "EA", 2) == 0)
@@ -79,4 +81,14 @@ void	ft_update_dir(t_env *env)
 		env->ray.dirX = 1;
 		env->ray.dirY = 0;
 	}
+}
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	while (*s1 && *s2 && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+	}
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }

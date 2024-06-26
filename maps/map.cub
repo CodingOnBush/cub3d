@@ -1,0 +1,15 @@
+NO ./tex/test-north.xpm
+SO ./tex/test-north.xpm
+WE ./tex/test-north.xpm
+EA ./tex/test-north.xpm
+F 220, 100, 0
+C 225, 30, 0
+
+111111111111
+1         11
+1          1
+111111111111
+10S000000001
+111111111111
+11         1
+111111111111

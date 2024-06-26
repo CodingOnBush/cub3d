@@ -6,7 +6,7 @@
 #    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/06/20 10:24:37 by momrane          ###   ########.fr        #
+#    Updated: 2024/06/26 11:47:54 by momrane          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ OBJ_DIR 		= ./obj
 INC_DIR 		= ./inc
 LIB_DIR 		= ./lib
 BIN_DIR 		= ./bin
-MINILIBX_DIR	= $(LIB_DIR)/mlx
+MINILIBX_DIR	= $(LIB_DIR)/minilibx-linux
 LIBFT_DIR		= $(LIB_DIR)/libft
 
 # Libs
@@ -45,11 +45,13 @@ OBJ			:=	$(SRC:$(SRC_DIR)/%.c=$(BIN_DIR)/%.o)
 
 all: $(NAME)
 
-e: all
-	@./$(NAME) japancoridor.cub
+CONFIG= maps/hey.cubsf
 
-v: $(NAME)
-	@valgrind --leak-check=full ./$(NAME) japancoridor.cub
+e: all
+	@./$(NAME) $(CONFIG)
+
+v: clean all
+	@valgrind --leak-check=full ./$(NAME) $(CONFIG)
 
 $(NAME): $(LIBS) $(OBJ)
 	$(CC) -I $(INC_DIR) $(OBJ) $(LIBS) $(MLX_FLAGS) -o ./$(NAME)

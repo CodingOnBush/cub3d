@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:48:17 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/25 16:40:19 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/26 10:17:03 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	ft_free_file(t_file *file)
 	if (file->content != NULL)
 	{
 		i = 0;
-		while (file->content[i])
+		while (file->content[i] != NULL)
 		{
 			free(file->content[i]);
 			i++;

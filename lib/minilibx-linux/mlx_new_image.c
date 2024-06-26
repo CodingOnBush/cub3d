@@ -23,9 +23,9 @@ int	mlx_X_error;
 
 int	shm_att_pb(Display *d,XErrorEvent *ev)
 {
-  mlx_X_error = 1;
   if (ev->request_code==146 && ev->minor_code==X_ShmAttach)
     write(2,WARN_SHM_ATTACH,strlen(WARN_SHM_ATTACH));
+  mlx_X_error = 1;
 }
 
 
