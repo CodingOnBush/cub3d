@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/26 08:32:29 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/26 14:48:49 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ static void	ft_init_ray(t_ray *ray)
 	ray->dirX = 0;
 	ray->dirY = 1;
 	
-	ray->ms = 0.15;
-	ray->rs = 0.075;
+	ray->ms = 0.05;
+	ray->rs = 0.01;
 }
 
 static void	ft_init_img(t_img *img)

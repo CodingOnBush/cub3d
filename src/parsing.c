@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/26 13:32:08 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/26 15:40:21 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,20 @@ static int	ft_count_lines(char *file)
 	return (count);
 }
 
+static void	ft_remove_spaces_at_end(char *line)
+{
+	int	len;
+
+	len = ft_strlen(line);
+	if (line[len - 1] == '\n')
+		line[len - 1] = ' ';
+	while (len > 0 && line[len - 1] == ' ')
+	{
+		line[len - 1] = '\0';
+		len--;
+	}
+}
+
 static int	ft_get_all_lines(t_env *env, char *cubfile)
 {
 	int	fd;
@@ -71,8 +85,10 @@ static int	ft_get_all_lines(t_env *env, char *cubfile)
 	{
 		env->file.content[row] = get_next_line(fd);
 		len = ft_strlen(env->file.content[row]);
-		if (len > 0 && env->file.content[row][len - 1] == '\n')
-			env->file.content[row][len - 1] = '\0';
+		ft_remove_spaces_at_end(env->file.content[row]);
+		// printf("line = [%s]\n", env->file.content[row]);
+		// if (len > 0 && env->file.content[row][len - 1] == '\n')
+		// 	env->file.content[row][len - 1] = '\0';
 		// printf("line = [%s]\n", env->file.content[row]);
 		row++;
 	}
@@ -104,14 +120,14 @@ static int	ft_get_infos(t_env *env, char **split)
 {
 	if (!split)
 		return (GOON);
-	if (!split[0] && env->file.count == 6)
-		return (ft_free_split(split), STOP);
 	if (!split[0])
 		return (ft_free_split(split), GOON);
+	if (ft_get_id(split[0]) == -1)
+		return (ft_free_split(split), STOP);
 	if (ft_splitlen(split) == 2 && ft_get_id(split[0]) != -1)
 	{
 		if (env->img[ft_get_id(split[0])].path != NULL)
-			return (ft_free_split(split), STOP);
+			return (ft_free_split(split), GOON);
 		env->img[ft_get_id(split[0])].path = ft_strdup(split[1]);
 		env->file.count++;
 	}
@@ -232,7 +248,7 @@ static void	ft_set_mapsizes(t_env *env, char **content)
 		(content)++;
 		env->maph++;
 	}
-	printf("mapw = [%d], maph = [%d]\n", env->mapw, env->maph);
+	// printf("mapw = [%d], maph = [%d]\n", env->mapw, env->maph);
 }
 
 static void	ft_fill_map(t_env *env, char **content)
@@ -266,18 +282,23 @@ static int	ft_analyze_file(t_env *env)
 		split = ft_split(*(content), ' ');
 		if (ft_get_infos(env, split) == STOP)
 			break ;
-		(content)++;
+		content++;
 	}
-	if (env->file.count != 6)
-		return (ft_err("Wrong infos about game", FAILURE));
+	// printf("*content = [%s]\n", *(content));
+	// printf("file.count = [%d]\n", env->file.count);
+	if (env->file.count < 6)
+		return (ft_err("Not enough infos about game", FAILURE));
+	else if (env->file.count >= 7)
+		return (ft_err("Too much infos about game", FAILURE));
+		
 	// ft_print_file_infos(env);
 	
-	printf("*content = [%s]\n", *(content));
+	// printf("*content = [%s]\n", *(content));
 
 	while (*content != NULL && **content == '\0')
 		content++;
 	
-	printf("NEXT = [%s]\n", *(content));
+	// printf("NEXT = [%s]\n", *(content));
 
 	ft_set_mapsizes(env, content);
 	if (env->mapw == 0 || env->maph == 0)
@@ -312,7 +333,7 @@ static int	ft_check_map(t_env *env)
 		{
 			if (ft_strchr(" 01NSEW", map[col][row]) == NULL)
 			{
-				printf("map[col][row] = [%c]\n", map[col][row]);
+				// printf("map[col][row] = [%c]\n", map[col][row]);
 				return (ft_err("Invalid character in map", FAILURE));
 			}
 			row++;
@@ -385,17 +406,17 @@ static int	ft_check_col(char **map, int col, int maph)
 	while (row < maph && map[col][row] == ' ')
 		row++;
 	if (row == maph)
-		return (SUCCESS);
+		return (FAILURE);
 	if (map[col][row] != '1')
 		return (FAILURE);
 	row = maph - 1;
 	while (row >= 0 && map[col][row] == ' ')
 		row--;
 	if (row == -1)
-		return (SUCCESS);
-	if (map[col][row] != '1')
 		return (FAILURE);
-	return (SUCCESS);
+	if (map[col][row] == '1')
+		return (SUCCESS);
+	return (FAILURE);
 }
 
 static int	ft_check_row(char **map, int row, int mapw)
@@ -419,15 +440,59 @@ static int	ft_check_row(char **map, int row, int mapw)
 	return (SUCCESS);
 }
 
+static int	ft_is_empty_col(char **map, int col, int maph)
+{
+	int	row;
+
+	row = 0;
+	while (row < maph)
+	{
+		if (map[col][row] != ' ')
+			return (NO);
+		row++;
+	}
+	return (YES);
+}
+
+static int	ft_is_empty_row(char **map, int row, int mapw)
+{
+	int	col;
+
+	col = 0;
+	while (col < mapw)
+	{
+		if (map[col][row] != ' ')
+			return (NO);
+		col++;
+	}
+	return (YES);
+}
+
 static int	ft_map_is_closed(t_env *env)
 {
 	char	**map;
 	int		row;
+	int		r;
 	int		col;
 
 	map = env->map;
 	col = 0;
-	ft_print_map(env);
+	// ft_print_map(env);
+	// if (ft_is_empty_col(map, col, env->maph) == YES)
+	// 	printf("first col is empty\n");
+	// else
+	// 	printf("first col is not empty\n");
+	
+	// on passe toutes les colonnes vides
+	while (col < env->mapw && ft_is_empty_col(map, col, env->maph) == YES)
+		col++;
+	
+	
+	
+	// printf("col = [%d]\n", col);
+	// col++;
+	
+	// on passe toutes les colonnes pleines
 	while (col < env->mapw)
 	{
 		// printf("check col = [%d]\n", col);
@@ -440,9 +505,13 @@ static int	ft_map_is_closed(t_env *env)
 	{
 		// printf("check row = [%d]\n", row);
 		if (ft_check_row(map, row, env->mapw) == FAILURE)
-			return (ft_err("Map is not closed on rows", FAILURE));
+			break;
 		row++;
 	}
+	while(row < env->maph && ft_is_empty_row(map, row, env->mapw) == YES)
+		row++;
+	if (row != env->maph)
+		return (ft_err("Map is not closed on rows", FAILURE));
 	return (SUCCESS);
 }
 
@@ -472,5 +541,6 @@ int	ft_parsing(t_env *env, char *cubfile)
 	
 	if (ft_map_is_closed(env) == FAILURE)
 		return (FAILURE);
+	// printf("Map is closed !\n");
 	return (SUCCESS);
 }

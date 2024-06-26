@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/26 12:31:26 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/26 15:01:38 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,15 @@
 #include <math.h>
 #include <stdbool.h>
 
+# define RED 	"\033[0;31m"
+# define GREEN	"\033[0;32m"
+# define RESET	"\033[0m"
+
 # define SUCCESS 0
 # define FAILURE 1
+
+# define YES	1
+# define NO		0
 
 # define NORTH 0
 # define SOUTH 1

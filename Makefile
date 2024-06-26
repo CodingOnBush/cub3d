@@ -6,7 +6,7 @@
 #    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/06/26 11:47:54 by momrane          ###   ########.fr        #
+#    Updated: 2024/06/26 15:24:39 by momrane          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ LIBS 			= $(LIBFT) $(MINILIBX)
 CC				= cc
 CFLAGS			= -g3#-Wall -Wextra -Werror
 MLX_FLAGS		= -Lmlx -L/$(LIB_DIR) -Imlx -lXext -lX11 -lm -lz
+VAL_FLAGS		= --leak-check=full --track-origins=yes --track-fds=yes
 
 # Sources
 SRC			:=	$(wildcard $(SRC_DIR)/*.c)
