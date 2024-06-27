@@ -6,37 +6,38 @@
 #    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/06/27 10:45:38 by momrane          ###   ########.fr        #
+#    Updated: 2024/06/27 22:33:33 by momrane          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Colors
-DEF_COLOR		= \033[0;39m
-GREEN 			= \033[0;92m
-CYAN 			= \033[0;96m
+DEF_COLOR		:= \033[0;39m
+GREEN 			:= \033[0;92m
+CYAN 			:= \033[0;96m
 
 # Name
-NAME 			= cube3D
+NAME 			:= cube3D
 
 # Directories
-SRC_DIR			= ./src
-OBJ_DIR 		= ./obj
-INC_DIR 		= ./inc
-LIB_DIR 		= ./lib
-BIN_DIR 		= ./bin
-MINILIBX_DIR	= $(LIB_DIR)/minilibx-linux
-LIBFT_DIR		= $(LIB_DIR)/libft
+SRC_DIR			:= ./src
+OBJ_DIR 		:= ./obj
+INC_DIR 		:= ./inc
+LIB_DIR 		:= ./lib
+BIN_DIR 		:= ./bin
+MINILIBX_DIR	:= $(LIB_DIR)/minilibx-linux
+LIBFT_DIR		:= $(LIB_DIR)/libft
 
 # Libs
-MINILIBX		= $(MINILIBX_DIR)/libmlx.a
-LIBFT			= $(LIBFT_DIR)/libft.a
-LIBS 			= $(LIBFT) $(MINILIBX)
+MINILIBX		:= $(MINILIBX_DIR)/libmlx.a
+LIBFT			:= $(LIBFT_DIR)/libft.a
+LIBS 			:= $(LIBFT) $(MINILIBX)
 
 # Compilation
-CC				= cc
-CFLAGS			= -g3#-Wall -Wextra -Werror
-MLX_FLAGS		= -Lmlx -L/$(LIB_DIR) -Imlx -lXext -lX11 -lm -lz
-VAL_FLAGS		= --leak-check=full --track-origins=yes --track-fds=yes
+CC				:= cc
+CFLAGS			:= -g3 -MMD #-Wall -Wextra -Werror
+LDLIBS			:= -lft -lmlx -lXext -lX11 -lm
+LDFLAGS			:= -L$(LIBFT_DIR) -L$(MINILIBX_DIR)
+VAL_FLAGS		:= --leak-check=full --track-origins=yes --track-fds=yes
 
 # Sources
 SRC			:=	$(wildcard $(SRC_DIR)/*.c)
@@ -44,23 +45,20 @@ SRC			:=	$(wildcard $(SRC_DIR)/*.c)
 # Objects
 OBJ			:=	$(SRC:$(SRC_DIR)/%.c=$(BIN_DIR)/%.o)
 
+# Dependencies
+DEP 		:= $(OBJ:%.o=%.d)
+
 all: $(NAME)
 
-CONFIG= maps/hey.cubsf
-
-e: all
-	@./$(NAME) $(CONFIG)
-
-v: clean all
-	@valgrind --leak-check=full ./$(NAME) $(CONFIG)
-
 $(NAME): $(LIBS) $(OBJ)
-	$(CC) -I $(INC_DIR) $(OBJ) $(LIBS) $(MLX_FLAGS) -o ./$(NAME)
+	$(CC) $(OBJ) $(LDFLAGS) $(LDLIBS) -o ./$(NAME)
 	@echo "$(GREEN)cub3d compiled !$(DEF_COLOR)"
+
+-include $(DEP)
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -I $(INC_DIR) -Imlx -O3 -c $< -o $@
+	@$(CC) $(CFLAGS) -I $(INC_DIR) -c $< -o $@
 
 # ---------------------------------- LIBS ---------------------------------- #
 $(LIBFT):
