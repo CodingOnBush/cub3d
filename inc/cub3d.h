@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 09:28:55 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 18:51:53 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ int		ft_strcmp(const char *s1, const char *s2);
 
 /*	PARSING	*/
 int		ft_parsing(t_env *env, char *cubfile);
+
+/*	PARSING2	*/
+int		ft_map_is_closed(t_env *env);
 
 /*	INIT	*/
 void	ft_init_env(t_env *env);

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 17:29:27 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 19:50:10 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	ft_count_lines(char *file)
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		return (perror(file), FAILURE);
+		return (perror(file), -1);
 	count = 0;
 	while (1)
 	{
@@ -86,9 +86,13 @@ static int	ft_get_all_lines(t_env *env, char *cubfile)
 	if (fd == -1)
 		return (perror(cubfile), FAILURE);
 	env->file.height = ft_count_lines(cubfile);
+	if (env->file.height == -1)
+		return (close(fd), FAILURE);
+	if (env->file.height == 0)
+		return (close(fd), ft_err("Empty file", FAILURE));
 	env->file.content = (char **)malloc(sizeof(char *) * (env->file.height + 1));
 	if (!env->file.content)
-		return (FAILURE);
+		return (close(fd), FAILURE);
 	env->file.content[env->file.height] = NULL;
 	row = 0;
 	while (row < env->file.height)
@@ -98,8 +102,7 @@ static int	ft_get_all_lines(t_env *env, char *cubfile)
 		ft_remove_spaces_at_end(env->file.content[row]);
 		row++;
 	}
-	close(fd);
-	return (SUCCESS);
+	return (close(fd), SUCCESS);
 }
 
 static void	ft_print_split(char **split)
@@ -153,44 +156,29 @@ static int	ft_rgb_isvalid(t_env *env)
 
 static int	ft_get_infos(t_env *env, char **split)
 {
-	// ft_print_split(split);
 	if (!split)
-		return (GOON);
+		return (ft_free_splitmore(split), GOON);
 	if (!split[0])
-		return (GOON);
+		return (ft_free_splitmore(split), GOON);
 	if (ft_get_id(split[0]) == -1)
-		return (STOP);
+		return (ft_free_splitmore(split), STOP);
 	if (ft_splitlen(split) == 2 && ft_get_id(split[0]) != -1)
 	{
 		env->file.count++;
 		if (env->img[ft_get_id(split[0])].path != NULL)
-			return (GOON);
+			return (ft_free_splitmore(split), GOON);
 		env->img[ft_get_id(split[0])].path = ft_strdup(split[1]);
 	}
 	else if (ft_splitlen(split) == 4 && ft_is_color(split) == YES)
 	{
-		// printf("split len : %d\n", ft_splitlen(split));
-		// printf("COUCOU\n");
 		env->file.colors[ft_get_id(split[0])][R] = ft_atoi(split[1]);
 		env->file.colors[ft_get_id(split[0])][G] = ft_atoi(split[2]);
 		env->file.colors[ft_get_id(split[0])][B] = ft_atoi(split[3]);
 		env->file.count++;
 	}
 	else
-		return (STOP);
-	return (GOON);
-}
-
-static int	ft_get_map(t_env *env, char *line)
-{
-	int	mapw;
-	// int	len;
-
-	(void)env;
-	mapw = 0;
-	while (line[mapw])
-		mapw++;
-	return (SUCCESS);
+		return (ft_free_splitmore(split), STOP);
+	return (ft_free_splitmore(split), GOON);
 }
 
 static void	ft_print_file_infos(t_env *env)
@@ -260,21 +248,6 @@ static void	ft_print_map(t_env *env)
 		}
 		printf("\n");
 		row++;
-	}
-}
-
-static void	ft_find_sizes(t_env *env, char **content)
-{
-	int	len;
-
-	len = 0;
-	while (*(content) != NULL)
-	{
-		len = ft_strlen(*(content));
-		if (len > env->mapw)
-			env->mapw = len;
-		(content)++;
-		env->maph++;
 	}
 }
 
@@ -356,19 +329,11 @@ static int	ft_analyze_file(t_env *env)
 	while (*(content) != NULL)
 	{
 		if (ft_gettype(*content) == CEIL || ft_gettype(*content) == FLOOR)
-		{
 			split = ft_splitmore(*content, " ,");
-			// printf("SORTIE\n");
-			// ft_print_split(split);
-		}
 		else
 			split = ft_splitmore(*content, " ");
 		if (ft_get_infos(env, split) == STOP)
-		{
-			ft_free_splitmore(split);
 			break ;
-		}
-		ft_free_splitmore(split);
 		content++;
 	}
 	if (ft_check_infos_error(env) == FAILURE)
@@ -381,7 +346,7 @@ static int	ft_analyze_file(t_env *env)
 	return (SUCCESS);
 }
 
-static int	ft_check_map(t_env *env)
+static int	ft_check_invalid_char(t_env *env)
 {
 	char	**map;
 	int		row;
@@ -466,183 +431,6 @@ static int	ft_check_textures(t_env *env)
 	return (SUCCESS);
 }
 
-static int	ft_check_invalid_col(char **map, int col, int start, int end)
-{
-	int	row;
-
-	row = start;
-	while (row <= end)
-	{
-		if (ft_strchr(" 01NSEW", map[col][row]) == NULL)
-			return (FAILURE);
-		row++;
-	}
-	return (SUCCESS);
-}
-
-static int	ft_check_invalid_row(char **map, int row, int start, int end)
-{
-	int	col;
-
-	col = start;
-	while (col <= end)
-	{
-		if (ft_strchr(" 01NSEW", map[col][row]) == NULL)
-			return (FAILURE);
-		col++;
-	}
-	return (SUCCESS);
-}
-
-static int	ft_check_in_col(char **map, int col, int start, int end)
-{
-	int	row;
-
-	row = start;
-	while (row <= end)
-	{
-		if (ft_strchr("01NSEW", map[col][row]) == NULL)
-			return (FAILURE);
-		row++;
-	}
-	return (SUCCESS);
-}
-
-static int	ft_check_in_row(char **map, int row, int start, int end)
-{
-	int	col;
-
-	col = start;
-	while (col <= end)
-	{
-		if (ft_strchr("01NSEW", map[col][row]) == NULL)
-			return (FAILURE);
-		col++;
-	}
-	return (SUCCESS);
-}
-
-static int	ft_check_col(char **map, int col, int maph)
-{
-	int	row;
-	int	start;
-
-	row = 0;
-	while (row < maph && map[col][row] == ' ')
-		row++;
-	if (row == maph)
-		return (FAILURE);
-	if (map[col][row] != '1')
-		return (FAILURE);
-	start = row;
-	row = maph - 1;
-	while (row >= 0 && map[col][row] == ' ')
-		row--;
-	if (row == -1)
-		return (FAILURE);
-	if (ft_check_in_col(map, col, start, row) == FAILURE)
-		return (FAILURE);
-	if (map[col][row] == '1')
-		return (SUCCESS);
-	if (ft_check_invalid_col(map, col, start, row) == FAILURE)
-		return (FAILURE);
-	return (FAILURE);
-}
-
-static int	ft_check_row(char **map, int row, int mapw)
-{
-	int	col;
-	int	start;
-
-	col = 0;
-	while (col < mapw && map[col][row] == ' ')
-		col++;
-	if (col == mapw)
-		return (FAILURE);
-	if (map[col][row] != '1')
-		return (FAILURE);
-	start = col;
-	col = mapw - 1;
-	while (col >= 0 && map[col][row] == ' ')
-		col--;
-	if (col == -1)
-		return (SUCCESS);
-	if (map[col][row] != '1')
-		return (FAILURE);
-	if (ft_check_in_row(map, row, start, col) == FAILURE)
-		return (FAILURE);
-	if (ft_check_invalid_row(map, row, start, col) == FAILURE)
-		return (FAILURE);
-	return (SUCCESS);
-}
-
-static int	ft_is_empty_col(char **map, int col, int maph)
-{
-	int	row;
-
-	row = 0;
-	while (row < maph)
-	{
-		if (map[col][row] != ' ')
-			return (NO);
-		row++;
-	}
-	return (YES);
-}
-
-static int	ft_is_empty_row(char **map, int row, int mapw)
-{
-	int	col;
-
-	col = 0;
-	while (col < mapw)
-	{
-		if (map[col][row] != ' ')
-			return (NO);
-		col++;
-	}
-	return (YES);
-}
-
-static int	ft_map_is_closed(t_env *env)
-{
-	char	**map;
-	int		i;
-	int		maxcol;
-
-	map = env->map;
-	i = 0;
-	while (i < env->mapw && ft_is_empty_col(map, i, env->maph) == YES)
-		i++;
-	i = env->mapw - 1;
-	while (i >= 0 && ft_is_empty_col(map, i, env->maph) == YES)
-		i--;
-	maxcol = i;
-	while (i < maxcol)
-	{
-		if (ft_check_col(map, i, env->maph) == FAILURE)
-		{
-			printf("colllllll = %d\n", i);
-			printf("map[i][0] = [%c]\n", map[i - 1][0]);
-			printf("map[i][0] = [%c]\n", map[i - 1][1]);
-			return (ft_err("Map not conform COL", FAILURE));
-		}
-		i++;
-	}
-	i = 0;
-	while (i < env->maph)
-	{
-		if (ft_check_row(map, i, env->mapw) == FAILURE)
-			break;
-		i++;
-	}
-	while(i < env->maph && ft_is_empty_row(map, i, env->mapw) == YES)
-		i++;
-	if (i != env->maph)
-		return (ft_err("Map not conform ROW", FAILURE));
-	return (SUCCESS);
-}
-
 static void	ft_remove_all_spaces_at_end(t_env *env)
 {
 	int	row;
@@ -690,6 +478,7 @@ static int	ft_reverse_map(t_env *env)
 	return (SUCCESS);
 }
 
+
 int	ft_parsing(t_env *env, char *cubfile)
 {
 	if (ft_check_file(cubfile) == FAILURE)
@@ -698,15 +487,17 @@ int	ft_parsing(t_env *env, char *cubfile)
 		return (FAILURE);
 	if (ft_analyze_file(env) == FAILURE)
 		return (FAILURE);
-	if (ft_check_map(env) == FAILURE)
+	if (ft_check_invalid_char(env) == FAILURE)
 		return (FAILURE);
-	ft_print_map(env);
+	// ft_print_map(env);
 	ft_reverse_map(env);
 	ft_print_map(env);
 	if (ft_find_player(env) == FAILURE)
 		return (FAILURE);
 	if (ft_map_is_closed(env) == FAILURE)
 		return (FAILURE);
+	// if (ft_map_is_closed(env) == FAILURE)
+	// 	return (FAILURE);
 	if (ft_check_textures(env) == FAILURE)
 		return (FAILURE);
 	// printf("player pos = [%f, %f]\n", env->px, env->py);
