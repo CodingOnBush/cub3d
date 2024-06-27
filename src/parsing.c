@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 14:51:36 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 15:44:36 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,29 +150,32 @@ static int	ft_rgb_isvalid(t_env *env)
 
 static int	ft_get_infos(t_env *env, char **split)
 {
+	ft_print_split(split);
 	if (!split)
 		return (GOON);
 	if (!split[0])
-		return (ft_free_splitmore(split), GOON);
+		return (GOON);
 	if (ft_get_id(split[0]) == -1)
-		return (ft_free_splitmore(split), STOP);
+		return (STOP);
 	if (ft_splitlen(split) == 2 && ft_get_id(split[0]) != -1)
 	{
 		env->file.count++;
 		if (env->img[ft_get_id(split[0])].path != NULL)
-			return (ft_free_splitmore(split), GOON);
+			return (GOON);
 		env->img[ft_get_id(split[0])].path = ft_strdup(split[1]);
 	}
 	else if (ft_splitlen(split) == 4 && ft_is_color(split) == YES)
 	{
+		// printf("split len : %d\n", ft_splitlen(split));
+		// printf("COUCOU\n");
 		env->file.colors[ft_get_id(split[0])][R] = ft_atoi(split[1]);
 		env->file.colors[ft_get_id(split[0])][G] = ft_atoi(split[2]);
 		env->file.colors[ft_get_id(split[0])][B] = ft_atoi(split[3]);
 		env->file.count++;
 	}
 	else
-		return (ft_free_splitmore(split), STOP);
-	return (ft_free_splitmore(split), GOON);
+		return (STOP);
+	return (GOON);
 }
 
 static int	ft_get_map(t_env *env, char *line)
@@ -350,11 +353,19 @@ static int	ft_analyze_file(t_env *env)
 	while (*(content) != NULL)
 	{
 		if (ft_gettype(*content) == CEIL || ft_gettype(*content) == FLOOR)
-			split = ft_splitmore(*(content), " ,");
+		{
+			split = ft_splitmore(*content, " ,");
+			printf("SORTIE\n");
+			ft_print_split(split);
+		}
 		else
-			split = ft_splitmore(*(content), " ");
+			split = ft_splitmore(*content, " ");
 		if (ft_get_infos(env, split) == STOP)
+		{
+			ft_free_splitmore(split);
 			break ;
+		}
+		ft_free_splitmore(split);
 		content++;
 	}
 	if (ft_check_infos_error(env) == FAILURE)

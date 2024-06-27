@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:24:35 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 14:56:52 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 15:33:51 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ int	ft_splitlen(char **split)
 	if (!split)
 		return (0);
 	while (split[i])
+	{
+		// printf("split[%d]: %s\n", i, split[i]);
 		i++;
+	}
 	return (i);
 }
 

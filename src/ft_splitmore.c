@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 07:35:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 07:43:52 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 15:43:27 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,33 +28,35 @@ static int	ft_count_words(const char *str, char *set)
 	int	out;
 
 	out = 0;
+	if (!str)
+		return (0);
 	while (*str)
 	{
-		while (ft_strchr(set, *str) != NULL)
+		while (*str != '\0' && ft_strchr(set, *str) != NULL)
 			str++;
 		if (ft_strchr(set, *str) == NULL && *str != '\0')
 			out++;
-		while (ft_strchr(set, *str) == NULL && *str != '\0')
+		while (*str != '\0' && ft_strchr(set, *str) == NULL)
 			str++;
 	}
 	return (out);
 }
 
-static int	ft_get_wlen(const char *str, char *set)/*char sep*/
+static int	ft_get_wlen(const char *str, char *set)
 {
-	// if (!ft_strchr(str, sep))
-	// 	return (ft_strlen(str));
-	// else
-	// 	return (ft_strchr(str, sep) - str);
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
+	printf("str: %s\n", str);
 	while(str[i])
 	{
 		if (ft_strchr(set, str[i]) != NULL)
 			break;
 		i++;
 	}
+	printf("i: %d\n", i);
 	return (i);
 }
 
@@ -62,27 +64,37 @@ char	**ft_splitmore(char const *s, char *set)
 {
 	char	**out;
 	int		i;
+	int		j;
+	int		len;
+	int		slen;
 
 	if (!s)
 		return (NULL);
-	out = malloc((ft_count_words(s, set) + 1) * sizeof(char *));
+	// printf("String to split: %s\n", s);
+	// printf("Size of split found: %d\n", ft_count_words(s, set));
+	len = ft_count_words(s, set);
+	printf("Size of split found: %d\n", len);
+	out = malloc(sizeof(char *) * (len + 1));
 	if (!out)
 		return (NULL);
+	out[len] = NULL;
 	i = 0;
-	while (*s)
+	j = 0;
+	slen = ft_strlen(s);
+	while (s[j] != '\0' && i < len)
 	{
 		while (ft_strchr(set, *s) != NULL)
 			s++;
-		if (*s)
-		{
-			out[i] = ft_substr(s, 0, ft_get_wlen(s, set));
-			if (!out[i])
-				return (ft_free_array(out, i));
-			i++;
-			s += ft_get_wlen(s, set);
-		}
+		if (!*s)
+			break ;
+		out[i] = ft_substr(s, 0, ft_get_wlen(s, set));
+		if (!out[i])
+			return (ft_free_array(out, i));
+		i++;
+		j += ft_get_wlen(s, set);
+		if (j >= slen)
+			break ;
 	}
-	out[i] = NULL;
 	return (out);
 }
 
