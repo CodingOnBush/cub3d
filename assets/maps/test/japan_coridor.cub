@@ -1,7 +1,7 @@
-WE ./assets/textures/shoji-wall-brown-top.xpm
-EA ./assets/textures/shoji-wall-brown-grid.xpm
-NO ./assets/textures/shoji-wall-brown.xpm
-SO ./assets/textures/shoji-wall-brown-full.xpm
+WE ./assets/textures/test/shoji-wall-brown-top.xpm
+EA ./assets/textures/test/shoji-wall-brown-grid.xpm
+NO ./assets/textures/test/shoji-wall-brown.xpm
+SO ./assets/textures/test/shoji-wall-brown-full.xpm
 
 C 119, 81, 53
 F 110, 98, 89

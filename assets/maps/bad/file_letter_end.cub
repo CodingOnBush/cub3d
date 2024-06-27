@@ -1,7 +1,7 @@
-NO ./assets/textures/test/north.xpm
-SO ./assets/textures/test/south.xpm
-WE ./assets/textures/test/west.xpm
-EA ./assets/textures/test/east.xpm
+NO ./assets/./assets/textures/test/north.xpm
+SO ./assets/./assets/textures/test/south.xpm
+WE ./assets/./assets/textures/test/west.xpm
+EA ./assets/./assets/textures/test/east.xpm
 
 F 20, 20, 20
 C 200, 200, 200

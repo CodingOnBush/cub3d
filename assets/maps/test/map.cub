@@ -1,7 +1,7 @@
-NO ./tex/test-north.xpm
-SO ./tex/test-north.xpm
-WE ./tex/test-north.xpm
-EA ./tex/test-north.xpm
+NO ./assets/textures/test/test-north.xpm
+SO ./assets/textures/test/test-north.xpm
+WE ./assets/textures/test/test-north.xpm
+EA ./assets/textures/test/test-north.xpm
 F 220, 100, 0
 C 225, 30, 0
 

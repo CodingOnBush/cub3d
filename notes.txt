@@ -1,1 +1,89 @@
 valgrind --leak-check=full --track-origins=yes --track-fds=yes ./cube3D ./assets/maps/bad/textures_duplicates.cub
+
+
+
+
+
+
+VALIDE OU PAS ICI ?
+
+
+subject.cub
+        1111111111111111111111111
+        1000000000110000000000001
+        1011000001110000000000001
+        1001000000000000000000001
+111111111011000001110000000000001
+100000000011000001110111111111111
+11110111111111011100000010001
+11110111111111011101010010001
+11000000110101011100000010001
+10000000000000001100000010001
+10000000000000001101010010001
+11000001110101011111011110N0111
+11110111 1110101 101111010001
+11111111 1111111 111111111111
+
+
+
+
+forbidden.cub
+111111111111
+1         11
+1          1
+111111111111
+10S000000001
+111111111111
+11         1
+111111111111
+
+
+
+
+
+
+
+
+EUUUUHHH ???
+
+
+test_map_hole.cub
+111111111111
+1         11
+1       0001
+1000000 0011
+10S000000001
+111111111111
+11         1
+111111111111
+
+
+
+
+
+On est ok avec ca ?
+test_map.cub
+
+111111111111
+1         11
+1          1
+111111111111
+10S000000001
+111111111111
+11         1
+111111111111
+
+
+
+
+Pourquoi test_pos_bottom.cub ne marche pas aussi bien que le parisian studio ?
+
+valgrind --leak-check=full --track-origins=yes --track-fds=yes ./cube3D ./assets/maps/test/parisian_studio.cub
+
+valgrind --leak-check=full --track-origins=yes --track-fds=yes ./cube3D ./assets/maps/good/test_pos_bottom.cub
+
+
+
+Alors que lui marche bien :
+valgrind --leak-check=full --track-origins=yes --track-fds=yes ./cube3D ./assets/maps/good/test_pos_left.cub
+

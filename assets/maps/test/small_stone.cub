@@ -1,7 +1,7 @@
-WE ./textures/wolfenstein/red_brick.xpm
-EA ./textures/wolfenstein/red_brick.xpm
-NO ./textures/wolfenstein/red_brick.xpm
-SO ./textures/wolfenstein/red_brick.xpm
+WE ././assets/textures/wolfenstein/red_brick.xpm
+EA ././assets/textures/wolfenstein/red_brick.xpm
+NO ././assets/textures/wolfenstein/red_brick.xpm
+SO ././assets/textures/wolfenstein/red_brick.xpm
 
 C 98, 181, 229
 F 110, 98, 89

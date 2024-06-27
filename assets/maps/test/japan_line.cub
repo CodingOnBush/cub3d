@@ -1,7 +1,7 @@
-WE ./assets/textures/japan-wall-shoji-top.xpm
-EA ./assets/textures/japan-wall-shoji-top-2.xpm
-NO ./assets/textures/japan-wall-shoji-wall-2.xpm
-SO ./assets/textures/japan-wall-shoji-wall.xpm
+WE ./assets/textures/test/japan-wall-shoji-top.xpm
+EA ./assets/textures/test/japan-wall-shoji-top-2.xpm
+NO ./assets/textures/test/japan-wall-shoji-wall-2.xpm
+SO ./assets/textures/test/japan-wall-shoji-wall.xpm
 
 C 136, 219, 223
 F 110, 98, 89

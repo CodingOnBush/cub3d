@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 09:10:42 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 09:59:20 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static void	ft_init_ray(t_ray *ray)
 	ray->planeY = 0;
 	ray->dirX = 0;
 	ray->dirY = 1;
-	ray->ms = 0.7;//valgrind 0.7 //no valgrind 0.025
-	ray->rs = 0.2;//valgrind 0.2  //no valgrind 0.01
+	ray->ms = 0.3;//valgrind 0.7 //no valgrind 0.025
+	ray->rs = 0.15;//valgrind 0.2  //no valgrind 0.01
 }
 
 static void	ft_init_img(t_img *img)

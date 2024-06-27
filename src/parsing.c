@@ -6,23 +6,30 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 09:24:41 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 10:02:47 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../inc/cub3d.h"
+
+static int	ft_check_file_extension(char *file, char *ext)
+{
+	char	*point;
+
+	point = ft_strrchr(file, '.');
+	if (!point)
+		return (ft_err("No file extension", FAILURE));
+	if (ft_strcmp(point, ext) != 0)
+		return (ft_err("Invalid file extension", FAILURE));
+	return (SUCCESS);
+}
 
 static int	ft_check_file(char *file)
 {
 	int		fd;
-	char	*ext;
 
-	ext = ft_strrchr(file, '.');
-	if (!ext)
-		return (ft_err("No file extension", FAILURE));
-	if (ft_strcmp(ext, ".cub") != 0)
-		return (ft_err("Invalid file extension", FAILURE));
+	if (ft_check_file_extension(file, ".cub") == FAILURE)
+		return (FAILURE);
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return (perror(file), FAILURE);
@@ -151,10 +158,10 @@ static int	ft_get_infos(t_env *env, char **split)
 		return (ft_free_splitmore(split), STOP);
 	if (ft_splitlen(split) == 2 && ft_get_id(split[0]) != -1)
 	{
+		env->file.count++;
 		if (env->img[ft_get_id(split[0])].path != NULL)
 			return (ft_free_splitmore(split), GOON);
 		env->img[ft_get_id(split[0])].path = ft_strdup(split[1]);
-		env->file.count++;
 	}
 	else if (ft_splitlen(split) == 4 && ft_is_color(split) == YES)
 	{
@@ -427,6 +434,8 @@ static int	ft_check_textures(t_env *env)
 	i = 0;
 	while (i < 4)
 	{
+		if (ft_check_file_extension(env->img[i].path, ".xpm") == FAILURE)
+			return (FAILURE);
 		if (env->img[i].path == NULL)
 			return (ft_err("Missing texture", FAILURE));
 		fd = open(env->img[i].path, O_RDONLY);
@@ -445,7 +454,7 @@ static int	ft_check_invalid_col(char **map, int col, int start, int end)
 	row = start;
 	while (row <= end)
 	{
-		if (ft_strchr("01NSEW", map[col][row]) == NULL)
+		if (ft_strchr(" 01NSEW", map[col][row]) == NULL)
 			return (FAILURE);
 		row++;
 	}
@@ -459,7 +468,7 @@ static int	ft_check_invalid_row(char **map, int row, int start, int end)
 	col = start;
 	while (col <= end)
 	{
-		if (ft_strchr("01NSEW", map[col][row]) == NULL)
+		if (ft_strchr(" 01NSEW", map[col][row]) == NULL)
 			return (FAILURE);
 		col++;
 	}
