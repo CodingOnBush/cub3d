@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 08:37:27 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 11:11:19 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ static void	ft_pixel_put2(t_env *env, int c, int r, int color)
 	*(unsigned int *)dst = color;
 }
 
-static int ft_get_ns_wall(int px, int py, int x, int y){
+/* static int ft_get_ns_wall(int px, int py, int x, int y){
+	  (void)py;
+	  (void)y;
   if (px <= x)
     return (SOUTH);
   else
@@ -30,10 +32,31 @@ static int ft_get_ns_wall(int px, int py, int x, int y){
 }
 
 static int ft_get_ew_wall(int px, int py, int x, int y){
+  (void)px;
+  (void)x;
   if (py <= y)
     return (EAST);
   else
     return (WEST);
+} */
+
+
+static int ft_get_ns_wall(int px, int py, int x, int y){
+	(void)py;
+	(void)y;
+	if (px <= x)
+		return (WEST);
+	else
+		return (EAST);
+}
+
+static int ft_get_ew_wall(int px, int py, int x, int y){
+	(void)px;
+	(void)x;
+	if (py <= y)
+		return (SOUTH);
+	else
+		return (NORTH);
 }
 
 static int	ft_get_color2(t_env *e, int texX, int texY, int wall)

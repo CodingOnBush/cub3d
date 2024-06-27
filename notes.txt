@@ -29,7 +29,7 @@ subject.cub
 
 forbidden.cub
 111111111111
-1         11
+1         11         
 1          1
 111111111111
 10S000000001
@@ -87,3 +87,6 @@ valgrind --leak-check=full --track-origins=yes --track-fds=yes ./cube3D ./assets
 Alors que lui marche bien :
 valgrind --leak-check=full --track-origins=yes --track-fds=yes ./cube3D ./assets/maps/good/test_pos_left.cub
 
+
+
+le gnl a qui ?

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 10:02:47 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 11:00:08 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,8 +178,9 @@ static int	ft_get_infos(t_env *env, char **split)
 static int	ft_get_map(t_env *env, char *line)
 {
 	int	mapw;
-	int	len;
+	// int	len;
 
+	(void)env;
 	mapw = 0;
 	while (line[mapw])
 		mapw++;
@@ -208,7 +209,7 @@ static void	ft_free_array(char **array, int row)
 
 static int	ft_create_map(t_env *env)
 {
-	char	**cpy;
+	// char	**cpy;
 	int		row;
 	int		col;
 
@@ -598,5 +599,7 @@ int	ft_parsing(t_env *env, char *cubfile)
 		return (FAILURE);
 	if (ft_map_is_closed(env) == FAILURE)
 		return (FAILURE);
+	ft_print_map(env);
+	printf("player pos = [%f, %f]\n", env->px, env->py);
 	return (SUCCESS);
 }
