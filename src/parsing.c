@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 15:44:36 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 15:53:25 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ static int	ft_check_file_extension(char *file, char *ext)
 
 	point = ft_strrchr(file, '.');
 	if (!point)
+	{
+		printf("file = [%s]\n", file);
 		return (ft_err("No file extension", FAILURE));
+	}
 	if (ft_strcmp(point, ext) != 0)
 		return (ft_err("Invalid file extension", FAILURE));
 	return (SUCCESS);
@@ -449,6 +452,7 @@ static int	ft_check_textures(t_env *env)
 	i = 0;
 	while (i < 4)
 	{
+		printf("path = [%s]\n", env->img[i].path);
 		if (ft_check_file_extension(env->img[i].path, ".xpm") == FAILURE)
 			return (FAILURE);
 		if (env->img[i].path == NULL)
