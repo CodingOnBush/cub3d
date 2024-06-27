@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 15:53:25 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/06/27 17:29:27 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ static int	ft_rgb_isvalid(t_env *env)
 
 static int	ft_get_infos(t_env *env, char **split)
 {
-	ft_print_split(split);
+	// ft_print_split(split);
 	if (!split)
 		return (GOON);
 	if (!split[0])
@@ -358,8 +358,8 @@ static int	ft_analyze_file(t_env *env)
 		if (ft_gettype(*content) == CEIL || ft_gettype(*content) == FLOOR)
 		{
 			split = ft_splitmore(*content, " ,");
-			printf("SORTIE\n");
-			ft_print_split(split);
+			// printf("SORTIE\n");
+			// ft_print_split(split);
 		}
 		else
 			split = ft_splitmore(*content, " ");
@@ -397,7 +397,7 @@ static int	ft_check_map(t_env *env)
 		row = 0;
 		while (row < env->maph)
 		{
-			if (ft_strchr(" 012345NSEW", map[col][row]) == NULL)
+			if (ft_strchr(" 01NSEW", map[col][row]) == NULL)
 				return (ft_err("Invalid character in map", FAILURE));
 			row++;
 		}
@@ -452,7 +452,7 @@ static int	ft_check_textures(t_env *env)
 	i = 0;
 	while (i < 4)
 	{
-		printf("path = [%s]\n", env->img[i].path);
+		// printf("path = [%s]\n", env->img[i].path);
 		if (ft_check_file_extension(env->img[i].path, ".xpm") == FAILURE)
 			return (FAILURE);
 		if (env->img[i].path == NULL)
@@ -473,7 +473,7 @@ static int	ft_check_invalid_col(char **map, int col, int start, int end)
 	row = start;
 	while (row <= end)
 	{
-		if (ft_strchr(" 012345NSEW", map[col][row]) == NULL)
+		if (ft_strchr(" 01NSEW", map[col][row]) == NULL)
 			return (FAILURE);
 		row++;
 	}
@@ -487,7 +487,35 @@ static int	ft_check_invalid_row(char **map, int row, int start, int end)
 	col = start;
 	while (col <= end)
 	{
-		if (ft_strchr(" 012345NSEW", map[col][row]) == NULL)
+		if (ft_strchr(" 01NSEW", map[col][row]) == NULL)
+			return (FAILURE);
+		col++;
+	}
+	return (SUCCESS);
+}
+
+static int	ft_check_in_col(char **map, int col, int start, int end)
+{
+	int	row;
+
+	row = start;
+	while (row <= end)
+	{
+		if (ft_strchr("01NSEW", map[col][row]) == NULL)
+			return (FAILURE);
+		row++;
+	}
+	return (SUCCESS);
+}
+
+static int	ft_check_in_row(char **map, int row, int start, int end)
+{
+	int	col;
+
+	col = start;
+	while (col <= end)
+	{
+		if (ft_strchr("01NSEW", map[col][row]) == NULL)
 			return (FAILURE);
 		col++;
 	}
@@ -511,6 +539,8 @@ static int	ft_check_col(char **map, int col, int maph)
 	while (row >= 0 && map[col][row] == ' ')
 		row--;
 	if (row == -1)
+		return (FAILURE);
+	if (ft_check_in_col(map, col, start, row) == FAILURE)
 		return (FAILURE);
 	if (map[col][row] == '1')
 		return (SUCCESS);
@@ -538,6 +568,8 @@ static int	ft_check_row(char **map, int row, int mapw)
 	if (col == -1)
 		return (SUCCESS);
 	if (map[col][row] != '1')
+		return (FAILURE);
+	if (ft_check_in_row(map, row, start, col) == FAILURE)
 		return (FAILURE);
 	if (ft_check_invalid_row(map, row, start, col) == FAILURE)
 		return (FAILURE);
@@ -576,15 +608,25 @@ static int	ft_map_is_closed(t_env *env)
 {
 	char	**map;
 	int		i;
+	int		maxcol;
 
 	map = env->map;
 	i = 0;
 	while (i < env->mapw && ft_is_empty_col(map, i, env->maph) == YES)
 		i++;
-	while (i < env->mapw)
+	i = env->mapw - 1;
+	while (i >= 0 && ft_is_empty_col(map, i, env->maph) == YES)
+		i--;
+	maxcol = i;
+	while (i < maxcol)
 	{
 		if (ft_check_col(map, i, env->maph) == FAILURE)
-			return (ft_err("Map not conform", FAILURE));
+		{
+			printf("colllllll = %d\n", i);
+			printf("map[i][0] = [%c]\n", map[i - 1][0]);
+			printf("map[i][0] = [%c]\n", map[i - 1][1]);
+			return (ft_err("Map not conform COL", FAILURE));
+		}
 		i++;
 	}
 	i = 0;
@@ -597,11 +639,29 @@ static int	ft_map_is_closed(t_env *env)
 	while(i < env->maph && ft_is_empty_row(map, i, env->mapw) == YES)
 		i++;
 	if (i != env->maph)
-		return (ft_err("Map not conform", FAILURE));
+		return (ft_err("Map not conform ROW", FAILURE));
 	return (SUCCESS);
 }
 
-static void	ft_reverse_map(t_env *env)
+static void	ft_remove_all_spaces_at_end(t_env *env)
+{
+	int	row;
+	int	col;
+
+	row = 0;
+	while(row < env->maph)
+	{
+		col = env->mapw - 1;
+		while(col >= 0 && env->map[col][row] == ' ')
+		{
+			env->map[col][row] = ' ';
+			col--;
+		}
+		row++;
+	}
+}
+
+static int	ft_reverse_map(t_env *env)
 {
 	char	**cpy;
 	int		row;
@@ -609,16 +669,13 @@ static void	ft_reverse_map(t_env *env)
 
 	cpy = (char **)malloc(sizeof(char *) * (env->mapw));
 	if (!cpy)
-		return ;
+		return (FAILURE);
 	col = 0;
 	while (col < env->mapw)
 	{
 		cpy[col] = malloc(sizeof(char) * env->maph);
 		if (!cpy[col])
-		{
-			ft_free_array(cpy, col);
-			return ;
-		}
+			return (ft_free_array(cpy, col), FAILURE);
 		row = 0;
 		while (row < env->maph)
 		{
@@ -629,6 +686,8 @@ static void	ft_reverse_map(t_env *env)
 	}
 	ft_free_array(env->map, env->mapw);
 	env->map = cpy;
+	ft_remove_all_spaces_at_end(env);
+	return (SUCCESS);
 }
 
 int	ft_parsing(t_env *env, char *cubfile)
@@ -639,17 +698,35 @@ int	ft_parsing(t_env *env, char *cubfile)
 		return (FAILURE);
 	if (ft_analyze_file(env) == FAILURE)
 		return (FAILURE);
-	// if (ft_check_map(env) == FAILURE)
-	// 	return (FAILURE);
+	if (ft_check_map(env) == FAILURE)
+		return (FAILURE);
 	ft_print_map(env);
 	ft_reverse_map(env);
 	ft_print_map(env);
 	if (ft_find_player(env) == FAILURE)
 		return (FAILURE);
+	if (ft_map_is_closed(env) == FAILURE)
+		return (FAILURE);
 	if (ft_check_textures(env) == FAILURE)
 		return (FAILURE);
-	// if (ft_map_is_closed(env) == FAILURE)
-	// 	return (FAILURE);
-	printf("player pos = [%f, %f]\n", env->px, env->py);
+	// printf("player pos = [%f, %f]\n", env->px, env->py);
+
+
+	int row = 0;
+	int col = 0;
+
+	printf("\n\n MAAAAAAAAAAAAAAAAAAAAAAAAP \n\n");
+	while (row < env->maph)
+	{
+		col = 0;
+		while (col < env->mapw)
+		{
+			printf("[%c]", env->map[col][row]);
+			col++;
+		}
+		printf("\n");
+		row++;
+	}
+
 	return (SUCCESS);
 }

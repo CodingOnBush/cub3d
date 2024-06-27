@@ -1,4 +1,4 @@
-NO ./assets/textures/test/north
+NO ./assets/textures/test/north.xp
 SO ./assets/textures/test/south.xpm
 WE ./assets/textures/test/west.xpm
 EA ./assets/textures/test/east.xpm
