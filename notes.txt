@@ -1,0 +1,1 @@
+valgrind --leak-check=full --track-origins=yes --track-fds=yes ./cube3D ./assets/maps/bad/textures_duplicates.cub

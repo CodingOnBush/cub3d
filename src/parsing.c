@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 08:36:22 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 09:24:41 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,23 @@ static int	ft_is_color(char **split)
 	if (id == CEIL || id == FLOOR)
 		return (YES);
 	return (NO); 
+}
+
+static int	ft_rgb_isvalid(t_env *env)
+{
+	if (env->file.colors[FLOOR][R] < 0 || env->file.colors[FLOOR][R] > 255)
+		return (NO);
+	if (env->file.colors[FLOOR][G] < 0 || env->file.colors[FLOOR][G] > 255)
+		return (NO);
+	if (env->file.colors[FLOOR][B] < 0 || env->file.colors[FLOOR][B] > 255)
+		return (NO);
+	if (env->file.colors[CEIL][R] < 0 || env->file.colors[CEIL][R] > 255)
+		return (NO);
+	if (env->file.colors[CEIL][G] < 0 || env->file.colors[CEIL][G] > 255)
+		return (NO);
+	if (env->file.colors[CEIL][B] < 0 || env->file.colors[CEIL][B] > 255)
+		return (NO);
+	return (YES);
 }
 
 static int	ft_get_infos(t_env *env, char **split)
@@ -259,7 +276,7 @@ static int	ft_set_mapsizes(t_env *env, char **content)
 		env->maph++;
 	}
 	if (env->mapw == 0 || env->maph == 0)
-		return (ft_err("Map empty", FAILURE));
+		return (ft_err("Map missing", FAILURE));
 	if (env->mapw < 3 || env->maph < 3)
 		return (ft_err("Map too small", FAILURE));
 	return (SUCCESS);
@@ -295,11 +312,22 @@ static int	ft_gettype(char *line)
 		return (EAST);
 	else if (ft_strncmp(line, "WE ", 3) == 0)
 		return (WEST);
-	else if (ft_strncmp(line, "C ", 3) == 0)
-		return (FLOOR);
-	else if (ft_strncmp(line, "F ", 3) == 0)
+	else if (ft_strncmp(line, "C ", 2) == 0)
 		return (CEIL);
+	else if (ft_strncmp(line, "F ", 2) == 0)
+		return (FLOOR);
 	return (-1);
+}
+
+static int	ft_check_infos_error(t_env *env)
+{
+	if (ft_rgb_isvalid(env) == NO)
+		return (ft_err("Invalid color", FAILURE));
+	else if (env->file.count < 6)
+		return (ft_err("Map infos not conform", FAILURE));
+	else if (env->file.count >= 7)
+		return (ft_err("Too much infos about game", FAILURE));
+	return (SUCCESS);
 }
 
 static int	ft_analyze_file(t_env *env)
@@ -318,10 +346,8 @@ static int	ft_analyze_file(t_env *env)
 			break ;
 		content++;
 	}
-	if (env->file.count < 6)
-		return (ft_err("Not enough infos about game", FAILURE));
-	else if (env->file.count >= 7)
-		return (ft_err("Too much infos about game", FAILURE));
+	if (ft_check_infos_error(env) == FAILURE)
+		return (FAILURE);
 	if (ft_set_mapsizes(env, content) == FAILURE)
 		return (FAILURE);
 	if (ft_create_map(env) == FAILURE)
@@ -338,7 +364,7 @@ static int	ft_check_map(t_env *env)
 
 	map = env->map;
 	if (map == NULL || map[0] == NULL)
-		return (ft_err("Map empty", FAILURE));
+		return (ft_err("Map missing", FAILURE));
 	col = 0;
 	row = 0;
 	while (col < env->mapw)
@@ -412,9 +438,38 @@ static int	ft_check_textures(t_env *env)
 	return (SUCCESS);
 }
 
+static int	ft_check_invalid_col(char **map, int col, int start, int end)
+{
+	int	row;
+
+	row = start;
+	while (row <= end)
+	{
+		if (ft_strchr("01NSEW", map[col][row]) == NULL)
+			return (FAILURE);
+		row++;
+	}
+	return (SUCCESS);
+}
+
+static int	ft_check_invalid_row(char **map, int row, int start, int end)
+{
+	int	col;
+
+	col = start;
+	while (col <= end)
+	{
+		if (ft_strchr("01NSEW", map[col][row]) == NULL)
+			return (FAILURE);
+		col++;
+	}
+	return (SUCCESS);
+}
+
 static int	ft_check_col(char **map, int col, int maph)
 {
 	int	row;
+	int	start;
 
 	row = 0;
 	while (row < maph && map[col][row] == ' ')
@@ -423,6 +478,7 @@ static int	ft_check_col(char **map, int col, int maph)
 		return (FAILURE);
 	if (map[col][row] != '1')
 		return (FAILURE);
+	start = row;
 	row = maph - 1;
 	while (row >= 0 && map[col][row] == ' ')
 		row--;
@@ -430,12 +486,15 @@ static int	ft_check_col(char **map, int col, int maph)
 		return (FAILURE);
 	if (map[col][row] == '1')
 		return (SUCCESS);
+	if (ft_check_invalid_col(map, col, start, row) == FAILURE)
+		return (FAILURE);
 	return (FAILURE);
 }
 
 static int	ft_check_row(char **map, int row, int mapw)
 {
 	int	col;
+	int	start;
 
 	col = 0;
 	while (col < mapw && map[col][row] == ' ')
@@ -444,12 +503,15 @@ static int	ft_check_row(char **map, int row, int mapw)
 		return (FAILURE);
 	if (map[col][row] != '1')
 		return (FAILURE);
+	start = col;
 	col = mapw - 1;
 	while (col >= 0 && map[col][row] == ' ')
 		col--;
 	if (col == -1)
 		return (SUCCESS);
 	if (map[col][row] != '1')
+		return (FAILURE);
+	if (ft_check_invalid_row(map, row, start, col) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
 }
@@ -494,7 +556,7 @@ static int	ft_map_is_closed(t_env *env)
 	while (i < env->mapw)
 	{
 		if (ft_check_col(map, i, env->maph) == FAILURE)
-			return (ft_err("Map is not closed on cols", FAILURE));
+			return (ft_err("Map not conform", FAILURE));
 		i++;
 	}
 	i = 0;
@@ -507,7 +569,7 @@ static int	ft_map_is_closed(t_env *env)
 	while(i < env->maph && ft_is_empty_row(map, i, env->mapw) == YES)
 		i++;
 	if (i != env->maph)
-		return (ft_err("Map is not closed on rows", FAILURE));
+		return (ft_err("Map not conform", FAILURE));
 	return (SUCCESS);
 }
 
