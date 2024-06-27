@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 11:11:19 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 14:57:52 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void	ft_draw(t_env *env, int col)
 
 	// printf("rendering column %d\n", col);
 	// cub->ray = ft_init_ray(cub, col);
-	double	cameraX = 2 * col / (double)env->winw - 1; //x-coordinate in camera space
+	double	cameraX = 2 * (col) / (double)env->winw - 1; //x-coordinate in camera space
 	double	rayDirX = env->ray.dirX + (env->ray.planeX)*(cameraX);
 	double	rayDirY = env->ray.dirY + (env->ray.planeY)*(cameraX);
 	int		mapX = (int)(env->px);
@@ -101,13 +101,13 @@ static void	ft_draw(t_env *env, int col)
 	// int mapY = (int)(cub->data.py);
 
 	//length of ray from current position to next x or y-side
-	double sideDistX;
-	double sideDistY;
+	double	sideDistX;
+	double	sideDistY;
 
 	//length of ray from one x or y-side to next x or y-side
-	double deltaDistX = (rayDirX == 0) ? 1e30 : fabs(1 / rayDirX);
-	double deltaDistY = (rayDirY == 0) ? 1e30 : fabs(1 / rayDirY);
-	double perpWallDist;
+	double	deltaDistX = (rayDirX == 0) ? 1e30 : fabs(1 / rayDirX);
+	double	deltaDistY = (rayDirY == 0) ? 1e30 : fabs(1 / rayDirY);
+	double	perpWallDist;
 
 	//what direction to step in x or y-direction (either +1 or -1)
 	int stepX;
@@ -145,13 +145,52 @@ static void	ft_draw(t_env *env, int col)
 		if (sideDistY == 0)
 			sideDistY = 0.1;
 	}
+
+
+	// if(rayDirX < 0)
+	// {
+	// 	stepX = -1;
+	// 	sideDistX = (env->px - mapX) * deltaDistX;
+	// 	if (sideDistX == 0)
+	// 		sideDistX = 0.1;
+	// }
+	// else
+	// {
+	// 	stepX = 1;
+	// 	sideDistX = (mapX + 1.0 - env->px) * deltaDistX;
+	// 	if (sideDistX == 0)
+	// 		sideDistX = 0.1;
+	// }
+	// if(rayDirY < 0)
+	// {
+	// 	stepY = -1;
+	// 	sideDistY = (env->py - mapY) * deltaDistY;
+	// 	if (sideDistY == 0)
+	// 		sideDistY = 0.1;
+	// }
+	// else
+	// {
+	// 	stepY = 1;
+	// 	sideDistY = (mapY + 1.0 - env->py) * deltaDistY;
+	// 	if (sideDistY == 0)
+	// 		sideDistY = 0.1;
+	// }
+
 	// printf("rayDirX = %f\n", rayDirX);
 	// printf("rayDirY = %f\n", rayDirY);
 
 	// printf("sideDistX = %f\n", sideDistX);
 	// printf("sideDistY = %f\n", sideDistY);
 	
+
 	//perform DDA
+	// if (col == 0)
+	// {
+	// 	printf("player position: %f %f\n", env->px, env->py);
+	// 	printf("mapX = %d\n", mapX);
+	// 	printf("mapY = %d\n", mapY);
+	// 	printf("map[mapX][mapY] = %c\n", env->map[mapX][mapY]);
+	// }
 	while (hit == 0)
 	{
 		//jump to next map square, either in x-direction, or in y-direction
@@ -168,10 +207,18 @@ static void	ft_draw(t_env *env, int col)
 			side = 1;
 		}
 		// Check if ray has hit a wall
-		if (mapX < 0 || mapY < 0 || mapX >= env->mapw || mapY >= env->maph)
-			break ;
+		// if (mapX < 0 || mapY < 0 || mapX >= env->mapw || mapY >= env->maph)
+		// 	break ;
 		if(env->map[mapX][mapY] > '0') hit = 1;
 	}
+	if (col == 0)
+	{
+		// printf("player position: %f %f\n", env->px, env->py);
+		// printf("mapX = %d\n", mapX);
+		// printf("mapY = %d\n", mapY);
+		// printf("map[mapX][mapY] = %c\n", env->map[mapX][mapY]);
+	}
+	// printf("mapX = %d mapY = %d\n", mapX, mapY);
 	// printf("mapX = %d\n", mapX);
 	// printf("mapY = %d\n", mapY);
 	// printf("map[mapX][mapY] = %c\n", env->map[mapX][mapY]);
@@ -209,14 +256,18 @@ static void	ft_draw(t_env *env, int col)
 
       //calculate value of wallX
       double wallX; //where exactly the wall was hit
-      if(side == 0) wallX = env->py + perpWallDist * rayDirY;
-      else          wallX = env->px + perpWallDist * rayDirX;
+      if(side == 0)
+	  	wallX = env->py + perpWallDist * rayDirY;
+      else
+	  	wallX = env->px + perpWallDist * rayDirX;
       wallX -= floor((wallX));
     //   printf("wallX = %f\n", wallX);
 	//x coordinate on the texture
 	int texX = (int)(wallX * (double)(env->img[NORTH].imgw));
-	if(side == 0 && rayDirX > 0) texX = env->img[NORTH].imgh - texX - 1;
-	if(side == 1 && rayDirY < 0) texX = env->img[NORTH].imgw - texX - 1;
+	if(side == 0 && rayDirX > 0)
+		texX = env->img[NORTH].imgh - texX - 1;
+	if(side == 1 && rayDirY < 0)
+		texX = env->img[NORTH].imgw - texX - 1;
 
 	// TODO: an integer-only bresenham or DDA like algorithm could make the texture coordinate stepping faster
 	// How much to increase the texture coordinate per screen pixel
