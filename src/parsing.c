@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 19:50:10 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 20:03:03 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -491,7 +491,7 @@ int	ft_parsing(t_env *env, char *cubfile)
 		return (FAILURE);
 	// ft_print_map(env);
 	ft_reverse_map(env);
-	ft_print_map(env);
+	// ft_print_map(env);
 	if (ft_find_player(env) == FAILURE)
 		return (FAILURE);
 	if (ft_map_is_closed(env) == FAILURE)
@@ -503,13 +503,14 @@ int	ft_parsing(t_env *env, char *cubfile)
 	// printf("player pos = [%f, %f]\n", env->px, env->py);
 
 
-	int row = 0;
-	int col = 0;
 
 	printf("\n\n MAAAAAAAAAAAAAAAAAAAAAAAAP \n\n");
+	int row = 0;
+	int col = 0;
 	while (row < env->maph)
 	{
 		col = 0;
+		printf("{%d} :\t", row);
 		while (col < env->mapw)
 		{
 			printf("[%c]", env->map[col][row]);

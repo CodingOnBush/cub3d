@@ -6,11 +6,11 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:51:21 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 19:49:44 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 21:21:53 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/cub3d.h"
+#include "cub3d.h"
 
 static int	ft_flood_fill(char **map, int px, int py, int mapw, int maph)
 {
@@ -31,6 +31,42 @@ static int	ft_flood_fill(char **map, int px, int py, int mapw, int maph)
 	if (ft_flood_fill(map, px, py - 1, mapw, maph) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
+}
+
+static int	ft_flood_fill2(char **map, int px, int py, int mapw, int maph)
+{
+	if (px < 0 || px >= mapw || py < 0 || py >= maph)
+		return (FAILURE);
+	if (map[px][py] == ' ' || map[px][py] == '?')
+		return (SUCCESS);
+	if (map[px][py] == '1')
+		map[px][py] = '?';
+	else
+		return (FAILURE);
+	if (ft_flood_fill(map, px + 1, py, mapw, maph) == FAILURE)
+		return (FAILURE);
+	if (ft_flood_fill(map, px - 1, py, mapw, maph) == FAILURE)
+		return (FAILURE);
+	if (ft_flood_fill(map, px, py + 1, mapw, maph) == FAILURE)
+		return (FAILURE);
+	if (ft_flood_fill(map, px, py - 1, mapw, maph) == FAILURE)
+		return (FAILURE);
+	return (SUCCESS);
+}
+
+static void	ft_flood_fill_wall(char **map, int wx, int wy, int mapw, int maph)
+{
+	if (wx < 0 || wx >= mapw || wy < 0 || wy >= maph)
+		return ;
+	map[wx][wy] = '%';
+	ft_flood_fill(map, wx + 1, wy, mapw, maph);
+	ft_flood_fill(map, wx - 1, wy, mapw, maph);
+	ft_flood_fill(map, wx, wy + 1, mapw, maph);
+	ft_flood_fill(map, wx, wy - 1, mapw, maph);
+	ft_flood_fill(map, wx - 1, wy - 1, mapw, maph);
+	ft_flood_fill(map, wx + 1, wy + 1, mapw, maph);
+	ft_flood_fill(map, wx - 1, wy + 1, mapw, maph);
+	ft_flood_fill(map, wx + 1, wy - 1, mapw, maph);
 }
 
 static void	ft_replace_map(char **map, int mapw, int maph, char c1, char c2)
@@ -137,22 +173,37 @@ static void	ft_flood_fill_on_walls(t_env *env, int px, int py)
 	char	*wall;
 	int		wx;
 	int		wy;
+	int		col;
+	int		c;
+	int		r;
 
-	wall = ft_strchr(env->map[px] + py, '1');
-	if (!wall)
-		return ;
-	printf("wall found\n");
-	env->map[px][py + (wall - env->map[px])] = 'x';
+	col = 0;
+	while(env->map[col][py] != '1')
+		col++;
+	wx = col;
+	wy = py;
+	// env->map[wx][wy] = '&';
+	// printf("env->map[wx][wy] = %c\n", env->map[wx][wy]);
+	ft_flood_fill_wall(env->map, wx, wy, env->mapw, env->maph);
+	// r = 0;
+	// while (r < env->maph)
+	// {
+	// 	c = 0;
+	// 	while (c < env->mapw)
+	// 	{
+	// 		printf("%c", env->map[c][r]);
+	// 		c++;
+	// 	}
+	// 	printf("\n");
+	// 	r++;
+	// }
 }
 
 int	ft_map_is_closed(t_env *env)
 {
-	int		px;
-	int		py;
+	int const	px = env->px;
+	int const	py = env->py;
 
-	px = (int)env->px;
-	py = (int)env->py;
-	printf("player at %d %d\n", px, py);
 	if (ft_check_rows(env) == FAILURE)
 		return (ft_err("Map is not closed ROWS\n", FAILURE));
 	if (ft_check_cols(env) == FAILURE)
@@ -160,6 +211,5 @@ int	ft_map_is_closed(t_env *env)
 	if (ft_flood_fill(env->map, px, py, env->mapw, env->maph) == FAILURE)
 		return (ft_err("Map is not closed\n", FAILURE));
 	ft_replace_map(env->map, env->mapw, env->maph, 'x', '0');
-	ft_flood_fill_on_walls(env, px, py);
 	return (SUCCESS);
 }
