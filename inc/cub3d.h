@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/26 15:01:38 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 07:51:13 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,9 +154,12 @@ int		ft_key_pressed(int keycode, t_env *env);
 
 /*	FREE	*/
 void	ft_free_env(t_env *env);
-void	ft_free_split(char **split);
+void	ft_free_splitmore(char **split);
 
 /*	MLX	*/
 void	ft_load_images(t_env *env);
+
+/*	SPLITMORE	*/
+char	**ft_splitmore(char const *s, char *set);
 
 #endif

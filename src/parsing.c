@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/26 15:40:21 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 08:36:22 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,6 @@ static int	ft_get_all_lines(t_env *env, char *cubfile)
 		env->file.content[row] = get_next_line(fd);
 		len = ft_strlen(env->file.content[row]);
 		ft_remove_spaces_at_end(env->file.content[row]);
-		// printf("line = [%s]\n", env->file.content[row]);
-		// if (len > 0 && env->file.content[row][len - 1] == '\n')
-		// 	env->file.content[row][len - 1] = '\0';
-		// printf("line = [%s]\n", env->file.content[row]);
 		row++;
 	}
 	close(fd);
@@ -116,22 +112,34 @@ static void	ft_print_split(char **split)
 	printf("\n\n");
 }
 
+static int	ft_is_color(char **split)
+{
+	int	id;
+
+	if (!split || !*split)
+		return (NO);
+	id = ft_get_id(split[0]);
+	if (id == CEIL || id == FLOOR)
+		return (YES);
+	return (NO); 
+}
+
 static int	ft_get_infos(t_env *env, char **split)
 {
 	if (!split)
 		return (GOON);
 	if (!split[0])
-		return (ft_free_split(split), GOON);
+		return (ft_free_splitmore(split), GOON);
 	if (ft_get_id(split[0]) == -1)
-		return (ft_free_split(split), STOP);
+		return (ft_free_splitmore(split), STOP);
 	if (ft_splitlen(split) == 2 && ft_get_id(split[0]) != -1)
 	{
 		if (env->img[ft_get_id(split[0])].path != NULL)
-			return (ft_free_split(split), GOON);
+			return (ft_free_splitmore(split), GOON);
 		env->img[ft_get_id(split[0])].path = ft_strdup(split[1]);
 		env->file.count++;
 	}
-	else if (ft_splitlen(split) == 4 && ft_get_id(split[0]) == CEIL || ft_get_id(split[0]) == FLOOR)
+	else if (ft_splitlen(split) == 4 && ft_is_color(split) == YES)
 	{
 		env->file.colors[ft_get_id(split[0])][R] = ft_atoi(split[1]);
 		env->file.colors[ft_get_id(split[0])][G] = ft_atoi(split[2]);
@@ -139,8 +147,8 @@ static int	ft_get_infos(t_env *env, char **split)
 		env->file.count++;
 	}
 	else
-		return (ft_free_split(split), STOP);
-	return (ft_free_split(split), GOON);
+		return (ft_free_splitmore(split), STOP);
+	return (ft_free_splitmore(split), GOON);
 }
 
 static int	ft_get_map(t_env *env, char *line)
@@ -236,10 +244,12 @@ static void	ft_find_sizes(t_env *env, char **content)
 	}
 }
 
-static void	ft_set_mapsizes(t_env *env, char **content)
+static int	ft_set_mapsizes(t_env *env, char **content)
 {
 	int	len;
 
+	while (*content != NULL && **content == '\0')
+		content++;
 	while (*(content) != NULL)
 	{
 		len = ft_strlen(*(content));
@@ -248,7 +258,11 @@ static void	ft_set_mapsizes(t_env *env, char **content)
 		(content)++;
 		env->maph++;
 	}
-	// printf("mapw = [%d], maph = [%d]\n", env->mapw, env->maph);
+	if (env->mapw == 0 || env->maph == 0)
+		return (ft_err("Map empty", FAILURE));
+	if (env->mapw < 3 || env->maph < 3)
+		return (ft_err("Map too small", FAILURE));
+	return (SUCCESS);
 }
 
 static void	ft_fill_map(t_env *env, char **content)
@@ -271,6 +285,23 @@ static void	ft_fill_map(t_env *env, char **content)
 	}
 }
 
+static int	ft_gettype(char *line)
+{
+	if (ft_strncmp(line, "NO ", 3) == 0)
+		return (NORTH);
+	else if (ft_strncmp(line, "SO ", 3) == 0)
+		return (SOUTH);
+	else if (ft_strncmp(line, "EA ", 3) == 0)
+		return (EAST);
+	else if (ft_strncmp(line, "WE ", 3) == 0)
+		return (WEST);
+	else if (ft_strncmp(line, "C ", 3) == 0)
+		return (FLOOR);
+	else if (ft_strncmp(line, "F ", 3) == 0)
+		return (CEIL);
+	return (-1);
+}
+
 static int	ft_analyze_file(t_env *env)
 {
 	char	**content;
@@ -279,39 +310,23 @@ static int	ft_analyze_file(t_env *env)
 	content = env->file.content;
 	while (*(content) != NULL)
 	{
-		split = ft_split(*(content), ' ');
+		if (ft_gettype(*content) == CEIL || ft_gettype(*content) == FLOOR)
+			split = ft_splitmore(*(content), " ,");
+		else
+			split = ft_splitmore(*(content), " ");
 		if (ft_get_infos(env, split) == STOP)
 			break ;
 		content++;
 	}
-	// printf("*content = [%s]\n", *(content));
-	// printf("file.count = [%d]\n", env->file.count);
 	if (env->file.count < 6)
 		return (ft_err("Not enough infos about game", FAILURE));
 	else if (env->file.count >= 7)
 		return (ft_err("Too much infos about game", FAILURE));
-		
-	// ft_print_file_infos(env);
-	
-	// printf("*content = [%s]\n", *(content));
-
-	while (*content != NULL && **content == '\0')
-		content++;
-	
-	// printf("NEXT = [%s]\n", *(content));
-
-	ft_set_mapsizes(env, content);
-	if (env->mapw == 0 || env->maph == 0)
-		return (ft_err("Map empty", FAILURE));
-	if (env->mapw < 3 || env->maph < 3)
-		return (ft_err("Map too small", FAILURE));
-	
+	if (ft_set_mapsizes(env, content) == FAILURE)
+		return (FAILURE);
 	if (ft_create_map(env) == FAILURE)
 		return (FAILURE);
 	ft_fill_map(env, content);
-
-	// ft_print_map(env);
-
 	return (SUCCESS);
 }
 
@@ -332,10 +347,7 @@ static int	ft_check_map(t_env *env)
 		while (row < env->maph)
 		{
 			if (ft_strchr(" 01NSEW", map[col][row]) == NULL)
-			{
-				// printf("map[col][row] = [%c]\n", map[col][row]);
 				return (ft_err("Invalid character in map", FAILURE));
-			}
 			row++;
 		}
 		col++;
@@ -343,14 +355,21 @@ static int	ft_check_map(t_env *env)
 	return (SUCCESS);
 }
 
+static void	ft_set_player_pos(t_env *env, int col, int row, char **map)
+{
+	env->px = col + 0.5;
+	env->py = row + 0.5;
+	env->pdir = map[col][row];
+	map[col][row] = '0';
+	ft_update_dir(env);
+}
+
 static int	ft_find_player(t_env *env)
 {
-	char	**map;
 	int		row;
 	int		col;
 	int		count;
 
-	map = env->map;
 	col = 0;
 	count = 0;
 	while (col < env->mapw)
@@ -358,17 +377,13 @@ static int	ft_find_player(t_env *env)
 		row = 0;
 		while (row < env->maph)
 		{
-			if (count > 1)
-				return (ft_err("Too many players in map", FAILURE));
-			if (ft_strchr("NSEW", map[col][row]) != NULL)
+			if (ft_strchr("NSEW", env->map[col][row]) != NULL)
 			{
-				env->px = col + 0.5;
-				env->py = row + 0.5;
-				env->pdir = map[col][row];
-				map[col][row] = '0';
-				ft_update_dir(env);
+				ft_set_player_pos(env, col, row, env->map);
 				count++;
 			}
+			if (count > 1)
+				return (ft_err("Too many players in map", FAILURE));
 			row++;
 		}
 		col++;
@@ -386,7 +401,6 @@ static int	ft_check_textures(t_env *env)
 	i = 0;
 	while (i < 4)
 	{
-		// printf("path = [%s]\n", env->img[i].path);
 		if (env->img[i].path == NULL)
 			return (ft_err("Missing texture", FAILURE));
 		fd = open(env->img[i].path, O_RDONLY);
@@ -471,46 +485,28 @@ static int	ft_is_empty_row(char **map, int row, int mapw)
 static int	ft_map_is_closed(t_env *env)
 {
 	char	**map;
-	int		row;
-	int		r;
-	int		col;
+	int		i;
 
 	map = env->map;
-	col = 0;
-	// ft_print_map(env);
-	// if (ft_is_empty_col(map, col, env->maph) == YES)
-	// 	printf("first col is empty\n");
-	// else
-	// 	printf("first col is not empty\n");
-	
-	// on passe toutes les colonnes vides
-	while (col < env->mapw && ft_is_empty_col(map, col, env->maph) == YES)
-		col++;
-	
-	
-	
-	// printf("col = [%d]\n", col);
-	// col++;
-	
-	// on passe toutes les colonnes pleines
-	while (col < env->mapw)
+	i = 0;
+	while (i < env->mapw && ft_is_empty_col(map, i, env->maph) == YES)
+		i++;
+	while (i < env->mapw)
 	{
-		// printf("check col = [%d]\n", col);
-		if (ft_check_col(map, col, env->maph) == FAILURE)
+		if (ft_check_col(map, i, env->maph) == FAILURE)
 			return (ft_err("Map is not closed on cols", FAILURE));
-		col++;
+		i++;
 	}
-	row = 0;
-	while (row < env->maph)
+	i = 0;
+	while (i < env->maph)
 	{
-		// printf("check row = [%d]\n", row);
-		if (ft_check_row(map, row, env->mapw) == FAILURE)
+		if (ft_check_row(map, i, env->mapw) == FAILURE)
 			break;
-		row++;
+		i++;
 	}
-	while(row < env->maph && ft_is_empty_row(map, row, env->mapw) == YES)
-		row++;
-	if (row != env->maph)
+	while(i < env->maph && ft_is_empty_row(map, i, env->mapw) == YES)
+		i++;
+	if (i != env->maph)
 		return (ft_err("Map is not closed on rows", FAILURE));
 	return (SUCCESS);
 }
@@ -523,24 +519,13 @@ int	ft_parsing(t_env *env, char *cubfile)
 		return (FAILURE);
 	if (ft_analyze_file(env) == FAILURE)
 		return (FAILURE);
-	
 	if (ft_check_map(env) == FAILURE)
 		return (FAILURE);
-	
-	// ft_print_file_infos(env);
-	
 	if (ft_find_player(env) == FAILURE)
 		return (FAILURE);
-	
-	// printf("px = [%f], py = [%f]\n", env->px, env->py);
-	
 	if (ft_check_textures(env) == FAILURE)
 		return (FAILURE);
-	
-	// ft_print_map(env);
-	
 	if (ft_map_is_closed(env) == FAILURE)
 		return (FAILURE);
-	// printf("Map is closed !\n");
 	return (SUCCESS);
 }

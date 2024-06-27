@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/26 14:48:49 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/27 08:18:00 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,33 +29,12 @@ static void	ft_init_ray(t_ray *ray)
 	ray->hit = 0;
 	ray->side = 0;
 	ray->texCol = 0;
-	
-	// WEST
-	// ray->planeX = 0;
-	// ray->planeY = 0.66;
-	// ray->dirX = -1;
-	// ray->dirY = 0;
-	
-	// SOUTH
-	// ray->planeX = -0.66;
-	// ray->planeY = 0;
-	// ray->dirX = 0;
-	// ray->dirY = -1;
-
-	// EAST
-	// ray->planeX = 0;
-	// ray->planeY = -0.66;
-	// ray->dirX = 1;
-	// ray->dirY = 0;
-
-	// NORTH
 	ray->planeX = 0.66;
 	ray->planeY = 0;
 	ray->dirX = 0;
 	ray->dirY = 1;
-	
-	ray->ms = 0.05;
-	ray->rs = 0.01;
+	ray->ms = 0.7;//valgrind 0.7 //no valgrind 0.025
+	ray->rs = 0.2;//valgrind 0.2  //no valgrind 0.01
 }
 
 static void	ft_init_img(t_img *img)

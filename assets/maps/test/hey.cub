@@ -1,10 +1,10 @@
-WE    ./tex/west.xpm
-SO      ./tex/south.xpm
+WE    ./assets/tex/west.xpm
+SO      ./assets/tex/south.xpm
 
 
-EA ./tex/east.xpm
+EA ./assets/tex/east.xpm
 
-NO ./tex/north.xpm
+NO ./assets/tex/north.xpm
 
 C 136, 219, 223
 F 110, 98, 89
