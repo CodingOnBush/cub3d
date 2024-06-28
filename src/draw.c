@@ -6,13 +6,13 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 18:12:36 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/28 18:21:21 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-static void	ft_pixel_put(t_env *env, int c, int r, int color)
+void	ft_pixel_put(t_env *env, int c, int r, int color)
 {
 	char	*dst;
 
@@ -22,7 +22,7 @@ static void	ft_pixel_put(t_env *env, int c, int r, int color)
 	*(unsigned int *)dst = color;
 }
 
-static int ft_get_ns_wall(int px, int py, int x, int y){
+int ft_get_ns_wall(int px, int py, int x, int y){
 	(void)py;
 	(void)y;
 	if (px <= x)
@@ -31,7 +31,7 @@ static int ft_get_ns_wall(int px, int py, int x, int y){
 		return (EAST);
 }
 
-static int ft_get_ew_wall(int px, int py, int x, int y){
+int ft_get_ew_wall(int px, int py, int x, int y){
 	(void)px;
 	(void)x;
 	if (py <= y)
@@ -40,7 +40,7 @@ static int ft_get_ew_wall(int px, int py, int x, int y){
 		return (NORTH);
 }
 
-static int	ft_get_color2(t_env *e, int texX, int texY, int wall)
+int	ft_get_color2(t_env *e, int texX, int texY, int wall)
 {
 	t_img	tex;
 	int		color;
@@ -145,7 +145,7 @@ static void	ft_draw_ceiling(t_env *env, int start, int end, int col)
 	}
 }
 
-static void	ft_draw(t_env *env, int col)
+static void	ft_draw2(t_env *env, int col)
 {
 	int	row;
 	int	color;
@@ -217,6 +217,7 @@ static void	ft_draw(t_env *env, int col)
 		ft_pixel_put(env, col, row, color);
 		row++;
 	}
+
 
 
 	// ft_draw_floor(draw_end, env->winh)

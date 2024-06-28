@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 17:07:17 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/28 18:21:49 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ int	ft_get_infos(t_env *env, char **split);
 void	ft_init_env(t_env *env);
 
 /*	DRAW	*/
+void	ft_pixel_put(t_env *env, int c, int r, int color);
+int ft_get_ns_wall(int px, int py, int x, int y);
+int ft_get_ew_wall(int px, int py, int x, int y);
+int	ft_get_color2(t_env *e, int texX, int texY, int wall);
 int		ft_render(t_env *env);
 
 /*	HOOKS	*/
@@ -72,5 +76,8 @@ int	ft_get_all_lines(t_env *env, char *cubfile);
 
 /*	FIND_PLAYER	*/
 int	ft_find_player(t_env *env);
+
+/*	BETTERDRAW	*/
+void	ft_draw(t_env *env, int col);
 
 #endif
