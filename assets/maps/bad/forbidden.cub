@@ -1,17 +1,17 @@
-NO ./assets/textures/wolfenstein/grey_stone.xpm
-SO ./assets/textures/wolfenstein/purple_stone.xpm
-WE ./assets/textures/wolfenstein/red_brick.xpm
-EA ./assets/textures/wolfenstein/wood.xpm
+NO ../cub3d/assets/textures/wolfenstein/grey_stone.xpm
+SO ../cub3d/assets/textures/wolfenstein/purple_stone.xpm
+WE ../cub3d/assets/textures/wolfenstein/red_brick.xpm
+EA ../cub3d/assets/textures/wolfenstein/wood.xpm
 
 F 18,53,25
 C 153,204,255
 
-111111  11111	
-111111  11111	
-1    1111  11	
-1           1	
-1111111111111	
-110S000000001	
-1111111111111	
-1           1	
-1111111111111	
+111111  11111
+111111  11111
+1000011110011
+1000000000001
+1111111111111
+110S000000001
+1111111111111
+1000000000001
+1111111111111
