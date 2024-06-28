@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 12:21:09 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/28 18:12:36 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,121 +52,179 @@ static int	ft_get_color2(t_env *e, int texX, int texY, int wall)
 	return (color);
 }
 
+static void	ft_init_draw_vars(t_env *env, int col)
+{
+	env->ray.cameraX = 2 * (col) / (double)env->winw - 1;
+	env->ray.rayDirX = env->ray.dirX + (env->ray.planeX)*(env->ray.cameraX);
+	env->ray.rayDirY = env->ray.dirY + (env->ray.planeY)*(env->ray.cameraX);
+	env->ray.mapX = env->px;
+	env->ray.mapY = env->py;
+	env->ray.deltaDistY = 1e30;
+	env->ray.deltaDistX = 1e30;
+	if (env->ray.rayDirX != 0)
+		env->ray.deltaDistX = fabs(1 / env->ray.rayDirX);
+	if (env->ray.rayDirY != 0)
+		env->ray.deltaDistY = fabs(1 / env->ray.rayDirY);
+	// env->ray.deltaDistX = (env->ray.rayDirX == 0) ? 1e30 : fabs(1 / env->ray.rayDirX);
+	// env->ray.deltaDistY = (env->ray.rayDirY == 0) ? 1e30 : fabs(1 / env->ray.rayDirY);
+}
+
+static void ft_handle_stepx(t_env *env)
+{
+	if(env->ray.rayDirX < 0)
+	{
+		env->ray.stepX = -1;
+		env->ray.sideDistX = (env->px - env->ray.mapX) * env->ray.deltaDistX;
+		if (env->ray.sideDistX == 0)
+			env->ray.sideDistX = 0.1;
+	}
+	else
+	{
+		env->ray.stepX = 1;
+		env->ray.sideDistX = (env->ray.mapX + 1.0 - env->px) * env->ray.deltaDistX;
+		if (env->ray.sideDistX == 0)
+			env->ray.sideDistX = 0.1;
+	}
+}
+
+static void	ft_handle_stepy(t_env *env)
+{
+	if(env->ray.rayDirY < 0)
+	{
+		env->ray.stepY = -1;
+		env->ray.sideDistY = (env->py - env->ray.mapY) * env->ray.deltaDistY;
+		if (env->ray.sideDistY == 0)
+			env->ray.sideDistY = 0.1;
+	}
+	else
+	{
+		env->ray.stepY = 1;
+		env->ray.sideDistY = (env->ray.mapY + 1.0 - env->py) * env->ray.deltaDistY;
+		if (env->ray.sideDistY == 0)
+			env->ray.sideDistY = 0.1;
+	}
+}
+
+static void ft_hit_wall(t_env *env)
+{
+	while (1)
+	{
+		if(env->ray.sideDistX < env->ray.sideDistY)
+		{
+			env->ray.sideDistX += env->ray.deltaDistX;
+			env->ray.mapX += env->ray.stepX;
+			env->ray.side = 0;
+		}
+		else
+		{
+			env->ray.sideDistY += env->ray.deltaDistY;
+			env->ray.mapY += env->ray.stepY;
+			env->ray.side = 1;
+		}
+		if (env->ray.mapX < 0 || env->ray.mapY < 0 || env->ray.mapX >= env->mapw || env->ray.mapY >= env->maph)
+			break ;
+		if(env->map[env->ray.mapX][env->ray.mapY] > '0')
+			break;
+	}
+}
+
+static void	ft_draw_ceiling(t_env *env, int start, int end, int col)
+{
+	t_file const	f = env->file;
+	int				color;
+	int				row;
+
+	row = start;
+	if (row >= end)
+		return ;
+	while (row < end)
+	{
+		color = (f.colors[0][R] << 16 | f.colors[0][G] << 8 | f.colors[0][B]);
+		ft_pixel_put(env, col, row, color);
+		row++;
+	}
+}
+
 static void	ft_draw(t_env *env, int col)
 {
-	double cameraX = 2 * (col) / (double)env->winw - 1; //x-coordinate in camera space
-	double rayDirX = env->ray.dirX + (env->ray.planeX)*(cameraX);
-	double rayDirY = env->ray.dirY + (env->ray.planeY)*(cameraX);
-	int	y;
+	int	row;
 	int	color;
-	int		mapX = (int)(env->px);
-	int		mapY = (int)(env->py);
-	double	sideDistX;
-	double	sideDistY;
-	double	deltaDistX = (rayDirX == 0) ? 1e30 : fabs(1 / rayDirX);
-	double	deltaDistY = (rayDirY == 0) ? 1e30 : fabs(1 / rayDirY);
-	double	perpWallDist;
-	int stepX;
-	int stepY;
-	int hit = 0; //was there a wall hit?
-	int side; //was a NS or a EW wall hit?
+	int	draw_start;
+	int	draw_end;
+	
+	ft_init_draw_vars(env, col);
 
-	if(rayDirX < 0)
-	{
-		stepX = -1;
-		sideDistX = (env->px - mapX) * deltaDistX;
-		if (sideDistX == 0)
-			sideDistX = 0.1;
-	}
+	ft_handle_stepx(env);
+	ft_handle_stepy(env);
+	ft_hit_wall(env);
+	
+	
+	if(env->ray.side == 0)
+		env->ray.perpWallDist = (env->ray.sideDistX - env->ray.deltaDistX);
 	else
-	{
-		stepX = 1;
-		sideDistX = (mapX + 1.0 - env->px) * deltaDistX;
-		if (sideDistX == 0)
-			sideDistX = 0.1;
-	}
-	if(rayDirY < 0)
-	{
-		stepY = -1;
-		sideDistY = (env->py - mapY) * deltaDistY;
-		if (sideDistY == 0)
-			sideDistY = 0.1;
-	}
+		env->ray.perpWallDist = (env->ray.sideDistY - env->ray.deltaDistY);
+
+	env->ray.lineHeight = (int)(env->winh / env->ray.perpWallDist);
+	env->ray.pitch = 100;
+	env->ray.drawStart = -(env->ray.lineHeight) / 2 + (env->winh) / 2 + env->ray.pitch;
+	if(env->ray.drawStart < 0)
+		env->ray.drawStart = 0;
+	env->ray.drawEnd = (env->ray.lineHeight) / 2 + (env->winh) / 2 + env->ray.pitch;
+	if(env->ray.drawEnd >= (env->winh))
+		env->ray.drawEnd = (env->winh) - 1;
+	
+	if(env->ray.side == 0)
+		env->ray.wallx = env->py + env->ray.perpWallDist * env->ray.rayDirY;
 	else
-	{
-		stepY = 1;
-		sideDistY = (mapY + 1.0 - env->py) * deltaDistY;
-		if (sideDistY == 0)
-			sideDistY = 0.1;
-	}
-	while (hit == 0)
-	{
-		if(sideDistX < sideDistY)
-		{
-			sideDistX += deltaDistX;
-			mapX += stepX;
-			side = 0;
-		}
-		else
-		{
-			sideDistY += deltaDistY;
-			mapY += stepY;
-			side = 1;
-		}
-		if (mapX < 0 || mapY < 0 || mapX >= env->mapw || mapY >= env->maph)
-			break ;
-		if(env->map[mapX][mapY] > '0') hit = 1;
-	}
-	if(side == 0) perpWallDist = (sideDistX - deltaDistX);
-	else          perpWallDist = (sideDistY - deltaDistY);
-	int lineHeight = (int)(env->winh / perpWallDist);
-	int pitch = 100;
-	int drawStart = -lineHeight / 2 + (env->winh) / 2 + pitch;
-	if(drawStart < 0) drawStart = 0;
-	int drawEnd = lineHeight / 2 + (env->winh) / 2 + pitch;
-	if(drawEnd >= (env->winh)) drawEnd = (env->winh) - 1;
-	double wallX; //where exactly the wall was hit
-	if(side == 0)
-		wallX = env->py + perpWallDist * rayDirY;
-	else
-	  	wallX = env->px + perpWallDist * rayDirX;
-	wallX -= floor((wallX));
-	int texX = (int)(wallX * (double)(env->img[NORTH].imgw));
-	if(side == 0 && rayDirX > 0)
+	  	env->ray.wallx = env->px + env->ray.perpWallDist * env->ray.rayDirX;
+	env->ray.wallx -= floor((env->ray.wallx));
+	
+	
+	int texX = (int)(env->ray.wallx * (double)(env->img[NORTH].imgw));
+	if(env->ray.side == 0 && env->ray.rayDirX > 0)
 		texX = env->img[NORTH].imgh - texX - 1;
-	if(side == 1 && rayDirY < 0)
+	if(env->ray.side == 1 && env->ray.rayDirY < 0)
 		texX = env->img[NORTH].imgw - texX - 1;
-	double step = 1.0 * env->img[NORTH].imgh / lineHeight;
-	double texPos = (drawStart - pitch - (env->winh) / 2 + lineHeight / 2) * step;
-	y = 0;
-	if (drawStart > env->winh || drawEnd < 0)
+	env->ray.step = 1.0 * env->img[NORTH].imgh / (env->ray.lineHeight);
+	env->ray.texPos = (env->ray.drawStart - env->ray.pitch - (env->winh) / 2 + (env->ray.lineHeight) / 2) * (env->ray.step);
+	row = 0;
+	if (env->ray.drawStart > env->winh || env->ray.drawEnd < 0)
 		return ;
-	while (y < drawStart)
-	{
-		color = (env->file.colors[0][R] << 16 | env->file.colors[0][G] << 8 | env->file.colors[0][B]);
-		ft_pixel_put(env, col, y, color);
-		y++;
-	}
-	while (y < drawEnd)
-	{
-		int texY = (int)texPos & (env->img[NORTH].imgh - 1);
-		texPos += step;
-		int wall;
-		if (side == 1)
-			wall = ft_get_ew_wall(env->px, env->py, mapX, mapY);
-		else
-			wall = ft_get_ns_wall(env->px, env->py, mapX, mapY);
+	
+	ft_draw_ceiling(env, 0, draw_start, col);
+	
+	// while (row < env->ray.drawStart)
+	// {
+	// 	color = (env->file.colors[0][R] << 16 | env->file.colors[0][G] << 8 | env->file.colors[0][B]);
+	// 	ft_pixel_put(env, col, row, color);
+	// 	row++;
+	// }
 
-		int color = ft_get_color2(env, texX, texY, wall);
-		if(side == 1) color = (color >> 1) & 8355711;
-		ft_pixel_put(env, col, y, color);
-		y++;
+	// ft_draw_wall(draw_start, draw_end);
+
+	while (row < env->ray.drawEnd)
+	{
+		env->ray.texY = (int)env->ray.texPos & (env->img[NORTH].imgh - 1);
+		env->ray.texPos += (env->ray.step);
+		if (env->ray.side == 1)
+			env->ray.wall = ft_get_ew_wall(env->px, env->py, env->ray.mapX, env->ray.mapY);
+		else
+			env->ray.wall = ft_get_ns_wall(env->px, env->py, env->ray.mapX, env->ray.mapY);
+
+		color = ft_get_color2(env, texX, env->ray.texY, env->ray.wall);
+		if(env->ray.side == 1)
+			color = (color >> 1) & 8355711;
+		ft_pixel_put(env, col, row, color);
+		row++;
 	}
-	while (y < env->winh)
+
+
+	// ft_draw_floor(draw_end, env->winh)
+	while (row < env->winh)
 	{
 		color = (env->file.colors[1][R] << 16 | env->file.colors[1][G] << 8 | env->file.colors[1][B]);
-		ft_pixel_put(env, col, y, color);
-		y++;
+		ft_pixel_put(env, col, row, color);
+		row++;
 	}
 }
 

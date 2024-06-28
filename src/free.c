@@ -6,11 +6,21 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:48:17 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 12:21:27 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/28 16:53:08 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
+
+void	ft_free_array(char **array, int row)
+{
+	int	i;
+
+	i = 0;
+	while (i < row)
+		free(array[i++]);
+	free(array);
+}
 
 static void	ft_free_file(t_file *file)
 {
@@ -28,12 +38,10 @@ static void	ft_free_file(t_file *file)
 	}
 }
 
-void	ft_free_env(t_env *env)
+static void	ft_free_map(t_env *env)
 {
 	int	col;
 
-	ft_free_file(&env->file);
-	
 	if (env->map != NULL)
 	{
 		col = 0;
@@ -44,10 +52,15 @@ void	ft_free_env(t_env *env)
 		}
 		free(env->map);
 	}
+}
 
+void	ft_free_env(t_env *env)
+{
 	int	i;
 
 	i = 0;
+	ft_free_file(&env->file);
+	ft_free_map(env);
 	while (i < 5)
 	{
 		if (env->img[i].path)
@@ -67,7 +80,7 @@ void	ft_free_env(t_env *env)
 
 void	ft_free_splitmore(char **split)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!split)

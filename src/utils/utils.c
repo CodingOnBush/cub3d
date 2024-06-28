@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:24:35 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 11:53:15 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/28 16:23:23 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_err(char *str, int ret)
 {
 	ft_putstr_fd(RED, 2);
-	ft_putstr_fd("Error 🚨\n↳ ", 2);
+	ft_putstr_fd("Error\n🚨↳ ", 2);
 	ft_putstr_fd(RESET, 2);
 	ft_putstr_fd(str, 2);
 	ft_putchar_fd('\n', 2);
@@ -30,10 +30,7 @@ int	ft_splitlen(char **split)
 	if (!split)
 		return (0);
 	while (split[i])
-	{
-		// printf("split[%d]: %s\n", i, split[i]);
 		i++;
-	}
 	return (i);
 }
 
@@ -56,48 +53,6 @@ int	ft_get_id(char *str)
 	return (-1);
 }
 
-void	ft_update_dir(t_env *env)
-{
-	if (env->pdir == 'W')
-	{
-		env->ray.planeX = 0;
-		env->ray.planeY = -0.66;
-		env->ray.dirX = 1;
-		env->ray.dirY = 0;
-	}
-	else if (env->pdir == 'N')
-	{
-		// env->ray.planeX = 0.66;
-		// env->ray.planeY = 0;
-		// env->ray.dirX = 0;
-		// env->ray.dirY = 1;
-
-		env->ray.planeX = -0.66;
-		env->ray.planeY = 0;
-		env->ray.dirX = 0;
-		env->ray.dirY = -1;
-	}
-	else if (env->pdir == 'E')
-	{
-		env->ray.planeX = 0;
-		env->ray.planeY = 0.66;
-		env->ray.dirX = -1;
-		env->ray.dirY = 0;
-	}
-	else if (env->pdir == 'S')
-	{
-		env->ray.planeX = 0.66;
-		env->ray.planeY = 0;
-		env->ray.dirX = 0;
-		env->ray.dirY = 1;
-		
-		// env->ray.planeX = -0.66;
-		// env->ray.planeY = 0;
-		// env->ray.dirX = 0;
-		// env->ray.dirY = -1;
-	}
-}
-
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	while (*s1 && *s2 && *s1 == *s2)
@@ -110,6 +65,8 @@ int	ft_strcmp(const char *s1, const char *s2)
 
 int	ft_iswhitespace(char c)
 {
+	if (c == '\0')
+		return (NO);
 	if (ft_strchr(" \t\n\v\f\r", c) != NULL)
 		return (YES);
 	return (NO);

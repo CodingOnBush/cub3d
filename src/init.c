@@ -6,11 +6,12 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 15:37:14 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/28 17:12:17 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
+
 /*ms0.5 rs0.2*/
 static void	ft_init_ray(t_ray *ray)
 {
@@ -51,11 +52,11 @@ static void	ft_init_img(t_img *img)
 
 static void	ft_init_file(t_file *file)
 {
-	int i;
+	int	i;
 
 	file->content = NULL;
 	file->width = 0;
-	file->height = 0;
+	file->rows = 0;
 	i = 0;
 	while (i < 2)
 	{

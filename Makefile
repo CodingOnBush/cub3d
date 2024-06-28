@@ -6,7 +6,7 @@
 #    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/06/27 22:33:33 by momrane          ###   ########.fr        #
+#    Updated: 2024/06/28 17:10:30 by momrane          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ GREEN 			:= \033[0;92m
 CYAN 			:= \033[0;96m
 
 # Name
-NAME 			:= cube3D
+NAME 			:= cub3D
 
 # Directories
 SRC_DIR			:= ./src
@@ -40,7 +40,9 @@ LDFLAGS			:= -L$(LIBFT_DIR) -L$(MINILIBX_DIR)
 VAL_FLAGS		:= --leak-check=full --track-origins=yes --track-fds=yes
 
 # Sources
-SRC			:=	$(wildcard $(SRC_DIR)/*.c)
+SRC			:=	$(wildcard $(SRC_DIR)/*.c)\
+				$(wildcard $(SRC_DIR)/parsing/*.c)\
+				$(wildcard $(SRC_DIR)/utils/*.c)
 
 # Objects
 OBJ			:=	$(SRC:$(SRC_DIR)/%.c=$(BIN_DIR)/%.o)

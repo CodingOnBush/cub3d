@@ -89,4 +89,73 @@ valgrind --leak-check=full --track-origins=yes --track-fds=yes ./cube3D ./assets
 
 
 
-le gnl a qui ?
+le gnl a qui ?\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// static void	ft_print_split(char **split)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	if (!split)
+// 	{
+// 		printf("split is NULL\n");
+// 		return ;
+// 	}
+// 	while (split[i])
+// 	{
+// 		printf("[%s] | ", split[i]);
+// 		i++;
+// 	}
+// 	if (split[i] == NULL)
+// 		printf("[NULL]");
+// 	printf("\n\n");
+// }
+
+// static void	ft_print_file_infos(t_env *env)
+// {
+// 	printf("NO = [%s]\n", env->img[NORTH].path);
+// 	printf("SO = [%s]\n", env->img[SOUTH].path);
+// 	printf("WE = [%s]\n", env->img[WEST].path);
+// 	printf("EA = [%s]\n", env->img[EAST].path);
+// 	printf("FLOOR = [%d, %d, %d]\n", env->file.colors[FLOOR][R], env->file.colors[FLOOR][G], env->file.colors[FLOOR][B]);
+// 	printf("CEIL = [%d, %d, %d]\n", env->file.colors[CEIL][R], env->file.colors[CEIL][G], env->file.colors[CEIL][B]);
+// }
+
+// static void	ft_print_map(t_env *env)
+// {
+// 	char	**map;
+// 	int		row;
+// 	int		col;
+
+// 	map = env->map;
+// 	row = 0;
+// 	while (row < env->maph)
+// 	{
+// 		col = 0;
+// 		while (col < env->mapw)
+// 		{
+// 			// if ((int)(env->px) == col && (int)(env->py) == row)
+// 			// 	printf("[P]");
+// 			// else
+// 				printf("[%c]", map[col][row]);
+// 			col++;
+// 		}
+// 		printf("\n");
+// 		row++;
+// 	}
+// }

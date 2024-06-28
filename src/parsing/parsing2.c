@@ -6,34 +6,34 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:51:21 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 12:12:26 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/28 16:20:36 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static int	ft_flood_fill(char **map, int px, int py, int mapw, int maph)
+static int	ft_flood_fill(t_env *env, int px, int py)
 {
-	if (px < 0 || px >= mapw || py < 0 || py >= maph)
+	if (px < 0 || px >= env->mapw || py < 0 || py >= env->maph)
 		return (FAILURE);
-	if (map[px][py] == '1' || map[px][py] == 'x')
+	if (env->map[px][py] == '1' || env->map[px][py] == 'x')
 		return (SUCCESS);
-	if (map[px][py] == '0')
-		map[px][py] = 'x';
+	if (env->map[px][py] == '0')
+		env->map[px][py] = 'x';
 	else
 		return (FAILURE);
-	if (ft_flood_fill(map, px + 1, py, mapw, maph) == FAILURE)
+	if (ft_flood_fill(env, px + 1, py) == FAILURE)
 		return (FAILURE);
-	if (ft_flood_fill(map, px - 1, py, mapw, maph) == FAILURE)
+	if (ft_flood_fill(env, px - 1, py) == FAILURE)
 		return (FAILURE);
-	if (ft_flood_fill(map, px, py + 1, mapw, maph) == FAILURE)
+	if (ft_flood_fill(env, px, py + 1) == FAILURE)
 		return (FAILURE);
-	if (ft_flood_fill(map, px, py - 1, mapw, maph) == FAILURE)
+	if (ft_flood_fill(env, px, py - 1) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
 }
 
-static void	ft_replace_map(char **map, int mapw, int maph, char c1, char c2)
+static void	ft_replace_map(char **map, int mapw, int maph)
 {
 	int	row;
 	int	col;
@@ -44,8 +44,8 @@ static void	ft_replace_map(char **map, int mapw, int maph, char c1, char c2)
 		row = 0;
 		while (row < maph)
 		{
-			if (map[col][row] == c1)
-				map[col][row] = c2;
+			if (map[col][row] == 'x')
+				map[col][row] = '0';
 			row++;
 		}
 		col++;
@@ -70,24 +70,25 @@ static int	ft_check_cols(t_env *env)
 	return (SUCCESS);
 }
 
-static int    ft_check_rows(t_env *env)
+static int	ft_check_rows(t_env *env)
 {
-    int    row;
-    int    col;
+	int	row;
+	int	col;
 
-    row = 0;
-    while (row < env->maph)
-    {
-        col = 0;
-        if (env->map[col][row] && env->map[col][row] == '\0')
-            return (ft_err("Map is not closed\n", FAILURE));
-        while (col < env->mapw && env->map[col][row] && env->map[col][row] == ' ')
-            col++;
-        if (col == env->mapw)
-            return (FAILURE);
-        row++;
-    }
-    return (SUCCESS);
+	row = 0;
+	while (row < env->maph)
+	{
+		col = 0;
+		if (env->map[col][row] && env->map[col][row] == '\0')
+			return (ft_err("Map is not closed\n", FAILURE));
+		while (col < env->mapw && env->map[col][row]
+			&& env->map[col][row] == ' ')
+			col++;
+		if (col == env->mapw)
+			return (FAILURE);
+		row++;
+	}
+	return (SUCCESS);
 }
 
 int	ft_map_is_closed(t_env *env)
@@ -99,8 +100,8 @@ int	ft_map_is_closed(t_env *env)
 		return (ft_err("Empty line in map\n", FAILURE));
 	if (ft_check_cols(env) == FAILURE)
 		return (ft_err("Map is not closed COLS\n", FAILURE));
-	if (ft_flood_fill(env->map, px, py, env->mapw, env->maph) == FAILURE)
+	if (ft_flood_fill(env, px, py) == FAILURE)
 		return (ft_err("Map is not closed\n", FAILURE));
-	ft_replace_map(env->map, env->mapw, env->maph, 'x', '0');
+	ft_replace_map(env->map, env->mapw, env->maph);
 	return (SUCCESS);
 }

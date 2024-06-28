@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:36:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 14:48:22 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/28 16:48:24 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	ft_launch_cub3d(char *cubfile)
 {
 	t_env	env;
-	
+
 	ft_init_env(&env);
 	if (ft_parsing(&env, cubfile) == FAILURE)
 		return (ft_free_env(&env), FAILURE);

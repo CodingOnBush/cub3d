@@ -6,22 +6,22 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 07:35:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 16:14:13 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/28 16:58:35 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-static void	*ft_free_array(char **out, int i)
-{
-	while (i > 0)
-	{
-		i--;
-		free(out[i]);
-	}
-	free(out);
-	return (NULL);
-}
+// void	*ft_free_array(char **out, int i)
+// {
+// 	while (i > 0)
+// 	{
+// 		i--;
+// 		free(out[i]);
+// 	}
+// 	free(out);
+// 	return (NULL);
+// }
 
 static int	ft_count_words(const char *str, char *set)
 {
@@ -49,38 +49,23 @@ static int	ft_get_wlen(const char *str, char *set)
 	i = 0;
 	if (!str)
 		return (0);
-	// printf("str: %s\n", str);
-	while(str[i])
+	while (str[i])
 	{
 		if (ft_strchr(set, str[i]) != NULL)
-			break;
+			break ;
 		i++;
 	}
-	// printf("i: %d\n", i);
 	return (i);
 }
 
-char	**ft_splitmore(char const *s, char *set)
+static int	ft_apply_split(char **out, int len, char const *s, char *set)
 {
-	char	**out;
-	int		i;
-	int		j;
-	int		len;
-	int		slen;
+	int const	slen = ft_strlen(s);
+	int			i;
+	int			j;
 
-	if (!s)
-		return (NULL);
-	// printf("String to split: %s\n", s);
-	// printf("Size of split found: %d\n", ft_count_words(s, set));
-	len = ft_count_words(s, set);
-	// printf("Size of split found: %d\n", len);
-	out = malloc(sizeof(char *) * (len + 1));
-	if (!out)
-		return (NULL);
-	out[len] = NULL;
 	i = 0;
 	j = 0;
-	slen = ft_strlen(s);
 	while (s[j] != '\0' && i < len)
 	{
 		while (ft_strchr(set, s[j]) != NULL)
@@ -89,12 +74,28 @@ char	**ft_splitmore(char const *s, char *set)
 			break ;
 		out[i] = ft_substr(&s[j], 0, ft_get_wlen(&s[j], set));
 		if (!out[i])
-			return (ft_free_array(out, i));
+			return (ft_free_array(out, i), FAILURE);
 		i++;
 		j += ft_get_wlen(&s[j], set);
 		if (j >= slen)
 			break ;
 	}
+	return (SUCCESS);
+}
+
+char	**ft_splitmore(char const *s, char *set)
+{
+	char		**out;
+	int const	len = ft_count_words(s, set);
+
+	if (!s)
+		return (NULL);
+	out = malloc(sizeof(char *) * (len + 1));
+	if (!out)
+		return (NULL);
+	out[len] = NULL;
+	if (ft_apply_split(out, len, s, set) == FAILURE)
+		return (NULL);
 	return (out);
 }
 

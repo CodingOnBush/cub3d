@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:59:43 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 09:00:19 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/28 18:02:50 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,15 @@ typedef struct s_ray
 	double	dirY;
 	double	ms;
 	double	rs;
+	int		lineHeight;
+	int		pitch;
+	int		drawStart;
+	int		drawEnd;
+	double	wallx;		//where exactly the wall was hit
+	double 	step;
+	double texPos;
+	int texY;
+	int wall;
 }			t_ray;
 
 typedef struct s_img
@@ -54,7 +63,7 @@ typedef struct s_file
 {
 	char	**content;
 	int		width;
-	int		height;
+	int		rows;
 	int		colors[2][3];
 	int		count;
 }			t_file;
