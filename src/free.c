@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:48:17 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 07:44:51 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/28 12:21:27 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	ft_free_env(t_env *env)
 			mlx_destroy_image(env->mlx_ptr, env->img[i].mlx_img);
 		i++;
 	}
-	// mlx_destroy_image(env->mlx_ptr, env->img[CANVAS].mlx_img);
 	if (env->mlx_ptr && env->win_ptr)
 		mlx_destroy_window(env->mlx_ptr, env->win_ptr);
 	if (env->mlx_ptr)

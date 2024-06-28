@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/27 18:51:53 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/28 12:13:52 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int		ft_splitlen(char **split);
 int		ft_get_id(char *str);
 void	ft_update_dir(t_env *env);
 int		ft_strcmp(const char *s1, const char *s2);
+int		ft_iswhitespace(char c);
 
 /*	PARSING	*/
 int		ft_parsing(t_env *env, char *cubfile);
