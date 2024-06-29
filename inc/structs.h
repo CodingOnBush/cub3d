@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:59:43 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/29 17:46:38 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/29 19:42:04 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ typedef struct s_ray
 	t_vic	deltadist;
 
 	double	perpWallDist;
+	double	oppside;
+	
 	int		stepX;
 	int		stepY;
 	int		hit;

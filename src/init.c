@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/29 17:45:57 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/29 19:42:24 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static void	ft_init_ray(t_ray *ray)
 	ray->deltadist.y = 0;
 	
 	ray->perpWallDist = 0;
+	ray->oppside = 0;
+
 	ray->stepX = 0;
 	ray->stepY = 0;
 	ray->hit = 0;
@@ -51,6 +53,7 @@ static void	ft_init_ray(t_ray *ray)
 	ray->dirY = 1;
 	ray->ms = 0.055;//0.55
 	ray->rs = 0.02;//0.2
+
 }
 
 static void	ft_init_img(t_img *img)
