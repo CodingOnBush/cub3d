@@ -3,83 +3,126 @@
 /*                                                        :::      ::::::::   */
 /*   betterdraw.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: allblue <allblue@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 18:19:23 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 18:20:57 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/29 10:42:14 by allblue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-void	ft_draw(t_env *env, int col)
+static t_vec	ft_get_deltadist(t_env *env)
 {
-	double cameraX = 2 * (col) / (double)env->winw - 1; //x-coordinate in camera space
-	double rayDirX = env->ray.dirX + (env->ray.planeX)*(cameraX);
-	double rayDirY = env->ray.dirY + (env->ray.planeY)*(cameraX);
-	int	y;
-	int	color;
-	int		mapX = (int)(env->px);
-	int		mapY = (int)(env->py);
-	double	sideDistX;
-	double	sideDistY;
-	double	deltaDistX = (rayDirX == 0) ? 1e30 : fabs(1 / rayDirX);
-	double	deltaDistY = (rayDirY == 0) ? 1e30 : fabs(1 / rayDirY);
-	double	perpWallDist;
-	int stepX;
-	int stepY;
-	int hit = 0; //was there a wall hit?
-	int side; //was a NS or a EW wall hit?
+	t_vec	deltadist;
 
-	if(rayDirX < 0)
-	{
-		stepX = -1;
-		sideDistX = (env->px - mapX) * deltaDistX;
-		if (sideDistX == 0)
-			sideDistX = 0.1;
-	}
+	deltadist.x = 1e30;
+	deltadist.y = 1e30;
+	if (env->ray.rayDirX != 0)
+		deltadist.x = fabs(1 / env->ray.rayDirX);
+	if (env->ray.rayDirY != 0)
+		deltadist.y = fabs(1 / env->ray.rayDirY);
+	return (deltadist);
+}
+
+static t_vec	ft_get_sidedist(t_env *env, t_vec deltadist)
+{
+	t_vec	sidedist;
+
+	if(env->ray.rayDirX < 0)
+		sidedist.x = (env->px - env->ray.mapY) * deltadist.y;
 	else
-	{
-		stepX = 1;
-		sideDistX = (mapX + 1.0 - env->px) * deltaDistX;
-		if (sideDistX == 0)
-			sideDistX = 0.1;
-	}
-	if(rayDirY < 0)
-	{
-		stepY = -1;
-		sideDistY = (env->py - mapY) * deltaDistY;
-		if (sideDistY == 0)
-			sideDistY = 0.1;
-	}
+		sidedist.x = (env->ray.mapY + 1.0 - env->py) * deltadist.y;
+	if(env->ray.rayDirY < 0)
+		sidedist.y = (env->py - env->ray.mapY) * deltadist.y;
 	else
+		sidedist.y = (env->ray.mapY + 1.0 - env->py) * deltadist.y;
+	if (sidedist.y == 0)
+		sidedist.y = 0.1;
+	if (sidedist.x == 0)
+		sidedist.x = 0.1;
+	return (sidedist);
+}
+
+static void	ft_find_hit_point(t_env *env, t_vec sidedist, t_vec deltadist, int stepX, int stepY)
+{
+	while (1)
 	{
-		stepY = 1;
-		sideDistY = (mapY + 1.0 - env->py) * deltaDistY;
-		if (sideDistY == 0)
-			sideDistY = 0.1;
-	}
-	while (hit == 0)
-	{
-		if(sideDistX < sideDistY)
+		if(sidedist.x < sidedist.y)
 		{
-			sideDistX += deltaDistX;
-			mapX += stepX;
-			side = 0;
+			sidedist.x += env->ray.deltadist.x;
+			env->ray.mapX += stepX;
+			env->ray.side = 0;
 		}
 		else
 		{
-			sideDistY += deltaDistY;
-			mapY += stepY;
-			side = 1;
+			sidedist.y += env->ray.deltadist.y;
+			env->ray.mapY += stepY;
+			env->ray.side = 1;
 		}
-		if (mapX < 0 || mapY < 0 || mapX >= env->mapw || mapY >= env->maph)
-			break ;
-		if(env->map[mapX][mapY] > '0') hit = 1;
+		if (env->ray.mapX < 0 || env->ray.mapY < 0)
+			return;
+		if (env->ray.mapX >= env->mapw || env->ray.mapY >= env->maph)
+			return;
+		if(env->map[env->ray.mapX][env->ray.mapY] > '0')
+			return;
 	}
-	if(side == 0) perpWallDist = (sideDistX - deltaDistX);
-	else          perpWallDist = (sideDistY - deltaDistY);
-	int lineHeight = (int)(env->winh / perpWallDist);
+}
+
+static int	ft_get_line_height(t_env *env)
+{
+	t_vec const	deltadist = ft_get_deltadist(env);
+	t_vec const	sidedist = ft_get_sidedist(env, deltadist);
+	int			stepX;
+	int			stepY;
+	int			perpWallDist;
+
+	stepX = 1;
+	stepY = 1;
+	if (env->ray.rayDirX < 0)
+		stepX = -1;
+	if (env->ray.rayDirY < 0)
+		stepY = -1;
+	ft_find_hit_point(env, sidedist, env->ray.deltadist, stepX, stepY);
+	if(env->ray.side == 0)
+		perpWallDist = (sidedist.x - env->ray.deltadist.x);
+	else
+		perpWallDist = (sidedist.y - env->ray.deltadist.y);
+	return ((int)(env->winh / env->ray.perpWallDist));
+}
+
+static void	ft_set_raydir(t_env *env, int col)
+{
+	double cameraX = 2 * (col) / (double)env->winw - 1;//x-coordinate in camera space
+
+	env->ray.raydir.x = env->ray.dir.x + env->ray.plane.x * cameraX;
+	env->ray.raydir.y = env->ray.dir.y + env->ray.plane.y * cameraX;
+}
+
+void	ft_draw_stripe(t_env *env, int col)
+{
+	int		lineHeight;
+
+
+	int	y;
+	int	color;
+
+	env->ray.mapX = (int)env->px;
+	env->ray.mapY = (int)env->py;
+	ft_set_raydir(env, col);
+	
+	//length of ray from current position to next x or y-side
+	// double	sideDistX;
+	// double	sideDistY;
+	
+	//length of ray from one x or y-side to next x or y-side
+	// double	env->ray.deltadist.x = (rayDirX == 0) ? 1e30 : fabs(1 / rayDirX);
+	// double	env->ray.deltadist.y = (rayDirY == 0) ? 1e30 : fabs(1 / rayDirY);
+
+
+
+	lineHeight = ft_get_line_height(env);
+	
 	int pitch = 100;
 	int drawStart = -lineHeight / 2 + (env->winh) / 2 + pitch;
 	if(drawStart < 0) drawStart = 0;

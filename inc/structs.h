@@ -3,23 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: allblue <allblue@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:59:43 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 18:02:50 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/29 10:39:49 by allblue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
+typedef struct s_vec
+{
+	double	x;
+	double	y;
+}			t_vec;
+
 typedef struct s_ray
 {
-	double	cameraX;
 	double	rayDirX;
 	double	rayDirY;
+	int		lineHeight;
 	int		mapX;
 	int		mapY;
+	int		side;//was a NS or a EW wall hit?
+
+	t_vec	raydir;
+
+	//length of ray from current position to next x or y-side
+	t_vec	sidedist;
+
+	//length of ray from one x or y-side to next x or y-side
+	t_vec	deltadist;
+
+	
+	t_vec	plane;
+	t_vec	dir;
+	
+	double	cameraX;
 	double	sideDistX;
 	double	sideDistY;
 	double	deltaDistX;
@@ -28,7 +49,6 @@ typedef struct s_ray
 	int		stepX;
 	int		stepY;
 	int		hit;
-	int		side;
 	int		texCol;
 	double	planeX;
 	double	planeY;
@@ -36,7 +56,6 @@ typedef struct s_ray
 	double	dirY;
 	double	ms;
 	double	rs;
-	int		lineHeight;
 	int		pitch;
 	int		drawStart;
 	int		drawEnd;
