@@ -6,34 +6,53 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:59:43 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 18:02:50 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/29 17:46:38 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
+typedef struct s_vic
+{
+	double	x;
+	double	y;
+}			t_vic;
+
 typedef struct s_ray
 {
 	double	cameraX;
+	
 	double	rayDirX;
 	double	rayDirY;
+	t_vic	raydir;
+	
 	int		mapX;
 	int		mapY;
+	
 	double	sideDistX;
 	double	sideDistY;
+	t_vic	sidedist;
+
 	double	deltaDistX;
 	double	deltaDistY;
+	t_vic	deltadist;
+
 	double	perpWallDist;
 	int		stepX;
 	int		stepY;
 	int		hit;
 	int		side;
 	int		texCol;
+	
 	double	planeX;
 	double	planeY;
+	t_vic	plane;	// NOP
+
 	double	dirX;
 	double	dirY;
+	t_vic	dir;	// NOP
+
 	double	ms;
 	double	rs;
 	int		lineHeight;
