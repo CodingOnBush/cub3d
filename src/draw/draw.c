@@ -6,7 +6,7 @@
 /*   By: allblue <allblue@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/30 19:31:44 by allblue          ###   ########.fr       */
+/*   Updated: 2024/06/30 19:39:39 by allblue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	ft_draw_stripe(t_env *env, int col)
 int	ft_render(t_env *env)
 {
 	int	col;
+	t_img const	canva = env->img[CANVAS];
 
 	col = 0;
 	if (env->down || env->right || env->left)
@@ -114,7 +115,7 @@ int	ft_render(t_env *env)
 		ft_draw_stripe(env, col);
 		col++;
 	}
-	if (env->mlx_ptr && env->win_ptr && env->img[CANVAS].mlx_img)
-		mlx_put_image_to_window(env->mlx_ptr, env->win_ptr, env->img[CANVAS].mlx_img, 0, 0);
+	if (env->mlx_ptr && env->win_ptr && canva.mlx_img)
+		mlx_put_image_to_window(env->mlx_ptr, env->win_ptr, canva.mlx_img, 0, 0);
 	return (0);
 }
