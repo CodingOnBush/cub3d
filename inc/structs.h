@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:59:43 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/29 19:42:04 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/30 15:33:40 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,19 @@ typedef struct s_vic
 	double	y;
 }			t_vic;
 
+typedef struct s_point
+{
+	int	x;
+	int	y;
+}			t_point;
+
 typedef struct s_ray
 {
+
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+
 	double	cameraX;
 	
 	double	rayDirX;

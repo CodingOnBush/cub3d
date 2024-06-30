@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 18:21:49 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/30 15:32:23 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,7 @@ int	ft_get_infos(t_env *env, char **split);
 void	ft_init_env(t_env *env);
 
 /*	DRAW	*/
-void	ft_pixel_put(t_env *env, int c, int r, int color);
-int ft_get_ns_wall(int px, int py, int x, int y);
-int ft_get_ew_wall(int px, int py, int x, int y);
-int	ft_get_color2(t_env *e, int texX, int texY, int wall);
+void	ft_pixel_put(t_env *env, int col, int row, int color);
 int		ft_render(t_env *env);
 
 /*	HOOKS	*/
@@ -66,6 +63,9 @@ char	**ft_splitmore(char const *s, char *set);
 void	ft_update_dir(t_env *env);
 int		ft_gettype(char *line);
 int		ft_rgb_isvalid(t_env *env);
+
+/*	UTILS3	*/
+int		ft_rgb_to_int(int color[3]);
 
 /*	CHECK_FILE	*/
 int	ft_check_file_extension(char *file, char *ext);

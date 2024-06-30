@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/29 19:42:24 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/30 15:34:09 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 /*ms0.5 rs0.2*/
 static void	ft_init_ray(t_ray *ray)
 {
+	ray->line_height = 0;
+	ray->draw_start = 0;
+	ray->draw_end = 0;
+	
 	ray->cameraX = 0;
 	
 	ray->rayDirX = 0;
