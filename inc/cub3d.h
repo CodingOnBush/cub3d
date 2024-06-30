@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: allblue <allblue@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/30 15:32:23 by momrane          ###   ########.fr       */
+/*   Updated: 2024/06/30 19:19:26 by allblue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,15 @@ int	ft_get_infos(t_env *env, char **split);
 /*	INIT	*/
 void	ft_init_env(t_env *env);
 
-/*	DRAW	*/
+/*	LINEHEIGHT	*/
+void	ft_set_line_height(t_env *env);
+
+/*	IMG	*/
 void	ft_pixel_put(t_env *env, int col, int row, int color);
+t_img	ft_get_texture(t_env *env);
+int		ft_get_tex_pixel(t_env *env, t_point tex);
+
+/*	DRAW	*/
 int		ft_render(t_env *env);
 
 /*	HOOKS	*/
@@ -77,7 +84,7 @@ int	ft_get_all_lines(t_env *env, char *cubfile);
 /*	FIND_PLAYER	*/
 int	ft_find_player(t_env *env);
 
-/*	BETTERDRAW	*/
-void	ft_draw(t_env *env, int col);
+/*	MOVE	*/
+void	ft_move(t_env *env);
 
 #endif
