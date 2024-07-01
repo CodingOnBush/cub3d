@@ -6,7 +6,7 @@
 /*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 11:20:13 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/07/01 11:51:30 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 static int	ft_get_texx(t_env *env)
 {
-	int	texx;
+	int		texx;
+	double	wall_x;
 
-	double wallX; // where exactly the wall was hit
 	if (env->ray.side == 0)
-		wallX = env->py + env->ray.oppside * env->ray.raydir.y;
+		wall_x = env->py + env->ray.oppside * env->ray.raydir.y;
 	else
-		wallX = env->px + env->ray.oppside * env->ray.raydir.x;
-	wallX -= floor((wallX));
-	texx = (int)(wallX * (double)(env->img[NORTH].imgw));
+		wall_x = env->px + env->ray.oppside * env->ray.raydir.x;
+	wall_x -= floor((wall_x));
+	texx = (int)(wall_x * (double)(env->img[NORTH].imgw));
 	if (env->ray.side == 0 && env->ray.raydir.x > 0)
 		texx = env->img[NORTH].imgh - texx - 1;
 	if (env->ray.side == 1 && env->ray.raydir.y < 0)
@@ -32,12 +32,10 @@ static int	ft_get_texx(t_env *env)
 
 static void	ft_setup_drawing(t_env *env, int col)
 {
-	double const	cameraX = 2 * (col) / (double)env->winw - 1;
+	double const	camera_x = 2 * (col) / (double)env->winw - 1;
 
-	// cameraX = 2 * (col) / (double)env->winw - 1;
-	// ft_set_raydir(env, col);
-	env->ray.raydir.x = env->ray.dirX + env->ray.planeX * cameraX;
-	env->ray.raydir.y = env->ray.dirY + env->ray.planeY * cameraX;
+	env->ray.raydir.x = env->ray.dirX + env->ray.planeX * camera_x;
+	env->ray.raydir.y = env->ray.dirY + env->ray.planeY * camera_x;
 	env->ray.mapX = (int)(env->px);
 	env->ray.mapY = (int)(env->py);
 	ft_set_line_height(env);
@@ -49,27 +47,27 @@ static void	ft_setup_drawing(t_env *env, int col)
 		env->ray.draw_end = (env->winh) - 1;
 }
 
+// Pourquoi j'utilise l'imeage NORTH ici ? et pas une autre ?
+// essager de remplacer les env->img[NORTH].imgh par texh
 static int	ft_draw_wall(t_env *env, int col, int row, int texh)
 {
-	double	texPos;
+	double	tex_pos;
 	int		color;
 	int		step;
 	t_point	tex;
 
 	tex.x = ft_get_texx(env);
-	// Pourquoi j'utilise l'imeage NORTH ici ? et pas une autre ?
-	// essager de remplacer les env->img[NORTH].imgh par texh
 	step = (1.0 * env->img[NORTH].imgh / (env->ray.line_height));
-	texPos = (double)((env->ray.draw_start - (env->winh) / 2
+	tex_pos = (double)((env->ray.draw_start - (env->winh) / 2
 				+ (env->ray.line_height) / 2) * step);
 	while (row < env->ray.draw_end)
 	{
-		tex.y = (int)texPos & (env->img[NORTH].imgh - 1);
-		texPos += step;
+		tex.y = (int)tex_pos & (env->img[NORTH].imgh - 1);
+		tex_pos += step;
 		color = ft_get_tex_pixel(env, tex);
 		// // pas obligatoire de laisser ca je pense, nan ?
-		// if(env->ray.side == 1)
-		// 	color = (color >> 1) & 8355711;
+		if (env->ray.side == 1)
+			color = (color >> 1) & 8355711;
 		ft_pixel_put(env, col, row, color);
 		(row) = (row) + 1;
 	}
@@ -79,7 +77,7 @@ static int	ft_draw_wall(t_env *env, int col, int row, int texh)
 void	ft_draw_stripe(t_env *env, int col)
 {
 	double	step;
-	double	texPos;
+	double	tex_pos;
 	int		row;
 	int		color;
 
@@ -104,9 +102,9 @@ void	ft_draw_stripe(t_env *env, int col)
 
 int	ft_render(t_env *env)
 {
-	int	col;
+	int			col;
+	t_img const	canva = env->img[CANVAS];
 
-	t_img const canva = env->img[CANVAS];
 	col = 0;
 	if (env->down || env->right || env->left)
 		ft_move(env);

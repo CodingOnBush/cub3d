@@ -6,88 +6,92 @@
 /*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 19:10:08 by allblue           #+#    #+#             */
-/*   Updated: 2024/07/01 11:21:22 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/07/01 11:52:41 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-static void	ft_rotate(t_env *env)
+static void	ft_rotright(t_env *e)
 {
-	double	oldDirX;
-	double	oldPlaneX;
+	double	olddirx;
+	double	oldplanex;
 
-	if (env->rotleft)
+	olddirx = e->ray.dirX;
+	e->ray.dirX = e->ray.dirX * cos(-e->ray.rs) - e->ray.dirY
+		* sin(-e->ray.rs);
+	e->ray.dirY = olddirx * sin(-e->ray.rs) + e->ray.dirY * cos(-e->ray.rs);
+	oldplanex = e->ray.planeX;
+	e->ray.planeX = e->ray.planeX * cos(-e->ray.rs) - e->ray.planeY
+		* sin(-e->ray.rs);
+	e->ray.planeY = oldplanex * sin(-e->ray.rs) + e->ray.planeY
+		* cos(-e->ray.rs);
+}
+
+static void	ft_rotate(t_env *e)
+{
+	double	olddirx;
+	double	oldplanex;
+
+	if (e->rotleft)
 	{
-		oldDirX = env->ray.dirX;
-		env->ray.dirX = env->ray.dirX * cos(env->ray.rs) - env->ray.dirY
-			* sin(env->ray.rs);
-		env->ray.dirY = oldDirX * sin(env->ray.rs) + env->ray.dirY
-			* cos(env->ray.rs);
-		oldPlaneX = env->ray.planeX;
-		env->ray.planeX = env->ray.planeX * cos(env->ray.rs) - env->ray.planeY
-			* sin(env->ray.rs);
-		env->ray.planeY = oldPlaneX * sin(env->ray.rs) + env->ray.planeY
-			* cos(env->ray.rs);
+		olddirx = e->ray.dirX;
+		e->ray.dirX = e->ray.dirX * cos(e->ray.rs) - e->ray.dirY
+			* sin(e->ray.rs);
+		e->ray.dirY = olddirx * sin(e->ray.rs) + e->ray.dirY * cos(e->ray.rs);
+		oldplanex = e->ray.planeX;
+		e->ray.planeX = e->ray.planeX * cos(e->ray.rs) - e->ray.planeY
+			* sin(e->ray.rs);
+		e->ray.planeY = oldplanex * sin(e->ray.rs) + e->ray.planeY
+			* cos(e->ray.rs);
 	}
-	else if (env->rotright)
-	{
-		oldDirX = env->ray.dirX;
-		env->ray.dirX = env->ray.dirX * cos(-env->ray.rs) - env->ray.dirY
-			* sin(-env->ray.rs);
-		env->ray.dirY = oldDirX * sin(-env->ray.rs) + env->ray.dirY
-			* cos(-env->ray.rs);
-		oldPlaneX = env->ray.planeX;
-		env->ray.planeX = env->ray.planeX * cos(-env->ray.rs) - env->ray.planeY
-			* sin(-env->ray.rs);
-		env->ray.planeY = oldPlaneX * sin(-env->ray.rs) + env->ray.planeY
-			* cos(-env->ray.rs);
-	}
+	else if (e->rotright)
+		ft_rotright(e);
 }
 
 static void	ft_move_horizontal(t_env *env)
 {
-	double	stepHorizontalX;
-	double	stepHorizontalY;
+	double	stephorizontalx;
+	double	stephorizontaly;
 
-	stepHorizontalX = env->ray.planeX * env->ray.ms;
-	stepHorizontalY = env->ray.planeY * env->ray.ms;
+	stephorizontalx = env->ray.planeX * env->ray.ms;
+	stephorizontaly = env->ray.planeY * env->ray.ms;
 	if (env->left)
 	{
-		if (env->map[(int)(env->px - stepHorizontalX)][(int)(env->py)] == '0')
-			env->px -= stepHorizontalX;
-		if (env->map[(int)(env->px)][(int)(env->py - stepHorizontalY)] == '0')
-			env->py -= stepHorizontalY;
+		if (env->map[(int)(env->px - stephorizontalx)][(int)(env->py)] == '0')
+			env->px -= stephorizontalx;
+		if (env->map[(int)(env->px)][(int)(env->py - stephorizontaly)] == '0')
+			env->py -= stephorizontaly;
 	}
 	else if (env->right)
 	{
-		if (env->map[(int)(env->px + stepHorizontalX)][(int)(env->py)] == '0')
-			env->px += stepHorizontalX;
-		if (env->map[(int)(env->px)][(int)(env->py + stepHorizontalY)] == '0')
-			env->py += stepHorizontalY;
+		if (env->map[(int)(env->px + stephorizontalx)][(int)(env->py)] == '0')
+			env->px += stephorizontalx;
+		if (env->map[(int)(env->px)][(int)(env->py + stephorizontaly)] == '0')
+			env->py += stephorizontaly;
 	}
 }
 
 static void	ft_move_vertical(t_env *env)
 {
-	double	stepVerticalX;
-	double	stepVerticalY;
+	double	stepverticalx;
+	double	stepverticaly;
 
-	stepVerticalX = env->ray.dirX * env->ray.ms;
-	stepVerticalY = env->ray.dirY * env->ray.ms;
+	stepverticalx = env->ray.dirX * env->ray.ms;
+	stepverticaly = env->ray.dirY * env->ray.ms;
 	if (env->down)
 	{
-		if (env->map[(int)(env->px - stepVerticalX)][(int)(env->py)] == '0')
-			env->px -= stepVerticalX;
-		if (env->map[(int)(env->px)][(int)(env->py - stepVerticalY)] == '0')
-			env->py -= stepVerticalY;
+		if (env->map[(int)(env->px - stepverticalx)][(int)(env->py)] == '0')
+			env->px -= stepverticalx;
+		if (env->map[(int)(env->px)][(int)(env->py - stepverticaly)] == '0')
+			env->py -= stepverticaly;
 	}
 	else if (env->up)
 	{
-		if (env->map[(int)(env->px + stepVerticalX)][(int)(env->py)] == '0')
-			env->px += stepVerticalX;
-		if (env->map[(int)(env->px)][(int)(env->py + stepVerticalY)] == '0')
-			env->py += stepVerticalY;
+		if (env->map[(int)(env->px + stepverticalx)][(int)(env->py)] == '0')
+			env->px += stepverticalx;
+		if (env->map[(int)(env->px)][(int)(env->py + stepverticaly)] == '0')
+			env->py += stepverticaly;
 	}
 }
 
