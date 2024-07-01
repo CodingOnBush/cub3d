@@ -6,50 +6,32 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 14:54:14 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/01 14:58:48 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-static void	ft_draw_wall(t_env *env, int col, int start, int line_height)
+static int	ft_draw_wall(t_env *env, int col, int start, int line_height)
 {
 	double const	step = 1.0 * TEXH / line_height;
-	int const		texx = ft_get_texx(env);
+	t_point			tex;
 	double			texpos;
 	int				pix;
-	int				texy;
 
+	tex.x = ft_get_texx(env);
 	texpos = (env->ray.start - (env->winh) / 2 + line_height / 2) * step;
 	while (start < env->ray.end)
 	{
-		texy = (int)texpos & (TEXH - 1);
+		tex.y = (int)texpos & (TEXH - 1);
 		texpos += step;
-		pix = ft_get_texpixel(env, texx, texy);
+		pix = ft_get_texpixel(env, tex.x, tex.y);
 		if (env->ray.side == 1)
 			pix = (pix >> 1) & 8355711;
 		ft_pixel_put(env, col, start, pix);
 		start++;
 	}
-}
-
-static void	ft_set_start_and_end(t_env *env, int line_height)
-{
-	env->ray.start = -line_height / 2 + (env->winh) / 2;
-	if (env->ray.start < 0)
-		env->ray.start = 0;
-	env->ray.end = line_height / 2 + (env->winh) / 2;
-	if (env->ray.end >= (env->winh))
-		env->ray.end = (env->winh) - 1;
-}
-
-static void	ft_draw_in_range(t_env *env, int start, int end, int col, int color)
-{
-	while (start < end)
-	{
-		ft_pixel_put(env, col, start, color);
-		start++;
-	}
+	return (start);
 }
 
 static void	ft_draw_stripe(t_env *env, int col)
@@ -68,10 +50,12 @@ static void	ft_draw_stripe(t_env *env, int col)
 		return ;
 	row = 0;
 	color = ft_rgb_to_int(env->file.colors[CEIL]);
-	ft_draw_in_range(env, 0, env->ray.start, col, color);
-	ft_draw_wall(env, col, env->ray.start, line_height);
+	while (row < env->ray.start)
+		ft_pixel_put(env, col, row++, color);
+	row = ft_draw_wall(env, col, env->ray.start, line_height);
 	color = ft_rgb_to_int(env->file.colors[FLOOR]);
-	ft_draw_in_range(env, env->ray.end, env->winh, col, color);
+	while (row < env->winh)
+		ft_pixel_put(env, col, row++, color);
 }
 
 int	ft_render(t_env *env)
