@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:56:20 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 14:43:56 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/01 16:49:58 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@
 
 # define CEIL 0
 # define FLOOR 1
-
-# define TEXH 64
 
 # define R 0
 # define G 1

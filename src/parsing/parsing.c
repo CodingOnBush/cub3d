@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 17:08:02 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/01 18:06:58 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,18 +92,39 @@ static int	ft_check_textures(t_env *env)
 	i = 0;
 	while (i < 4)
 	{
-		printf("path = [%s]\n", env->img[i].path);
 		if (ft_check_file_extension(env->img[i].path, ".xpm") == FAILURE)
 			return (FAILURE);
 		if (env->img[i].path == NULL)
 			return (ft_err("Missing texture", FAILURE));
 		fd = open(env->img[i].path, O_RDONLY);
 		if (fd == -1)
+		{
+			ft_err_title();
 			return (perror(env->img[i].path), FAILURE);
+		}
 		close(fd);
 		i++;
 	}
 	return (SUCCESS);
+}
+
+static void	ft_print_map(t_env *env)
+{
+	int	row;
+	int	col;
+
+	row = 0;
+	while (row < env->maph)
+	{
+		col = 0;
+		while (col < env->mapw)
+		{
+			printf("[%c]", env->map[col][row]);
+			col++;
+		}
+		printf("\n");
+		row++;
+	}
 }
 
 int	ft_parsing(t_env *env, char *cubfile)
@@ -116,6 +137,7 @@ int	ft_parsing(t_env *env, char *cubfile)
 		return (FAILURE);
 	if (ft_check_invalid_char(env) == FAILURE)
 		return (FAILURE);
+	// ft_print_map(env);
 	ft_reverse_map(env);
 	if (ft_find_player(env) == FAILURE)
 		return (FAILURE);

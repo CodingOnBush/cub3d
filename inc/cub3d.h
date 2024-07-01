@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 15:27:10 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/01 18:05:56 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ void	ft_move(t_env *env);
 
 /*	UTILS3	*/
 int		ft_rgb_to_int(int color[3]);
+void	ft_replace_map(char **map, int mapw, int maph);
+void	ft_err_title(void);
 
 /*	WALLHEIGHT	*/
 int		ft_get_line_height(t_env *env, int col);

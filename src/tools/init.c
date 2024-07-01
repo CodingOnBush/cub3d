@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 15:28:17 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/01 15:50:54 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ static void	ft_init_file(t_file *file)
 {
 	int	i;
 
+	i = 0;
 	file->content = NULL;
 	file->width = 0;
 	file->rows = 0;
-	i = 0;
 	while (i < 2)
 	{
 		file->colors[i][R] = 1;

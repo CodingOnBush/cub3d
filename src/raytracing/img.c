@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:47:08 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 15:28:17 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/01 16:49:42 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	ft_get_texx(t_env *env)
 	wallx -= floor((wallx));
 	texx = (int)(wallx * (double)(env->img[NORTH].imgw));
 	if (env->ray.side == 0 && env->ray.raydir.x > 0)
-		texx = TEXH - texx - 1;
+		texx = env->img[NORTH].imgh - texx - 1;
 	if (env->ray.side == 1 && env->ray.raydir.y < 0)
 		texx = env->img[NORTH].imgw - texx - 1;
 	return (texx);

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:24:35 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 16:23:23 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/01 18:05:48 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 int	ft_err(char *str, int ret)
 {
-	ft_putstr_fd(RED, 2);
-	ft_putstr_fd("Error\n🚨↳ ", 2);
-	ft_putstr_fd(RESET, 2);
+	ft_err_title();
 	ft_putstr_fd(str, 2);
 	ft_putchar_fd('\n', 2);
 	return (ret);

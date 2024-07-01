@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 17:02:37 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 17:03:33 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/01 18:14:47 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ int	ft_check_file(char *file)
 		return (FAILURE);
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
+	{
+		ft_err_title();
 		return (perror(file), FAILURE);
+	}
 	close(fd);
 	return (SUCCESS);
 }

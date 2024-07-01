@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 14:58:48 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/01 16:49:52 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ft_draw_wall(t_env *env, int col, int start, int line_height)
 {
-	double const	step = 1.0 * TEXH / line_height;
+	double const	step = 1.0 * env->img[NORTH].imgh / line_height;
 	t_point			tex;
 	double			texpos;
 	int				pix;
@@ -23,7 +23,7 @@ static int	ft_draw_wall(t_env *env, int col, int start, int line_height)
 	texpos = (env->ray.start - (env->winh) / 2 + line_height / 2) * step;
 	while (start < env->ray.end)
 	{
-		tex.y = (int)texpos & (TEXH - 1);
+		tex.y = (int)texpos & (env->img[NORTH].imgh - 1);
 		texpos += step;
 		pix = ft_get_texpixel(env, tex.x, tex.y);
 		if (env->ray.side == 1)

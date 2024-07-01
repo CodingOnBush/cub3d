@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing2.c                                         :+:      :+:    :+:   */
+/*   ft_map_is_closed.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:51:21 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 16:20:36 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/01 18:01:58 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,72 @@ static int	ft_flood_fill(t_env *env, int px, int py)
 	return (SUCCESS);
 }
 
-static void	ft_replace_map(char **map, int mapw, int maph)
+// static void	ft_print_col(t_env *env, int col)
+// {
+// 	int	row;
+
+// 	row = 0;
+// 	printf("{%d}\n", col);
+// 	while (row < env->maph)
+// 	{
+// 		printf("[%c]\n", env->map[col][row]);
+// 		row++;
+// 	}
+// 	printf("\n\n");
+// }
+
+// static void	ft_print_map(t_env *env)
+// {
+// 	int	row;
+// 	int	col;
+
+// 	row = 0;
+// 	while (row < env->maph)
+// 	{
+// 		col = 0;
+// 		while (col < env->mapw)
+// 		{
+// 			printf("[%c]", env->map[col][row]);
+// 			col++;
+// 		}
+// 		printf("\n");
+// 		row++;
+// 	}
+// }
+
+static int	ft_col_is_empty(t_env *env, int col)
 {
 	int	row;
-	int	col;
 
-	col = 0;
-	while (col < mapw)
+	row = 0;
+	while (row < env->maph)
 	{
-		row = 0;
-		while (row < maph)
-		{
-			if (map[col][row] == 'x')
-				map[col][row] = '0';
-			row++;
-		}
-		col++;
+		if (ft_iswhitespace(env->map[col][row]) == NO)
+			return (NO);
+		row++;
 	}
+	return (YES);
 }
+
+// static void	ft_print(t_env *env)
+// {
+// 	int	row;
+// 	int	col;
+
+// 	printf("mapw = %d maph = %d\n", env->mapw, env->maph);
+// 	row = 0;
+// 	while (row < env->maph)
+// 	{
+// 		col = 0;
+// 		while (col < env->mapw)
+// 		{
+// 			printf("[%c]", env->map[col][row]);
+// 			col++;
+// 		}
+// 		printf("\n");
+// 		row++;
+// 	}
+// }
 
 static int	ft_check_cols(t_env *env)
 {
@@ -58,16 +106,15 @@ static int	ft_check_cols(t_env *env)
 	int	row;
 
 	col = 0;
-	while (col < env->mapw)
+	while(col < env->mapw)
 	{
-		row = 0;
-		while (row < env->maph && ft_iswhitespace(env->map[col][row]) == YES)
-			row++;
-		if (row == env->maph)
-			return (FAILURE);
+		if (ft_col_is_empty(env, col) == NO)
+			break;
 		col++;
 	}
-	return (SUCCESS);
+	if (col == env->mapw - 1 || col == 0)
+		return (SUCCESS);
+	return (FAILURE);
 }
 
 static int	ft_check_rows(t_env *env)
@@ -99,7 +146,7 @@ int	ft_map_is_closed(t_env *env)
 	if (ft_check_rows(env) == FAILURE)
 		return (ft_err("Empty line in map\n", FAILURE));
 	if (ft_check_cols(env) == FAILURE)
-		return (ft_err("Map is not closed COLS\n", FAILURE));
+		return (ft_err("Map is not closed\n", FAILURE));
 	if (ft_flood_fill(env, px, py) == FAILURE)
 		return (ft_err("Map is not closed\n", FAILURE));
 	ft_replace_map(env->map, env->mapw, env->maph);
