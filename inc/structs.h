@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:59:43 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 14:21:04 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/01 15:28:17 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,50 +29,19 @@ typedef struct s_ray
 {
 	int		start;
 	int		end;
-
-	double	cameraX;
-	
-	double	rayDirX;
-	double	rayDirY;
 	t_vic	raydir;
-	
-	int		mapX;
-	int		mapY;
-	
-	double	sideDistX;
-	double	sideDistY;
+	int		mapx;
+	int		mapy;
 	t_vic	sidedist;
-
-	double	deltaDistX;
-	double	deltaDistY;
 	t_vic	deltadist;
-
-	double	perpWallDist;
-	int		stepX;
-	int		stepY;
-	int		hit;
+	double	adjacent;
 	int		side;
-	int		texCol;
-	
-	double	planeX;
-	double	planeY;
-	t_vic	plane;	// NOP
-
-	double	dirX;
-	double	dirY;
-	t_vic	dir;	// NOP
-
+	double	planex;
+	double	planey;
+	double	dirx;
+	double	diry;
 	double	ms;
 	double	rs;
-	int		lineHeight;
-	int		pitch;
-	int		drawStart;
-	int		drawEnd;
-	double	wallx;		//where exactly the wall was hit
-	double 	step;
-	double texPos;
-	int texY;
-	int wall;
 }			t_ray;
 
 typedef struct s_img

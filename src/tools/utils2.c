@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 16:22:53 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/29 17:45:54 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/01 15:15:10 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@ static void	ft_set_ns(t_env *env)
 {
 	if (env->pdir == 'N')
 	{
-		env->ray.planeX = -0.66;
-		env->ray.planeY = 0;
-		env->ray.dirX = 0;
-		env->ray.dirY = -1;
+		env->ray.planex = -0.66;
+		env->ray.planey = 0;
+		env->ray.dirx = 0;
+		env->ray.diry = -1;
 	}
 	else if (env->pdir == 'S')
 	{
-		env->ray.planeX = 0.66;
-		env->ray.planeY = 0;
-		env->ray.dirX = 0;
-		env->ray.dirY = 1;
+		env->ray.planex = 0.66;
+		env->ray.planey = 0;
+		env->ray.dirx = 0;
+		env->ray.diry = 1;
 	}
 }
 
@@ -34,17 +34,17 @@ static void	ft_set_we(t_env *env)
 {
 	if (env->pdir == 'W')
 	{
-		env->ray.planeX = 0;
-		env->ray.planeY = -0.66;
-		env->ray.dirX = 1;
-		env->ray.dirY = 0;
+		env->ray.planex = 0;
+		env->ray.planey = -0.66;
+		env->ray.dirx = 1;
+		env->ray.diry = 0;
 	}
 	else if (env->pdir == 'E')
 	{
-		env->ray.planeX = 0;
-		env->ray.planeY = 0.66;
-		env->ray.dirX = -1;
-		env->ray.dirY = 0;
+		env->ray.planex = 0;
+		env->ray.planey = 0.66;
+		env->ray.dirx = -1;
+		env->ray.diry = 0;
 	}
 }
 

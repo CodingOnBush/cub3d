@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 14:48:34 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/01 15:27:10 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int		ft_map_is_closed(t_env *env);
 int		ft_analyze_file(t_env *env);
 
 /*	ANALYZE2	*/
-int	ft_get_infos(t_env *env, char **split);
+int		ft_get_infos(t_env *env, char **split);
 
 /*	INIT	*/
 void	ft_init_env(t_env *env);
@@ -69,14 +69,14 @@ int		ft_gettype(char *line);
 int		ft_rgb_isvalid(t_env *env);
 
 /*	CHECK_FILE	*/
-int	ft_check_file_extension(char *file, char *ext);
-int	ft_check_file(char *file);
+int		ft_check_file_extension(char *file, char *ext);
+int		ft_check_file(char *file);
 
 /*	GET_ALL_LINES	*/
-int	ft_get_all_lines(t_env *env, char *cubfile);
+int		ft_get_all_lines(t_env *env, char *cubfile);
 
 /*	FIND_PLAYER	*/
-int	ft_find_player(t_env *env);
+int		ft_find_player(t_env *env);
 
 /*	BETTERDRAW	*/
 void	ft_draw(t_env *env, int col);
@@ -85,9 +85,9 @@ void	ft_draw(t_env *env, int col);
 void	ft_move(t_env *env);
 
 /*	UTILS3	*/
-int	ft_rgb_to_int(int color[3]);
+int		ft_rgb_to_int(int color[3]);
 
 /*	WALLHEIGHT	*/
-int	ft_get_line_height(t_env *env, int col);
+int		ft_get_line_height(t_env *env, int col);
 
 #endif

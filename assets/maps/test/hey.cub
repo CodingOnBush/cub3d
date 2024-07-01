@@ -1,7 +1,7 @@
-WE    ./assets/tex/west.xpm
-SO      ./assets/tex/south.xpm
-EA ./assets/tex/east.xpm
-NO ./assets/tex/north.xpm
+WE    ./assets/textures/west.xpm
+SO      ./assets/textures/south.xpm
+EA ./assets/textures/east.xpm
+NO ./assets/textures/north.xpm
 
 C 136, 219, 223
 F 110, 98, 89
