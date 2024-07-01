@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/30 15:34:09 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/01 11:33:49 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
+
+static void	ft_init_rest(t_ray *ray)
+{
+	ray->oppside = 0;
+	ray->stepX = 0;
+	ray->stepY = 0;
+	ray->hit = 0;
+	ray->side = 0;
+	ray->texCol = 0;
+	ray->planeX = 0.66;
+	ray->planeY = 0;
+	ray->plane.x = 0.66;
+	ray->plane.y = 0;
+	ray->dirX = 0;
+	ray->dirY = 1;
+	ray->ms = 0.055;
+	ray->rs = 0.02;
+}
 
 /*ms0.5 rs0.2*/
 static void	ft_init_ray(t_ray *ray)
@@ -18,46 +36,23 @@ static void	ft_init_ray(t_ray *ray)
 	ray->line_height = 0;
 	ray->draw_start = 0;
 	ray->draw_end = 0;
-	
 	ray->cameraX = 0;
-	
 	ray->rayDirX = 0;
 	ray->rayDirY = 0;
 	ray->raydir.x = 0;
 	ray->raydir.y = 0;
-	
 	ray->mapX = 0;
 	ray->mapY = 0;
-
 	ray->sideDistX = 0;
 	ray->sideDistY = 0;
 	ray->sidedist.x = 0;
 	ray->sidedist.y = 0;
-
 	ray->deltaDistX = 0;
 	ray->deltaDistY = 0;
 	ray->deltadist.x = 0;
 	ray->deltadist.y = 0;
-	
 	ray->perpWallDist = 0;
-	ray->oppside = 0;
-
-	ray->stepX = 0;
-	ray->stepY = 0;
-	ray->hit = 0;
-	ray->side = 0;
-	ray->texCol = 0;
-
-	ray->planeX = 0.66;
-	ray->planeY = 0;
-	ray->plane.x = 0.66;
-	ray->plane.y = 0;
-	
-	ray->dirX = 0;
-	ray->dirY = 1;
-	ray->ms = 0.055;//0.55
-	ray->rs = 0.02;//0.2
-
+	ft_init_rest(ray);
 }
 
 static void	ft_init_img(t_img *img)

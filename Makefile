@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
+#    By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/06/28 17:10:30 by momrane          ###   ########.fr        #
+#    Updated: 2024/07/01 11:19:31 by vvaudain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ VAL_FLAGS		:= --leak-check=full --track-origins=yes --track-fds=yes
 # Sources
 SRC			:=	$(wildcard $(SRC_DIR)/*.c)\
 				$(wildcard $(SRC_DIR)/parsing/*.c)\
-				$(wildcard $(SRC_DIR)/utils/*.c)
+				$(wildcard $(SRC_DIR)/utils/*.c) \
+				$(wildcard $(SRC_DIR)/draw/*.c)
 
 # Objects
 OBJ			:=	$(SRC:$(SRC_DIR)/%.c=$(BIN_DIR)/%.o)
