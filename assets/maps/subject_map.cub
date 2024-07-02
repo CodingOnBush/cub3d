@@ -1,7 +1,7 @@
-NO ./assets/textures/wolfenstein/grey_stone.xpm
-SO ./assets/textures/wolfenstein/purple_stone.xpm
-WE ./assets/textures/wolfenstein/red_brick.xpm
-EA ./assets/textures/wolfenstein/wood.xpm
+NO ./assets/textures/grey_stone.xpm
+SO ./assets/textures/purple_stone.xpm
+WE ./assets/textures/red_brick.xpm
+EA ./assets/textures/wood.xpm
 
 F 220, 100, 0
 C 225, 30, 0

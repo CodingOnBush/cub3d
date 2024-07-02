@@ -1,13 +1,12 @@
-   WE                            ./assets/textures/wolfenstein/eagle.xpm 
-  NO      ./assets/textures/wolfenstein/grey_stone.xpm
+   WE                            ./assets/textures/eagle.xpm 
+  NO      ./assets/textures/grey_stone.xpm
 
 
 
-SO ./assets/textures/wolfenstein/red_brick.xpm
 
 F   69, 222, 199
 
-EA ./assets/textures/wolfenstein/mossy.xpm
+EA ./assets/textures/mossy.xpm
 
 
 
