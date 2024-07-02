@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:51:21 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 18:01:58 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/02 12:21:36 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,39 +33,6 @@ static int	ft_flood_fill(t_env *env, int px, int py)
 	return (SUCCESS);
 }
 
-// static void	ft_print_col(t_env *env, int col)
-// {
-// 	int	row;
-
-// 	row = 0;
-// 	printf("{%d}\n", col);
-// 	while (row < env->maph)
-// 	{
-// 		printf("[%c]\n", env->map[col][row]);
-// 		row++;
-// 	}
-// 	printf("\n\n");
-// }
-
-// static void	ft_print_map(t_env *env)
-// {
-// 	int	row;
-// 	int	col;
-
-// 	row = 0;
-// 	while (row < env->maph)
-// 	{
-// 		col = 0;
-// 		while (col < env->mapw)
-// 		{
-// 			printf("[%c]", env->map[col][row]);
-// 			col++;
-// 		}
-// 		printf("\n");
-// 		row++;
-// 	}
-// }
-
 static int	ft_col_is_empty(t_env *env, int col)
 {
 	int	row;
@@ -80,36 +47,16 @@ static int	ft_col_is_empty(t_env *env, int col)
 	return (YES);
 }
 
-// static void	ft_print(t_env *env)
-// {
-// 	int	row;
-// 	int	col;
-
-// 	printf("mapw = %d maph = %d\n", env->mapw, env->maph);
-// 	row = 0;
-// 	while (row < env->maph)
-// 	{
-// 		col = 0;
-// 		while (col < env->mapw)
-// 		{
-// 			printf("[%c]", env->map[col][row]);
-// 			col++;
-// 		}
-// 		printf("\n");
-// 		row++;
-// 	}
-// }
-
 static int	ft_check_cols(t_env *env)
 {
 	int	col;
 	int	row;
 
 	col = 0;
-	while(col < env->mapw)
+	while (col < env->mapw)
 	{
 		if (ft_col_is_empty(env, col) == NO)
-			break;
+			break ;
 		col++;
 	}
 	if (col == env->mapw - 1 || col == 0)

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 18:06:58 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/02 12:20:57 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,25 +108,6 @@ static int	ft_check_textures(t_env *env)
 	return (SUCCESS);
 }
 
-static void	ft_print_map(t_env *env)
-{
-	int	row;
-	int	col;
-
-	row = 0;
-	while (row < env->maph)
-	{
-		col = 0;
-		while (col < env->mapw)
-		{
-			printf("[%c]", env->map[col][row]);
-			col++;
-		}
-		printf("\n");
-		row++;
-	}
-}
-
 int	ft_parsing(t_env *env, char *cubfile)
 {
 	if (ft_check_file(cubfile) == FAILURE)
@@ -137,7 +118,6 @@ int	ft_parsing(t_env *env, char *cubfile)
 		return (FAILURE);
 	if (ft_check_invalid_char(env) == FAILURE)
 		return (FAILURE);
-	// ft_print_map(env);
 	ft_reverse_map(env);
 	if (ft_find_player(env) == FAILURE)
 		return (FAILURE);
