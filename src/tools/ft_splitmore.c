@@ -6,22 +6,11 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 07:35:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 16:58:35 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/02 12:33:46 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
-
-// void	*ft_free_array(char **out, int i)
-// {
-// 	while (i > 0)
-// 	{
-// 		i--;
-// 		free(out[i]);
-// 	}
-// 	free(out);
-// 	return (NULL);
-// }
 
 static int	ft_count_words(const char *str, char *set)
 {
@@ -98,22 +87,3 @@ char	**ft_splitmore(char const *s, char *set)
 		return (NULL);
 	return (out);
 }
-
-// #include <stdio.h>
-
-// int	main(void)
-// {
-//  	char	**result;
-// 	char	*str;
-//  	int		i;
-
-// 	str = "1, 2, 3, 4, 5";
-// 	result = ft_splitmore(str, "\0");
-// 	i = 0;
-//  	while (result[i] != NULL) {
-//  		printf("%s\n", result[i]);
-//  		i++;
-//  	}
-// 	ft_free_array(result, i);
-// 	return (0);
-// }

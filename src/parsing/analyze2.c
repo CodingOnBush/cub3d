@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyze2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 17:00:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/02 17:26:29 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/02 18:36:14 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,27 @@ static int	ft_is_color(char **split)
 	return (NO);
 }
 
+int ft_field_empty(t_env *env)
+{
+	int	i;
+
+	i = 0;
+	while (i < 4)
+	{
+		if (env->img[i].path == NULL)
+			return (YES);
+		i++;
+	}
+	i =	0;
+	while (i < 2)
+	{
+		if (env->file.colors[i][R] == -1 || env->file.colors[i][G] == -1 || env->file.colors[i][B] == -1)
+			return (YES);
+		i++;
+	}
+	return (NO);
+}
+
 int	ft_get_infos(t_env *env, char **split)
 {
 	if (!split)
@@ -34,9 +55,9 @@ int	ft_get_infos(t_env *env, char **split)
 		return (ft_free_splitmore(split), STOP);
 	if (ft_splitlen(split) == 2 && ft_get_id(split[0]) != -1)
 	{
+		env->file.count++;
 		if (env->img[ft_get_id(split[0])].path != NULL)
 			return (ft_free_splitmore(split), GOON);
-		
 		env->img[ft_get_id(split[0])].path = ft_strdup(split[1]);
 	}
 	else if (ft_splitlen(split) == 4 && ft_is_color(split) == YES)

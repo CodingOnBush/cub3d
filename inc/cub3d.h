@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 18:05:56 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/02 18:21:59 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int		ft_map_is_closed(t_env *env);
 int		ft_analyze_file(t_env *env);
 
 /*	ANALYZE2	*/
+int 	ft_field_empty(t_env *env);
 int		ft_get_infos(t_env *env, char **split);
 
 /*	INIT	*/

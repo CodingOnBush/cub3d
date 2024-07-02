@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_file.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 17:02:37 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 18:14:47 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/02 18:36:57 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	ft_check_file_extension(char *file, char *ext)
 	point = ft_strrchr(file, '.');
 	if (!point)
 	{
-		printf("file = [%s]\n", file);
 		return (ft_err("No file extension", FAILURE));
 	}
 	if (ft_strcmp(point, ext) != 0)

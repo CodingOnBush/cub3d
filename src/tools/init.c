@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 15:50:54 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/02 18:21:22 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-/*ms0.5 rs0.2*/
 static void	ft_init_ray(t_ray *ray)
 {
 	ray->raydir.x = 0;
@@ -55,9 +54,9 @@ static void	ft_init_file(t_file *file)
 	file->rows = 0;
 	while (i < 2)
 	{
-		file->colors[i][R] = 1;
-		file->colors[i][G] = 1;
-		file->colors[i][B] = 1;
+		file->colors[i][R] = -1;
+		file->colors[i][G] = -1;
+		file->colors[i][B] = -1;
 		i++;
 	}
 	file->count = 0;

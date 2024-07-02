@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:34:53 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/02 17:28:37 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/01 18:05:50 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,4 @@ void	ft_err_title(void)
 	ft_putstr_fd(RED, 2);
 	ft_putstr_fd("Error\n↳ ", 2);
 	ft_putstr_fd(RESET, 2);
-}
-
-void	ft_update_infos(t_env *env, int id)
-{
-
 }

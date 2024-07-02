@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:51:21 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/02 12:21:36 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/02 12:45:56 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ static int	ft_col_is_empty(t_env *env, int col)
 static int	ft_check_cols(t_env *env)
 {
 	int	col;
-	int	row;
 
 	col = 0;
 	while (col < env->mapw)

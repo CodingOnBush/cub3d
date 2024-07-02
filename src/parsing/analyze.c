@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyze.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 16:50:57 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 17:04:31 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/02 18:37:31 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,19 @@ static int	ft_create_map(t_env *env)
 	return (SUCCESS);
 }
 
+void ft_print_split(char **split)
+{
+	int i = 0;
+	int j = 0;
+
+	while (split[i] != NULL)
+	{
+		printf("%s  ", split[i]);
+		i++;
+	}
+	printf("\n");
+}
+
 int	ft_analyze_file(t_env *env)
 {
 	char	**content;
@@ -105,6 +118,8 @@ int	ft_analyze_file(t_env *env)
 			break ;
 		content++;
 	}
+	if (ft_field_empty(env) == YES)
+		return (ft_err("A field is empty", FAILURE));
 	if (ft_check_infos_error(env) == FAILURE)
 		return (FAILURE);
 	if (ft_set_mapsizes(env, content) == FAILURE)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:59:43 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/02 17:23:59 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/02 17:59:49 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_file
 	int		rows;
 	int		colors[2][3];
 	int		count;
-	int		infos[6];
+	int		info[6];
 }			t_file;
 
 typedef struct s_env
