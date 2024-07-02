@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
+#    By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/07/01 15:30:39 by momrane          ###   ########.fr        #
+#    Updated: 2024/07/02 11:09:10 by vvaudain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,10 @@ NAME 			:= cub3D
 
 # Directories
 SRC_DIR			:= ./src
+TOOLS_DIR		:= $(SRC_DIR)/tools
+PARSING_DIR		:= $(SRC_DIR)/parsing
+MLX_DIR			:= $(SRC_DIR)/mlx
+RAYTRACING_DIR	:= $(SRC_DIR)/raytracing
 OBJ_DIR 		:= ./obj
 INC_DIR 		:= ./inc
 LIB_DIR 		:= ./lib
@@ -40,11 +44,32 @@ LDFLAGS			:= -L$(LIBFT_DIR) -L$(MINILIBX_DIR)
 VAL_FLAGS		:= --leak-check=full --track-origins=yes --track-fds=yes
 
 # Sources
-SRC			:=	$(wildcard $(SRC_DIR)/*.c)\
-				$(wildcard $(SRC_DIR)/tools/*.c)\
-				$(wildcard $(SRC_DIR)/parsing/*.c)\
-				$(wildcard $(SRC_DIR)/mlx/*.c)\
-				$(wildcard $(SRC_DIR)/raytracing/*.c)
+
+TOOLS		:=	$(TOOLS_DIR)/free.c \
+				$(TOOLS_DIR)/ft_splitmore.c \
+				$(TOOLS_DIR)/init.c \
+				$(TOOLS_DIR)/utils.c \
+				$(TOOLS_DIR)/utils2.c \
+				$(TOOLS_DIR)/utils3.c
+				
+RAYTRACING	:=	$(RAYTRACING_DIR)/draw.c \
+				$(RAYTRACING_DIR)/img.c \
+				$(RAYTRACING_DIR)/move.c \
+				$(RAYTRACING_DIR)/wallheight.c
+				
+PARSING		:=	$(PARSING_DIR)/analyze.c \
+				$(PARSING_DIR)/analyze2.c \
+				$(PARSING_DIR)/ft_check_file.c \
+				$(PARSING_DIR)/ft_find_player.c \
+				$(PARSING_DIR)/ft_get_all_lines.c \
+				$(PARSING_DIR)/ft_map_is_closed.c \
+				$(PARSING_DIR)/parsing.c
+
+MLX			:=	$(MLX_DIR)/event.c \
+				$(MLX_DIR)/mlx.c
+
+SRC			:=	$(SRC_DIR)/main.c $(TOOLS) $(RAYTRACING) \
+				$(PARSING) $(MLX)
 
 # Objects
 OBJ			:=	$(SRC:$(SRC_DIR)/%.c=$(BIN_DIR)/%.o)
