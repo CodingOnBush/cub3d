@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:56:20 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 16:49:58 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/02 17:25:33 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,14 @@
 # define SOUTH 1
 # define EAST 2
 # define WEST 3
-
 # define CANVAS 4
+
+# define NO	0
+# define SO	1
+# define EA	2
+# define WE	3
+# define C	4
+# define F	5
 
 # define CEIL 0
 # define FLOOR 1
