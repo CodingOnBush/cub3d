@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/02 18:21:22 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/07/03 19:33:37 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,23 @@ static void	ft_init_file(t_file *file)
 	file->count = 0;
 }
 
+void	ft_init_color(t_color *color)
+{
+	color->r = -1;
+	color->g = -1;
+	color->b = -1;
+}
+
+static void	ft_init_data(t_data *data)
+{
+	ft_init_img(&data->so);
+	ft_init_img(&data->no);
+	ft_init_img(&data->we);
+	ft_init_img(&data->ea);
+	ft_init_color(&data->floor);
+	ft_init_color(&data->ceil);
+}
+
 void	ft_init_env(t_env *env)
 {
 	int	i;
@@ -86,5 +103,8 @@ void	ft_init_env(t_env *env)
 	env->right = 0;
 	env->rotleft = 0;
 	env->rotright = 0;
+	ft_init_color(&env->floor);
+	ft_init_color(&env->ceil);
+	ft_init_data(&env->data);
 	ft_init_ray(&env->ray);
 }

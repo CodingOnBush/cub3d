@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:48:17 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 16:53:08 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/03 21:51:16 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,18 @@ static void	ft_free_map(t_env *env)
 	}
 }
 
+static void	ft_free_data(t_data *data)
+{
+	if (data->no.path)
+		free(data->no.path);
+	if (data->so.path)
+		free(data->so.path);
+	if (data->we.path)
+		free(data->we.path);
+	if (data->ea.path)
+		free(data->ea.path);
+}
+
 void	ft_free_env(t_env *env)
 {
 	int	i;
@@ -61,6 +73,7 @@ void	ft_free_env(t_env *env)
 	i = 0;
 	ft_free_file(&env->file);
 	ft_free_map(env);
+	ft_free_data(&env->data);
 	while (i < 5)
 	{
 		if (env->img[i].path)
@@ -78,7 +91,7 @@ void	ft_free_env(t_env *env)
 	}
 }
 
-void	ft_free_splitmore(char **split)
+void	ft_free_split(char **split)
 {
 	int	i;
 

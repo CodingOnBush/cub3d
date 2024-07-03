@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:24:35 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 18:05:48 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/03 21:08:25 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
 
-int	ft_iswhitespace(char c)
+int	ft_isspace(char c)
 {
 	if (c == '\0')
 		return (NO);

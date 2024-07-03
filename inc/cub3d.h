@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/02 18:21:59 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/07/03 21:57:40 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		ft_err(char *str, int ret);
 int		ft_splitlen(char **split);
 int		ft_get_id(char *str);
 int		ft_strcmp(const char *s1, const char *s2);
-int		ft_iswhitespace(char c);
+int		ft_isspace(char c);
 
 /*	PARSING	*/
 int		ft_parsing(t_env *env, char *cubfile);
@@ -38,6 +38,7 @@ int 	ft_field_empty(t_env *env);
 int		ft_get_infos(t_env *env, char **split);
 
 /*	INIT	*/
+void	ft_init_color(t_color *color);
 void	ft_init_env(t_env *env);
 
 /*	IMG	*/
@@ -55,7 +56,7 @@ int		ft_key_pressed(int keycode, t_env *env);
 
 /*	FREE	*/
 void	ft_free_env(t_env *env);
-void	ft_free_splitmore(char **split);
+void	ft_free_split(char **split);
 void	ft_free_array(char **array, int row);
 
 /*	MLX	*/
@@ -92,5 +93,15 @@ void	ft_err_title(void);
 
 /*	WALLHEIGHT	*/
 int		ft_get_line_height(t_env *env, int col);
+
+/*	PARSING2	*/
+int		ft_parsing2(t_env *env, char *filepath);
+
+/*	PARSING/UTILS	*/
+int	ft_atoicolor(const char *str);
+int	ft_is_datafull(t_env *env);
+
+/*	PARSING/ft_parse_map_infos */
+int	ft_parse_map_infos(t_env *env, int fd);
 
 #endif

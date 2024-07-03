@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+         #
+#    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/07/02 18:30:41 by vvaudain         ###   ########.fr        #
+#    Updated: 2024/07/03 21:59:38 by momrane          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,10 @@ MLX			:=	$(MLX_DIR)/event.c \
 				$(MLX_DIR)/mlx.c
 
 SRC			:=	$(SRC_DIR)/main.c $(TOOLS) $(RAYTRACING) \
-				$(PARSING) $(MLX)
+				$(PARSING) $(MLX) \
+				$(SRC_DIR)/parsing2/ft_parse_map_infos.c \
+				$(SRC_DIR)/parsing2/utils.c \
+				$(SRC_DIR)/parsing2/parsing2.c
 
 # Objects
 OBJ			:=	$(SRC:$(SRC_DIR)/%.c=$(BIN_DIR)/%.o)

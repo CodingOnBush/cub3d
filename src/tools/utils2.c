@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 16:22:53 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 15:15:10 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/03 21:08:25 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	ft_gettype(char *line)
 {
 	if (line == NULL)
 		return (-1);
-	while (*line && ft_iswhitespace(*line) == YES)
+	while (*line && ft_isspace(*line) == YES)
 		line++;
 	if (ft_strncmp(line, "NO ", 3) == 0)
 		return (NORTH);

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:51:21 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/02 12:45:56 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/03 21:08:25 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	ft_col_is_empty(t_env *env, int col)
 	row = 0;
 	while (row < env->maph)
 	{
-		if (ft_iswhitespace(env->map[col][row]) == NO)
+		if (ft_isspace(env->map[col][row]) == NO)
 			return (NO);
 		row++;
 	}

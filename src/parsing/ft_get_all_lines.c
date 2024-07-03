@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 17:04:11 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 18:06:38 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/03 21:08:25 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	ft_line_is_empty(char *line)
 	i = 0;
 	if (!line)
 		return (YES);
-	while (line[i] && ft_iswhitespace(line[i]) == YES)
+	while (line[i] && ft_isspace(line[i]) == YES)
 		i++;
 	if (line[i] == '\0' || line[i] == '\n')
 		return (YES);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:59:43 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/02 17:59:49 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/07/03 22:07:35 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ typedef struct s_point
 	int		x;
 	int		y;
 }			t_point;
+
+typedef struct s_color
+{
+	int		r;
+	int		g;
+	int		b;
+}			t_color;
 
 typedef struct s_ray
 {
@@ -66,11 +73,24 @@ typedef struct s_file
 	int		info[6];
 }			t_file;
 
+typedef struct s_data
+{
+	t_img	no;
+	t_img	so;
+	t_img	we;
+	t_img	ea;
+	t_color	floor;
+	t_color	ceil;
+}			t_data;
+
 typedef struct s_env
 {
 	t_file	file;
+	t_data	data;
 	char	**map;
 	t_img	img[5];
+	t_color	floor;
+	t_color	ceil;
 	void	*mlx_ptr;
 	void	*win_ptr;
 	int		winw;
@@ -88,5 +108,7 @@ typedef struct s_env
 	int		rotright;
 	t_ray	ray;
 }			t_env;
+
+
 
 #endif
