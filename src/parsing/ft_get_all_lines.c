@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 17:04:11 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 18:06:38 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/06 12:58:25 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	ft_remove_spaces_at_end(char *line)
 	int	len;
 
 	len = ft_strlen(line);
-	if (line[len - 1] == '\n')
+	if (len >= 1 && line[len - 1] == '\n')
 		line[len - 1] = ' ';
 	while (len > 0 && line[len - 1] == ' ')
 	{
@@ -72,13 +72,12 @@ int	ft_get_all_lines(t_env *env, char *cubfile)
 {
 	int	fd;
 	int	row;
-	int	len;
 
 	fd = open(cubfile, O_RDONLY);
 	if (fd == -1)
 		return (ft_err_title(), perror(cubfile), FAILURE);
 	env->file.rows = ft_count_lines(cubfile);
-	if (env->file.rows == -1)
+	if (env->file.rows < 0)
 		return (close(fd), FAILURE);
 	if (env->file.rows == 0)
 		return (close(fd), ft_err("Empty file", FAILURE));
@@ -90,7 +89,6 @@ int	ft_get_all_lines(t_env *env, char *cubfile)
 	while (row < env->file.rows)
 	{
 		env->file.content[row] = get_next_line(fd);
-		len = ft_strlen(env->file.content[row]);
 		ft_remove_spaces_at_end(env->file.content[row]);
 		row++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/02 18:21:59 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/07/06 13:11:23 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ int		ft_gettype(char *line);
 int		ft_rgb_isvalid(t_env *env);
 
 /*	CHECK_FILE	*/
-int		ft_check_file_extension(char *file, char *ext);
-int		ft_check_file(char *file);
+int		ft_check_file_extension(char *path, char *ext);
+int		ft_check_file(char *cubfile_path);
 
 /*	GET_ALL_LINES	*/
 int		ft_get_all_lines(t_env *env, char *cubfile);

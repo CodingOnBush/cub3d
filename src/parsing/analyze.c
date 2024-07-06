@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyze.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 16:50:57 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/02 18:37:31 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/07/06 13:31:30 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,16 @@ void ft_print_split(char **split)
 	printf("\n");
 }
 
+static void	print_data(t_env *env)
+{
+	printf("north texture	: %s\n", env->img[NORTH].path);
+	printf("south texture	: %s\n", env->img[SOUTH].path);
+	printf("west texture	: %s\n", env->img[WEST].path);
+	printf("east texture	: %s\n", env->img[EAST].path);
+	printf("floor color	: %d %d %d\n", env->file.colors[FLOOR][R], env->file.colors[FLOOR][G], env->file.colors[FLOOR][B]);
+	printf("ceil color	: %d %d %d\n", env->file.colors[CEIL][R], env->file.colors[CEIL][G], env->file.colors[CEIL][B]);
+}
+
 int	ft_analyze_file(t_env *env)
 {
 	char	**content;
@@ -118,10 +128,26 @@ int	ft_analyze_file(t_env *env)
 			break ;
 		content++;
 	}
+
+	/*
+	fill these variables:
+		env->img[NORTH].path
+		env->img[SOUTH].path
+		env->img[WEST].path
+		env->img[EAST].path
+		env->file.colors[FLOOR]
+		env->file.colors[CEIL]
+	*/
+	
+	print_data(env);
+	
 	if (ft_field_empty(env) == YES)
-		return (ft_err("A field is empty", FAILURE));
+		return (ft_err("A field is missing", FAILURE));
 	if (ft_check_infos_error(env) == FAILURE)
 		return (FAILURE);
+	
+
+	// MAP CREATION
 	if (ft_set_mapsizes(env, content) == FAILURE)
 		return (FAILURE);
 	if (ft_create_map(env) == FAILURE)
