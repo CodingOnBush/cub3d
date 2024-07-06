@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+         #
+#    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/07/02 18:30:41 by vvaudain         ###   ########.fr        #
+#    Updated: 2024/07/06 14:33:34 by momrane          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,7 @@ PARSING		:=	$(PARSING_DIR)/analyze.c \
 				$(PARSING_DIR)/ft_find_player.c \
 				$(PARSING_DIR)/ft_get_all_lines.c \
 				$(PARSING_DIR)/ft_map_is_closed.c \
+				$(PARSING_DIR)/infos.c \
 				$(PARSING_DIR)/parsing.c
 
 MLX			:=	$(MLX_DIR)/event.c \

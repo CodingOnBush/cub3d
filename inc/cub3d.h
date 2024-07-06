@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/06 13:11:23 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/06 14:34:56 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,14 @@ int		ft_parsing(t_env *env, char *cubfile);
 int		ft_map_is_closed(t_env *env);
 
 /*	ANALYZE	*/
-int		ft_analyze_file(t_env *env);
+int		ft_analyze_file(t_env *env, char *filepath);
 
 /*	ANALYZE2	*/
 int 	ft_field_empty(t_env *env);
 int		ft_get_infos(t_env *env, char **split);
 
 /*	INIT	*/
+void	ft_init_color(int color[3]);
 void	ft_init_env(t_env *env);
 
 /*	IMG	*/
@@ -55,7 +56,7 @@ int		ft_key_pressed(int keycode, t_env *env);
 
 /*	FREE	*/
 void	ft_free_env(t_env *env);
-void	ft_free_splitmore(char **split);
+void	ft_free_split(char **split);
 void	ft_free_array(char **array, int row);
 
 /*	MLX	*/
@@ -92,5 +93,8 @@ void	ft_err_title(void);
 
 /*	WALLHEIGHT	*/
 int		ft_get_line_height(t_env *env, int col);
+
+/*	PARSING/INFOS	*/
+int		ft_parse_map_infos(t_env *env, int fd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:48:17 by momrane           #+#    #+#             */
-/*   Updated: 2024/06/28 16:53:08 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/06 14:34:30 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	ft_free_env(t_env *env)
 	}
 }
 
-void	ft_free_splitmore(char **split)
+void	ft_free_split(char **split)
 {
 	int	i;
 

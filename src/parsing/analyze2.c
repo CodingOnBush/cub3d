@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 17:00:10 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/06 13:29:47 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/06 17:08:30 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,26 +48,22 @@ int ft_field_empty(t_env *env)
 int	ft_get_infos(t_env *env, char **split)
 {
 	if (!split)
-		return (ft_free_splitmore(split), GOON);
+		return (ft_free_split(split), GOON);
 	if (!split[0])
-		return (ft_free_splitmore(split), GOON);
+		return (ft_free_split(split), GOON);
 	if (ft_get_id(split[0]) == -1)
-		return (ft_free_splitmore(split), STOP);
+		return (ft_free_split(split), STOP);
 	if (ft_splitlen(split) == 2 && ft_get_id(split[0]) != -1)
 	{
-		env->file.count++;
-		// if (env->img[ft_get_id(split[0])].path != NULL)
-		// 	return (ft_free_splitmore(split), GOON);
-		// env->img[ft_get_id(split[0])].path = ft_strdup(split[1]);
+		// env->file.count++;
+		return (ft_free_split(split), GOON);
 	}
 	else if (ft_splitlen(split) == 4 && ft_is_color(split) == YES)
 	{
-		env->file.count++;
-		// env->file.colors[ft_get_id(split[0])][R] = ft_atoi(split[1]);
-		// env->file.colors[ft_get_id(split[0])][G] = ft_atoi(split[2]);
-		// env->file.colors[ft_get_id(split[0])][B] = ft_atoi(split[3]);
+		// env->file.count++;
+		return (ft_free_split(split), GOON);
 	}
 	else
-		return (ft_free_splitmore(split), STOP);
-	return (ft_free_splitmore(split), GOON);
+		return (ft_free_split(split), STOP);
+	return (ft_free_split(split), GOON);
 }

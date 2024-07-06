@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:59:43 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/02 17:59:49 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/07/06 14:24:23 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,23 @@ typedef struct s_file
 	int		info[6];
 }			t_file;
 
+typedef struct s_color
+{
+	int	r;
+	int	g;
+	int	b;
+}			t_color;
+
+typedef struct s_data
+{
+	t_img	no;
+	t_img	so;
+	t_img	we;
+	t_img	ea;
+	t_color	floor;
+	t_color	ceil;
+}			t_data;
+
 typedef struct s_env
 {
 	t_file	file;
@@ -73,6 +90,7 @@ typedef struct s_env
 	t_img	img[5];
 	void	*mlx_ptr;
 	void	*win_ptr;
+	t_data	data;
 	int		winw;
 	int		winh;
 	int		mapw;
