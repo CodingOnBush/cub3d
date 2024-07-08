@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:28:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/06 15:11:13 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 16:46:22 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,54 +44,17 @@ static void	ft_init_img(t_img *img)
 	img->imgh = 64;
 }
 
-static void	ft_init_file(t_file *file)
-{
-	int	i;
-
-	i = 0;
-	file->content = NULL;
-	file->width = 0;
-	file->rows = 0;
-	while (i < 2)
-	{
-		file->colors[i][R] = -1;
-		file->colors[i][G] = -1;
-		file->colors[i][B] = -1;
-		i++;
-	}
-	file->count = 0;
-}
-
-void	ft_init_color(int color[3])
+static void	ft_init_color(int color[3])
 {
 	color[R] = -1;
 	color[G] = -1;
 	color[B] = -1;
 }
 
-static void	ft_init_data(t_data *data)
+static void	ft_set_values(t_env *env)
 {
-	ft_init_img(&data->so);
-	ft_init_img(&data->no);
-	ft_init_img(&data->we);
-	ft_init_img(&data->ea);
-	data->floor.r = -1;
-	data->floor.g = -1;
-	data->floor.b = -1;
-	data->ceil.r = -1;
-	data->ceil.g = -1;
-	data->ceil.b = -1;
-}
-
-void	ft_init_env(t_env *env)
-{
-	int	i;
-
-	ft_init_file(&env->file);
 	env->map = NULL;
-	i = 0;
-	while (i < 5)
-		ft_init_img(&env->img[i++]);
+	env->mapstart = 0;
 	env->mlx_ptr = NULL;
 	env->win_ptr = NULL;
 	env->winw = 900;
@@ -107,6 +70,24 @@ void	ft_init_env(t_env *env)
 	env->right = 0;
 	env->rotleft = 0;
 	env->rotright = 0;
-	ft_init_data(&env->data);
+}
+
+void	ft_init_env(t_env *env)
+{
+	int	i;
+
+	i = 0;
+	while (i < 5)
+	{
+		ft_init_img(&env->img[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 2)
+	{
+		ft_init_color(env->colors[i]);
+		i++;
+	}
+	ft_set_values(env);
 	ft_init_ray(&env->ray);
 }

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:48:17 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/06 14:34:30 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 16:01:53 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,6 @@ void	ft_free_array(char **array, int row)
 	while (i < row)
 		free(array[i++]);
 	free(array);
-}
-
-static void	ft_free_file(t_file *file)
-{
-	int	i;
-
-	if (file->content != NULL)
-	{
-		i = 0;
-		while (file->content[i] != NULL)
-		{
-			free(file->content[i]);
-			i++;
-		}
-		free(file->content);
-	}
 }
 
 static void	ft_free_map(t_env *env)
@@ -59,7 +43,6 @@ void	ft_free_env(t_env *env)
 	int	i;
 
 	i = 0;
-	ft_free_file(&env->file);
 	ft_free_map(env);
 	while (i < 5)
 	{

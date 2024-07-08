@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 16:49:52 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 14:35:00 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ static void	ft_draw_stripe(t_env *env, int col)
 	if (env->ray.start >= env->ray.end)
 		return ;
 	row = 0;
-	color = ft_rgb_to_int(env->file.colors[CEIL]);
+	color = ft_rgb_to_int(env->colors[CEIL]);
 	while (row < env->ray.start)
 		ft_pixel_put(env, col, row++, color);
 	row = ft_draw_wall(env, col, env->ray.start, line_height);
-	color = ft_rgb_to_int(env->file.colors[FLOOR]);
+	color = ft_rgb_to_int(env->colors[FLOOR]);
 	while (row < env->winh)
 		ft_pixel_put(env, col, row++, color);
 }

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:26:16 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 15:09:34 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 16:03:24 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	ft_key_pressed(int keycode, t_env *env)
 		env->down = 1;
 	else if (keycode == XK_Escape)
 	{
-		printf("Escape key pressed, so byeee !\n");
+		printf("Escape key pressed, byeee !\n");
 		ft_free_env(env);
 		exit(0);
 	}

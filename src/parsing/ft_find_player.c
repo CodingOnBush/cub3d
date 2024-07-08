@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 17:06:52 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/06 12:39:05 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 16:45:29 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static void	ft_set_player_pos(t_env *env, int col, int row, char **map)
 
 int	ft_find_player(t_env *env)
 {
-	int		row;
-	int		col;
-	int		count;
+	int	row;
+	int	col;
+	int	count;
 
 	col = 0;
 	count = 0;

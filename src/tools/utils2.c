@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 16:22:53 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/01 15:15:10 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 14:34:50 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,17 @@ int	ft_gettype(char *line)
 
 int	ft_rgb_isvalid(t_env *env)
 {
-	if (env->file.colors[FLOOR][R] < 0 || env->file.colors[FLOOR][R] > 255)
+	if (env->colors[FLOOR][R] < 0 || env->colors[FLOOR][R] > 255)
 		return (NO);
-	if (env->file.colors[FLOOR][G] < 0 || env->file.colors[FLOOR][G] > 255)
+	if (env->colors[FLOOR][G] < 0 || env->colors[FLOOR][G] > 255)
 		return (NO);
-	if (env->file.colors[FLOOR][B] < 0 || env->file.colors[FLOOR][B] > 255)
+	if (env->colors[FLOOR][B] < 0 || env->colors[FLOOR][B] > 255)
 		return (NO);
-	if (env->file.colors[CEIL][R] < 0 || env->file.colors[CEIL][R] > 255)
+	if (env->colors[CEIL][R] < 0 || env->colors[CEIL][R] > 255)
 		return (NO);
-	if (env->file.colors[CEIL][G] < 0 || env->file.colors[CEIL][G] > 255)
+	if (env->colors[CEIL][G] < 0 || env->colors[CEIL][G] > 255)
 		return (NO);
-	if (env->file.colors[CEIL][B] < 0 || env->file.colors[CEIL][B] > 255)
+	if (env->colors[CEIL][B] < 0 || env->colors[CEIL][B] > 255)
 		return (NO);
 	return (YES);
 }

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:59:43 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/06 14:24:23 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 16:01:22 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,41 +56,12 @@ typedef struct s_img
 	int		imgh;
 }			t_img;
 
-typedef struct s_file
-{
-	char	**content;
-	int		width;
-	int		rows;
-	int		colors[2][3];
-	int		count;
-	int		info[6];
-}			t_file;
-
-typedef struct s_color
-{
-	int	r;
-	int	g;
-	int	b;
-}			t_color;
-
-typedef struct s_data
-{
-	t_img	no;
-	t_img	so;
-	t_img	we;
-	t_img	ea;
-	t_color	floor;
-	t_color	ceil;
-}			t_data;
-
 typedef struct s_env
 {
-	t_file	file;
 	char	**map;
 	t_img	img[5];
 	void	*mlx_ptr;
 	void	*win_ptr;
-	t_data	data;
 	int		winw;
 	int		winh;
 	int		mapw;
@@ -104,6 +75,8 @@ typedef struct s_env
 	int		right;
 	int		rotleft;
 	int		rotright;
+	int		colors[2][3];
+	int		mapstart;
 	t_ray	ray;
 }			t_env;
 

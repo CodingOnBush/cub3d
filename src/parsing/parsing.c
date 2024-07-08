@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 13:15:41 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 16:44:54 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,15 +92,18 @@ static int	ft_check_textures(t_env *env)
 	i = 0;
 	while (i < 4)
 	{
-		if (ft_check_file_extension(env->img[i].path, ".xpm") == FAILURE)
-			return (FAILURE);
 		if (env->img[i].path == NULL)
 			return (ft_err("Missing texture", FAILURE));
+		if (ft_strrchr(env->img[i].path, '.') == NULL)
+			return (FAILURE);
+		if (ft_strcmp(ft_strrchr(env->img[i].path, '.'), ".xpm") != 0)
+			return (FAILURE);
 		fd = open(env->img[i].path, O_RDONLY);
 		if (fd == -1)
 		{
 			ft_err_title();
-			return (perror(env->img[i].path), FAILURE);
+			perror(env->img[i].path);
+			return (FAILURE);
 		}
 		close(fd);
 		i++;
@@ -110,11 +113,13 @@ static int	ft_check_textures(t_env *env)
 
 int	ft_parsing(t_env *env, char *cubfile)
 {
-	if (ft_check_file(cubfile) == FAILURE)
+	if (ft_strrchr(cubfile, '.') == NULL)
+		return (ft_err("No file extension", FAILURE));
+	if (ft_strcmp(ft_strrchr(cubfile, '.'), ".cub") != 0)
+		return (ft_err("Invalid file extension", FAILURE));
+	if (ft_parse_infos(env, cubfile) == FAILURE)
 		return (FAILURE);
-	// if (ft_get_all_lines(env, cubfile) == FAILURE)
-	// 	return (FAILURE);
-	if (ft_analyze_file(env, cubfile) == FAILURE)
+	if (ft_create_map(env, cubfile) == FAILURE)
 		return (FAILURE);
 	if (ft_check_invalid_char(env) == FAILURE)
 		return (FAILURE);

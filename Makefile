@@ -6,7 +6,7 @@
 #    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/07/06 14:33:34 by momrane          ###   ########.fr        #
+#    Updated: 2024/07/08 16:37:29 by momrane          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRC_DIR			:= ./src
 TOOLS_DIR		:= $(SRC_DIR)/tools
 PARSING_DIR		:= $(SRC_DIR)/parsing
 MLX_DIR			:= $(SRC_DIR)/mlx
-RAYTRACING_DIR	:= $(SRC_DIR)/raytracing
+RAY_DIR			:= $(SRC_DIR)/raycasting
 OBJ_DIR 		:= ./obj
 INC_DIR 		:= ./inc
 LIB_DIR 		:= ./lib
@@ -44,6 +44,21 @@ LDFLAGS			:= -L$(LIBFT_DIR) -L$(MINILIBX_DIR)
 VAL_FLAGS		:= --leak-check=full --track-origins=yes --track-fds=yes
 
 # Sources
+MLX			:=	$(MLX_DIR)/event.c \
+				$(MLX_DIR)/load_images.c
+							
+PARSING		:=	$(PARSING_DIR)/create_map.c \
+				$(PARSING_DIR)/ft_find_player.c \
+				$(PARSING_DIR)/ft_map_is_closed.c \
+				$(PARSING_DIR)/ft_set_map_size.c \
+				$(PARSING_DIR)/parse_infos.c \
+				$(PARSING_DIR)/parsing.c \
+				$(PARSING_DIR)/utils.c
+
+RAYCASTING	:=	$(RAY_DIR)/img.c \
+				$(RAY_DIR)/move.c \
+				$(RAY_DIR)/render.c \
+				$(RAY_DIR)/wallheight.c
 
 TOOLS		:=	$(TOOLS_DIR)/free.c \
 				$(TOOLS_DIR)/ft_splitmore.c \
@@ -52,24 +67,7 @@ TOOLS		:=	$(TOOLS_DIR)/free.c \
 				$(TOOLS_DIR)/utils2.c \
 				$(TOOLS_DIR)/utils3.c
 				
-RAYTRACING	:=	$(RAYTRACING_DIR)/draw.c \
-				$(RAYTRACING_DIR)/img.c \
-				$(RAYTRACING_DIR)/move.c \
-				$(RAYTRACING_DIR)/wallheight.c
-				
-PARSING		:=	$(PARSING_DIR)/analyze.c \
-				$(PARSING_DIR)/analyze2.c \
-				$(PARSING_DIR)/ft_check_file.c \
-				$(PARSING_DIR)/ft_find_player.c \
-				$(PARSING_DIR)/ft_get_all_lines.c \
-				$(PARSING_DIR)/ft_map_is_closed.c \
-				$(PARSING_DIR)/infos.c \
-				$(PARSING_DIR)/parsing.c
-
-MLX			:=	$(MLX_DIR)/event.c \
-				$(MLX_DIR)/mlx.c
-
-SRC			:=	$(SRC_DIR)/main.c $(TOOLS) $(RAYTRACING) \
+SRC			:=	$(SRC_DIR)/main.c $(TOOLS) $(RAYCASTING) \
 				$(PARSING) $(MLX)
 
 # Objects
