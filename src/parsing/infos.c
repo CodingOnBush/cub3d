@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 14:22:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 11:36:01 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 13:57:09 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 
 int	ft_atoicolor(const char *str)
 {
-	int	i;
 	int	res;
+	int	i;
 
 	i = 0;
 	res = 0;
 	if (str[i] == '-' || str[i] == '+')
 		return (ft_err("Sign before color value are not allowed", -1));
-	// if (str[i] == '0' && str[i + 1] != '\0')
-	// 	return (ft_err("Invalid color value", -1));
 	while (ft_isdigit(str[i]))
 	{
 		res = (res * 10) + (str[i] - 48);
@@ -35,19 +33,10 @@ int	ft_atoicolor(const char *str)
 	return (res);
 }
 
-int	ft_is_datafull(t_env *env)
+int	ft_all_data_collected(t_env *env)
 {
 	if (!env)
 		return (NO);
-	// if (env->data.so.path == NULL || env->data.no.path == NULL
-	// 	|| env->data.ea.path == NULL || env->data.we.path == NULL)
-	// 	return (NO);
-	// if (env->data.floor.r == -1 || env->data.floor.g == -1
-	// 	|| env->data.floor.b == -1)
-	// 	return (NO);
-	// if (env->data.ceil.r == -1 || env->data.ceil.g == -1
-	// 	|| env->data.ceil.b == -1)
-	// 	return (NO);
 	if (env->img[NORTH].path == NULL || env->img[SOUTH].path == NULL
 		|| env->img[EAST].path == NULL || env->img[WEST].path == NULL)
 		return (NO);
@@ -55,7 +44,6 @@ int	ft_is_datafull(t_env *env)
 		return (NO);
 	if (env->file.colors[CEIL][R] == -1 || env->file.colors[CEIL][G] == -1 || env->file.colors[CEIL][B] == -1)
 		return (NO);
-	// printf("data is full\n");
 	return (YES);
 }
 
@@ -114,19 +102,23 @@ static int	ft_parse_line(t_env *env, char *line)
 
 	split = NULL;
 	ret = FAILURE;
-	if (line && (*line == '\0' || *line == '\n'))
-		return (SUCCESS);
-	else if (!ft_strncmp(line, "C ", 2) || !ft_strncmp(line, "F ", 2))
+	if (!ft_strncmp(line, "C ", 2) || !ft_strncmp(line, "F ", 2))
+	{
 		split = ft_splitmore(line, " ,");
+		if (ft_splitlen(split) == 4)
+			ret = ft_get_color(env, split);
+		ft_free_split(split);
+	}
 	else if (!ft_strncmp(line, "NO ", 3) || !ft_strncmp(line, "SO ", 3) || !ft_strncmp(line, "WE ", 3) || !ft_strncmp(line, "EA ", 3))
+	{
 		split = ft_splitmore(line, " ");
+		if (ft_splitlen(split) == 2)
+			ret = ft_get_path(env, split);
+		ft_free_split(split);
+	}
 	else
-		return (ft_err("Not enough infos", FAILURE));
-	if (ft_splitlen(split) == 4)
-		ret = ft_get_color(env, split);
-	else if (ft_splitlen(split) == 2)
-		ret = ft_get_path(env, split);
-	return (ft_free_split(split), ret);
+		return (ft_err("Wrong info format", FAILURE));
+	return (ret);
 }
 
 int	ft_parse_map_infos(t_env *env, int fd)
@@ -134,11 +126,12 @@ int	ft_parse_map_infos(t_env *env, int fd)
 	char	*line;
 	int		i;
 
-	while (ft_is_datafull(env) == NO)
+	while (ft_all_data_collected(env) == NO)
 	{
 		line = get_next_line(fd);
 		if (!line)
 			return (FAILURE);
+		env->file.count++;
 		i = 0;
 		while (line[i] == ' ')
 			i++;

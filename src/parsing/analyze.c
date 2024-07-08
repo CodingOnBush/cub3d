@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 16:50:57 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 11:49:18 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 13:56:47 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,26 +79,26 @@ static void	ft_print_content(char **content)
 	}
 }
 
-static void	ft_fill_map(t_env *env, char **content)
-{
-	char	**map;
-	int		row;
-	int		col;
+// static void	ft_fill_map(t_env *env, char **content)
+// {
+// 	char	**map;
+// 	int		row;
+// 	int		col;
 
-	ft_print_content(content);
-	map = env->map;
-	row = 0;
-	while (row < env->maph)
-	{
-		col = 0;
-		while (col < env->mapw && content[row][col] != '\0')
-		{
-			map[col][row] = content[row][col];
-			col++;
-		}
-		row++;
-	}
-}
+// 	ft_print_content(content);
+// 	map = env->map;
+// 	row = 0;
+// 	while (row < env->maph)
+// 	{
+// 		col = 0;
+// 		while (col < env->mapw && content[row][col] != '\0')
+// 		{
+// 			map[col][row] = content[row][col];
+// 			col++;
+// 		}
+// 		row++;
+// 	}
+// }
 
 static int	ft_create_map(t_env *env)
 {
@@ -219,7 +219,7 @@ static int	ft_set_map_size(t_env *env, int fd)
 		env->maph++;
 		if (ft_strchr(line, '\n') != NULL)
 			*(ft_strchr(line, '\n')) = '\0';
-		printf("line : [%s]\n", line);
+		// printf("line : [%s]\n", line);
 		if (line[0] == '\0')
 			empty++;
 		else
@@ -233,78 +233,74 @@ static int	ft_set_map_size(t_env *env, int fd)
 	return (SUCCESS);
 }
 
+static char	*ft_skip_map_infos(t_env *env, int fd)
+{
+	char	*line;
+
+	line = get_next_line(fd);
+	if (!line)
+		return (ft_err("Missing map", FAILURE), close(fd), NULL);
+	printf("env->file.count : %d\n", env->file.count);
+	while (line != NULL && env->file.count > 0)
+	{
+		env->file.count--;
+		if (ft_strchr(line, '\n') != NULL)
+			*(ft_strchr(line, '\n')) = '\0';
+		// printf("line : [%s]\n", line);
+		free(line);
+		line = get_next_line(fd);
+	}
+	if (!line)
+		return (ft_err("Missing map", FAILURE), close(fd), NULL);
+	return (line);
+}
+
+static int	ft_fill_map(t_env *env, char *filepath)
+{
+	char	*line;
+	int		fd;
+	int		col;
+	int		row;
+
+	fd = open(filepath, O_RDONLY);
+	if (fd == -1)
+		return (ft_err_title(), perror(filepath), FAILURE);
+	line = ft_skip_map_infos(env, fd);
+	row = 0;
+	while (line != NULL)
+	{
+		if (ft_strchr(line, '\n') != NULL)
+			*(ft_strchr(line, '\n')) = '\0';
+		printf("line : [%s]\n", line);
+		// col = 0;
+		// while (col < env->mapw && line[col] != '\0')
+		// {
+		// 	env->map[col][row] = line[col];
+		// 	col++;
+		// }
+		row++;
+		free(line);
+		line = get_next_line(fd);
+	}
+	return (close(fd), SUCCESS);
+}
+
 int	ft_analyze_file(t_env *env, char *filepath)
 {
-	char	**content;
-	char	**split;
 	int		fd;
-	char	*line;
-	int		row;
-	char	*nl;
-	int		empty;
 
 	fd = open(filepath, O_RDONLY);
 	if (fd == -1)
 		return (ft_err_title(), perror(filepath), FAILURE);
 	if (ft_parse_map_infos(env, fd) == FAILURE)
 		return (close(fd), FAILURE);
-	if (ft_field_empty(env) == YES)
-		return (ft_err("A field is missing", FAILURE));
-	
-	/* Tester ici a fond les data >< */
-	print_data(env);
-	
 	if (ft_set_map_size(env, fd) == FAILURE)
 		return (close(fd), FAILURE);
 	close(fd);
-
-	printf("mapw [%d]\n", env->mapw);
-	printf("maph [%d]\n", env->maph);
-	
 	if (ft_create_map(env) == FAILURE)
 		return (FAILURE);
+	if (ft_fill_map(env, filepath) == FAILURE)
+		return (FAILURE);
 	ft_print_map(env->map, env->mapw, env->maph);
-
-
-
-	// printf("next line : [%s]\n", get_next_line(fd));
-
-	// if (ft_set_sizes(env, fd) == FAILURE)
-	// 	return (close(fd), FAILURE);
-	// close(fd);
-	// printf("mapw: %d\n", env->mapw);
-	// printf("maph: %d\n", env->maph);
-	// fd = open(filepath, O_RDONLY);
-	// if (fd == -1)
-	// 	return (ft_err_title(), perror(filepath), FAILURE);
-	// while (env->file.count > 0)
-	// {
-	// 	line = get_next_line(fd);
-	// 	if (!line)
-	// 		break ;
-	// 	free(line);
-	// 	env->file.count--;
-	// }
-	// printf("next line: [%s]\n", get_next_line(fd));
-	// row = 0;
-	// while(1)
-	// {
-	// 	line = get_next_line(fd);
-	// 	if (!line)
-	// 		break ;
-	// 	printf("line: [%s]\n", line);
-	// 	nl = ft_strchr(line, '\n');
-	// 	if (nl)
-	// 		*nl = '\0';
-	// 	env->map[row] = line;
-	// 	row++;
-	// }
-	// close(fd);
-	// printf("mapw: %d\n", env->mapw);
-	// printf("maph: %d\n", env->maph);
-	// ft_print_map(env->map, env->mapw, env->maph);
-	// ft_fill_map(env, env->file.content + env->file.count);
-	// if (ft_check_infos_error(env) == FAILURE)
-	// 	return (FAILURE);
 	return (SUCCESS);
 }

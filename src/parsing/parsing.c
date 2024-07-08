@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 10:51:54 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 13:15:41 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,8 @@ int	ft_parsing(t_env *env, char *cubfile)
 {
 	if (ft_check_file(cubfile) == FAILURE)
 		return (FAILURE);
-	if (ft_get_all_lines(env, cubfile) == FAILURE)
-		return (FAILURE);
+	// if (ft_get_all_lines(env, cubfile) == FAILURE)
+	// 	return (FAILURE);
 	if (ft_analyze_file(env, cubfile) == FAILURE)
 		return (FAILURE);
 	if (ft_check_invalid_char(env) == FAILURE)
