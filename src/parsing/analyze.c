@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 16:50:57 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 13:56:47 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 14:01:32 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,6 +297,7 @@ int	ft_analyze_file(t_env *env, char *filepath)
 	if (ft_set_map_size(env, fd) == FAILURE)
 		return (close(fd), FAILURE);
 	close(fd);
+	print_data(env);
 	if (ft_create_map(env) == FAILURE)
 		return (FAILURE);
 	if (ft_fill_map(env, filepath) == FAILURE)

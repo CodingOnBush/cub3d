@@ -1,29 +1,10 @@
 NO ./assets/textures/eagle.xpm
-
 SO ./assets/textures/eagle.xpm
 WE ./assets/textures/eagle.xpm
-
-
-
-
-
-
-
-
-
-
-
-
 EA ./assets/textures/eagle.xpm
-
-F 41,173,237
-C 0,0,255
-
-
+F 41,173,     237
+C 0, 1,255
 111
 101
 1E1
 111
-
-
-

@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 14:22:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 14:00:26 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 14:09:55 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,15 +110,19 @@ static int	ft_parse_line(t_env *env, char *line)
 		if (ft_splitlen(split) == 4)
 			ret = ft_get_color(env, split);
 		else
-			return (ft_err("Too many or few args for a color", FAILURE));
+			return (ft_free_split(split), ft_err("Too many or few args for a color", FAILURE));
 	}
 	else if (!ft_strncmp(line, "NO ", 3) || !ft_strncmp(line, "SO ", 3) || !ft_strncmp(line, "WE ", 3) || !ft_strncmp(line, "EA ", 3))
 	{
 		split = ft_splitmore(line, " ");
 		if (ft_splitlen(split) == 2)
+		{
+			printf("split[0] = [%s]\n", split[0]);
+			printf("split[1] = [%s]\n", split[1]);
 			ret = ft_get_path(env, split);
+		}
 		else
-			return (ft_err("Too many or few args for a texture", FAILURE));
+			return (ft_free_split(split), ft_err("Too many or few args for a texture", FAILURE));
 	}	
 	else
 		return (ft_err("Not enough infos", FAILURE));
@@ -141,7 +145,9 @@ int	ft_parse_map_infos(t_env *env, int fd)
 		i = 0;
 		while (line[i] == ' ')
 			i++;
-		if (line[i] != '\n' && line[i] != '\0')
+		if (ft_strchr(line, '\n') != NULL)
+			*(ft_strchr(line, '\n')) = '\0';
+		if (line[i] != '\0')
 		{
 			if (ft_parse_line(env, &line[i]) == FAILURE)
 				return (free(line), FAILURE);
