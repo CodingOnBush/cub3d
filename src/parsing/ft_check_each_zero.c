@@ -1,51 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils3.c                                           :+:      :+:    :+:   */
+/*   ft_check_each_zero.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/01 14:34:53 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 18:22:57 by momrane          ###   ########.fr       */
+/*   Created: 2024/07/08 18:10:10 by momrane           #+#    #+#             */
+/*   Updated: 2024/07/08 18:22:09 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-int	ft_rgb_to_int(int color[3])
+int	ft_check_each_zero(t_env *env)
 {
-	int	red;
-	int	green;
-	int	blue;
-
-	red = color[0] << 16;
-	green = color[1] << 8;
-	blue = color[2];
-	return (red | green | blue);
-}
-
-void	ft_reset_map(char **map, int mapw, int maph)
-{
-	int	row;
 	int	col;
+	int	row;
 
 	col = 0;
-	while (col < mapw)
+	while (col < env->mapw)
 	{
 		row = 0;
-		while (row < maph)
+		while (row < env->maph)
 		{
-			if (map[col][row] == 'x')
-				map[col][row] = '0';
+			if (env->map[col][row] == '0')
+			{
+				if (ft_flood_fill(env, col, row) == FAILURE)
+					return (FAILURE);
+			}
 			row++;
 		}
 		col++;
 	}
-}
-
-void	ft_err_title(void)
-{
-	ft_putstr_fd(RED, 2);
-	ft_putstr_fd("Error\n↳ ", 2);
-	ft_putstr_fd(RESET, 2);
+	return (SUCCESS);
 }

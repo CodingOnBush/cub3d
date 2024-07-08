@@ -6,13 +6,13 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:51:21 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 16:45:24 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 18:25:16 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static int	ft_flood_fill(t_env *env, int px, int py)
+int	ft_flood_fill(t_env *env, int px, int py)
 {
 	if (px < 0 || px >= env->mapw || py < 0 || py >= env->maph)
 		return (FAILURE);
@@ -84,6 +84,25 @@ static int	ft_check_rows(t_env *env)
 	return (SUCCESS);
 }
 
+static void	ft_print_map(t_env *env)
+{
+	int	col;
+	int	row;
+
+	col = 0;
+	while (col < env->mapw)
+	{
+		row = 0;
+		while (row < env->maph)
+		{
+			printf("[%c]", env->map[col][row]);
+			row++;
+		}
+		printf("\n");
+		col++;
+	}
+}
+
 int	ft_map_is_closed(t_env *env)
 {
 	int const	px = env->px;
@@ -95,6 +114,10 @@ int	ft_map_is_closed(t_env *env)
 		return (ft_err("Map is not closed\n", FAILURE));
 	if (ft_flood_fill(env, px, py) == FAILURE)
 		return (ft_err("Map is not closed\n", FAILURE));
-	ft_replace_map(env->map, env->mapw, env->maph);
+	// ft_print_map(env);
+	if (ft_check_each_zero(env) == FAILURE)
+		return (ft_err("Map is not closed\n", FAILURE));
+	ft_print_map(env);
+	ft_reset_map(env->map, env->mapw, env->maph);
 	return (SUCCESS);
 }

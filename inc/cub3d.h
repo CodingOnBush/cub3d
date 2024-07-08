@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 16:33:35 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 18:22:57 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,14 @@ int		load_images(t_env *env);
 /*	create_map	*/
 int		ft_create_map(t_env *env, char *filepath);
 
+/*	ft_check_each_zero	*/
+int		ft_check_each_zero(t_env *env);
+
 /*	ft_find_player	*/
 int		ft_find_player(t_env *env);
 
 /*	ft_map_is_closed	*/
+int		ft_flood_fill(t_env *env, int px, int py);
 int		ft_map_is_closed(t_env *env);
 
 /*	ft_set_map_size	*/
@@ -94,7 +98,7 @@ int		ft_rgb_isvalid(t_env *env);
 
 /*	utils3	*/
 int		ft_rgb_to_int(int color[3]);
-void	ft_replace_map(char **map, int mapw, int maph);
+void	ft_reset_map(char **map, int mapw, int maph);
 void	ft_err_title(void);
 
 #endif

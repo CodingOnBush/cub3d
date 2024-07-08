@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 14:22:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 16:44:59 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 17:53:31 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int	ft_parse_line(t_env *env, char *line)
 	else if (ft_is_texture_line(line) == YES)
 		split = ft_splitmore(line, " ");
 	else
-		return (ft_err("Line not conform", FAILURE));
+		return (ft_err("Not enough info", FAILURE));
 	if (ft_is_color_line(line) == YES && ft_splitlen(split) == 4)
 		ret = ft_get_color(env, split);
 	else if (ft_is_texture_line(line) == YES && ft_splitlen(split) == 2)
@@ -93,7 +93,11 @@ static int	ft_parse_map_infos(t_env *env, int fd)
 	{
 		line = get_next_line(fd);
 		if (!line)
+		{
+			if (ft_all_data_collected(env) == NO)
+				ft_err("Not enough infos", FAILURE);
 			return (FAILURE);
+		}
 		env->mapstart++;
 		if (ft_strchr(line, '\n') != NULL)
 			*(ft_strchr(line, '\n')) = '\0';

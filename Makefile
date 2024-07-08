@@ -6,7 +6,7 @@
 #    By: momrane <momrane@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 18:09:00 by momrane           #+#    #+#              #
-#    Updated: 2024/07/08 16:37:29 by momrane          ###   ########.fr        #
+#    Updated: 2024/07/08 18:22:01 by momrane          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ MLX			:=	$(MLX_DIR)/event.c \
 							
 PARSING		:=	$(PARSING_DIR)/create_map.c \
 				$(PARSING_DIR)/ft_find_player.c \
+				$(PARSING_DIR)/ft_check_each_zero.c \
 				$(PARSING_DIR)/ft_map_is_closed.c \
 				$(PARSING_DIR)/ft_set_map_size.c \
 				$(PARSING_DIR)/parse_infos.c \
