@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/06 16:55:53 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 10:51:54 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	ft_check_invalid_char(t_env *env)
 		row = 0;
 		while (row < env->maph)
 		{
-			if (ft_strchr(" 01NSEW", map[col][row]) == NULL)
+			if (ft_strchr(" 01NSEW\n", map[col][row]) == NULL)
 				return (ft_err("Invalid character in map", FAILURE));
 			row++;
 		}
