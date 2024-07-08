@@ -1,10 +1,11 @@
 NO ./assets/textures/respawn_anchor_side0.xpm
-EA ./assets/textures/respawn_anchor_side2.xpm
 SO ./assets/textures/respawn_anchor_side4.xpm
+EA 					./assets/textures/respawn_anchor_side2.xpm
+
 WE ./assets/textures/respawn_anchor_side3.xpm
 
 C 35, 19, 73
-F 15, 6, 40
+F 15, 6, 255
 
 111111111111111
 111111000111111

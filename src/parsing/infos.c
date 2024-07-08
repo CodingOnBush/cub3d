@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   infos.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 14:22:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 11:36:01 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/08 13:57:44 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_atoicolor(const char *str)
 	{
 		res = (res * 10) + (str[i] - 48);
 		if (res > 255)
-			return (ft_err("Overflow of color value", -1));
+			return (ft_err("Invalid color value", -1));
 		i++;
 	}
 	if (str[i] != '\0' && str[i] != '\n')
@@ -117,15 +117,25 @@ static int	ft_parse_line(t_env *env, char *line)
 	if (line && (*line == '\0' || *line == '\n'))
 		return (SUCCESS);
 	else if (!ft_strncmp(line, "C ", 2) || !ft_strncmp(line, "F ", 2))
+	{
 		split = ft_splitmore(line, " ,");
+		if (ft_splitlen(split) == 4)
+			ret = ft_get_color(env, split);
+		else
+			return (ft_err("Too many or few args for a color", FAILURE));
+	}
 	else if (!ft_strncmp(line, "NO ", 3) || !ft_strncmp(line, "SO ", 3) || !ft_strncmp(line, "WE ", 3) || !ft_strncmp(line, "EA ", 3))
+	{
 		split = ft_splitmore(line, " ");
+		if (ft_splitlen(split) == 2)
+			ret = ft_get_path(env, split);
+		else
+			return (ft_err("Too many or few args for a texture", FAILURE));
+	}	
 	else
 		return (ft_err("Not enough infos", FAILURE));
-	if (ft_splitlen(split) == 4)
-		ret = ft_get_color(env, split);
-	else if (ft_splitlen(split) == 2)
-		ret = ft_get_path(env, split);
+	if (ft_splitlen(split) != 2 && ft_splitlen(split) != 4)
+		return (ft_free_split(split), ft_err("incorrect info", ret));
 	return (ft_free_split(split), ret);
 }
 
