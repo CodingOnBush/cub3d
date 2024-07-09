@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 18:30:12 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 18:22:57 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/09 17:06:57 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int		ft_is_color_line(char *line);
 int		ft_atoicolor(const char *str);
 int		ft_all_data_collected(t_env *env);
 
-
 /* ==================== RAYCASTING ==================== */
 /*	img	*/
 void	ft_pixel_put(t_env *env, int c, int r, int color);
@@ -100,5 +99,6 @@ int		ft_rgb_isvalid(t_env *env);
 int		ft_rgb_to_int(int color[3]);
 void	ft_reset_map(char **map, int mapw, int maph);
 void	ft_err_title(void);
+void	ft_remove_spaces_at_end(char *line);
 
 #endif

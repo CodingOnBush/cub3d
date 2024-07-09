@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:34:53 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 18:22:57 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/09 17:06:23 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,18 @@ void	ft_err_title(void)
 	ft_putstr_fd(RED, 2);
 	ft_putstr_fd("Error\n↳ ", 2);
 	ft_putstr_fd(RESET, 2);
+}
+
+void	ft_remove_spaces_at_end(char *line)
+{
+	int	i;
+
+	if (line == NULL)
+		return ;
+	i = ft_strlen(line) - 1;
+	while (i >= 0 && line[i] == ' ')
+	{
+		line[i] = '\0';
+		i--;
+	}
 }
