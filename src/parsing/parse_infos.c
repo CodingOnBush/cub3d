@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_infos.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 14:22:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 17:53:31 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/09 14:32:37 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	ft_get_color(t_env *env, char **split)
 	else if (!ft_strcmp(split[0], "F"))
 		color = FLOOR;
 	else
-		return (ft_err("AAA", FAILURE));
+		return (ft_err("Invalid color line", FAILURE));
 	if (env->colors[color][R] != -1 || env->colors[color][G] != -1
 		|| env->colors[color][B] != -1)
 		return (ft_err("Color already set", FAILURE));
@@ -74,13 +74,13 @@ static int	ft_parse_line(t_env *env, char *line)
 	else if (ft_is_texture_line(line) == YES)
 		split = ft_splitmore(line, " ");
 	else
-		return (ft_err("Not enough info", FAILURE));
+		return (ft_err("Not enough or invalid info", FAILURE));
 	if (ft_is_color_line(line) == YES && ft_splitlen(split) == 4)
 		ret = ft_get_color(env, split);
 	else if (ft_is_texture_line(line) == YES && ft_splitlen(split) == 2)
 		ret = ft_get_path(env, split);
 	else
-		return (ft_free_split(split), ft_err("Line not conform", FAILURE));
+		return (printf("split [%s]\n", split[0]), ft_free_split(split), ft_err("Line not conform", FAILURE));
 	return (ft_free_split(split), ret);
 }
 

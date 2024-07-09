@@ -6,7 +6,7 @@
 /*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:51:21 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/09 13:23:48 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:09:31 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int	ft_check_rows(t_env *env)
 	{
 		col = 0;
 		if (env->map[col][row] && env->map[col][row] == '\0')
-			return (ft_err("Map is not closed\n", FAILURE));
+			return (ft_err("Map is not closed", FAILURE));
 		while (col < env->mapw && env->map[col][row]
 			&& env->map[col][row] == ' ')
 			col++;
@@ -109,13 +109,13 @@ int	ft_map_is_closed(t_env *env)
 	int const	py = env->py;
 
 	if (ft_check_rows(env) == FAILURE)
-		return (ft_err("Empty line in map\n", FAILURE));
+		return (ft_err("Empty line in map", FAILURE));
 	if (ft_check_cols(env) == FAILURE)
-		return (ft_err("Map is not closed\n", FAILURE));
+		return (ft_err("Map is not closed", FAILURE));
 	if (ft_flood_fill(env, px, py) == FAILURE)
-		return (ft_err("Map is not closed\n", FAILURE));
+		return (ft_err("Map is not closed", FAILURE));
 	if (ft_check_each_zero(env) == FAILURE)
-		return (ft_err("Map is not closed\n", FAILURE));
+		return (ft_err("Map is not closed", FAILURE));
 	ft_reset_map(env->map, env->mapw, env->maph);
 	return (SUCCESS);
 }

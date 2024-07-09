@@ -1,16 +1,16 @@
 
 
 
- NO ./path_to_the_north_texture 
+ NO ./assets/textures/mossy.xpm 
 
-SO    ./path_to_the_south_texture         
-
-
-
-          WE  ./path_to_the_west_texture          
+SO    ./assets/textures/mossy.xpm         
 
 
-EA    ./path_to_the_east_texture             
+
+          WE  ./assets/textures/mossy.xpm          
+
+
+EA    ./assets/textures/mossy.xpm             
 
 
 

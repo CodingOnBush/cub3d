@@ -1,6 +1,6 @@
 NO ./assets/textures/respawn_anchor_side0.xpm
 SO ./assets/textures/respawn_anchor_side4.xpm
-EA 					./assets/textures/respawn_anchor_side2.xpm
+EA ./assets/textures/respawn_anchor_side2.xpm
 
 WE ./assets/textures/respawn_anchor_side3.xpm
 
