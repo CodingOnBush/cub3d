@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_map_is_closed.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:51:21 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 18:25:16 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/09 12:22:16 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	ft_map_is_closed(t_env *env)
 	// ft_print_map(env);
 	if (ft_check_each_zero(env) == FAILURE)
 		return (ft_err("Map is not closed\n", FAILURE));
-	ft_print_map(env);
+	// ft_print_map(env);
 	ft_reset_map(env->map, env->mapw, env->maph);
 	return (SUCCESS);
 }

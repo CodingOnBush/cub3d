@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
+/*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 12:27:15 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 14:35:00 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/09 13:17:39 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	ft_draw_stripe(t_env *env, int col)
 	env->ray.end = line_height / 2 + (env->winh) / 2;
 	if (env->ray.end >= (env->winh))
 		env->ray.end = (env->winh) - 1;
-	if (env->ray.start >= env->ray.end)
+	if (env->ray.start > env->ray.end)
 		return ;
 	row = 0;
 	color = ft_rgb_to_int(env->colors[CEIL]);
