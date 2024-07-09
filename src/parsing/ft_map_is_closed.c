@@ -6,7 +6,7 @@
 /*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:51:21 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/09 12:22:16 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/07/09 13:23:48 by vvaudain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,24 +84,24 @@ static int	ft_check_rows(t_env *env)
 	return (SUCCESS);
 }
 
-static void	ft_print_map(t_env *env)
-{
-	int	col;
-	int	row;
+// static void	ft_print_map(t_env *env)
+// {
+// 	int	col;
+// 	int	row;
 
-	col = 0;
-	while (col < env->mapw)
-	{
-		row = 0;
-		while (row < env->maph)
-		{
-			printf("[%c]", env->map[col][row]);
-			row++;
-		}
-		printf("\n");
-		col++;
-	}
-}
+// 	col = 0;
+// 	while (col < env->mapw)
+// 	{
+// 		row = 0;
+// 		while (row < env->maph)
+// 		{
+// 			printf("[%c]", env->map[col][row]);
+// 			row++;
+// 		}
+// 		printf("\n");
+// 		col++;
+// 	}
+// }
 
 int	ft_map_is_closed(t_env *env)
 {
@@ -114,10 +114,8 @@ int	ft_map_is_closed(t_env *env)
 		return (ft_err("Map is not closed\n", FAILURE));
 	if (ft_flood_fill(env, px, py) == FAILURE)
 		return (ft_err("Map is not closed\n", FAILURE));
-	// ft_print_map(env);
 	if (ft_check_each_zero(env) == FAILURE)
 		return (ft_err("Map is not closed\n", FAILURE));
-	// ft_print_map(env);
 	ft_reset_map(env->map, env->mapw, env->maph);
 	return (SUCCESS);
 }
