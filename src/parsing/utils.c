@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 15:27:50 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/09 14:24:32 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:36:33 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,30 @@ int	ft_is_texture_line(char *line)
 
 int	ft_is_color_line(char *line)
 {
-	if (ft_strncmp(line, "F ", 2) == 0)
-		return (YES);
-	if (ft_strncmp(line, "C ", 2) == 0)
-		return (YES);
-	return (NO);
+	if (ft_strncmp(line, "F ", 2) != 0 && ft_strncmp(line, "C ", 2) != 0)
+		return (NO);
+	line += 2;
+	while (*line == ' ')
+		line++;
+	if (!ft_isdigit(*line))
+		return (NO);
+	if (ft_strchr(line, ',') == NULL)
+		return (NO);
+	line = ft_strchr(line, ',') + 1;
+	while (*line == ' ')
+		line++;
+	if (!ft_isdigit(*line))
+		return (NO);
+	if (ft_strchr(line, ',') == NULL)
+		return (NO);
+	line = ft_strchr(line, ',') + 1;
+	while (*line == ' ')
+		line++;
+	if (!ft_isdigit(*line))
+		return (NO);
+	if (ft_strchr(line, ',') != NULL)
+		return (NO);
+	return (YES);
 }
 
 int	ft_atoicolor(const char *str)

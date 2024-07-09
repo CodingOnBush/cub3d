@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 07:14:09 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/08 18:06:41 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/09 16:27:30 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ static int	ft_check_textures(t_env *env)
 			return (ft_err("Missing texture", FAILURE));
 		if (ft_strrchr(env->img[i].path, '.') == NULL)
 			return (ft_err("No file extension", FAILURE));
+		printf("path: %s\n", env->img[i].path);
+		/* Il faut remove les espaces a la fin de la ligne */
 		if (ft_strcmp(ft_strrchr(env->img[i].path, '.'), ".xpm") != 0)
 			return (ft_err("Invalid file extension", FAILURE));
 		fd = open(env->img[i].path, O_RDONLY);

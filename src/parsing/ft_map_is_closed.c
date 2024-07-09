@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_map_is_closed.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:51:21 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/09 14:09:31 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/07/09 16:07:43 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,6 @@ static int	ft_col_is_empty(t_env *env, int col)
 	return (YES);
 }
 
-static int	ft_check_cols(t_env *env)
-{
-	int	col;
-
-	col = 0;
-	while (col < env->mapw)
-	{
-		if (ft_col_is_empty(env, col) == NO)
-			break ;
-		col++;
-	}
-	if (col == env->mapw - 1 || col == 0)
-		return (SUCCESS);
-	return (FAILURE);
-}
-
 static int	ft_check_rows(t_env *env)
 {
 	int	row;
@@ -84,24 +68,24 @@ static int	ft_check_rows(t_env *env)
 	return (SUCCESS);
 }
 
-// static void	ft_print_map(t_env *env)
-// {
-// 	int	col;
-// 	int	row;
+static void	ft_print_map(t_env *env)
+{
+	int	col;
+	int	row;
 
-// 	col = 0;
-// 	while (col < env->mapw)
-// 	{
-// 		row = 0;
-// 		while (row < env->maph)
-// 		{
-// 			printf("[%c]", env->map[col][row]);
-// 			row++;
-// 		}
-// 		printf("\n");
-// 		col++;
-// 	}
-// }
+	row = 0;
+	while (row < env->maph)
+	{
+		col = 0;
+		while (col < env->mapw)
+		{
+			printf("[%c]", env->map[col][row]);
+			col++;
+		}
+		printf("\n");
+		row++;
+	}
+}
 
 int	ft_map_is_closed(t_env *env)
 {
@@ -110,10 +94,9 @@ int	ft_map_is_closed(t_env *env)
 
 	if (ft_check_rows(env) == FAILURE)
 		return (ft_err("Empty line in map", FAILURE));
-	if (ft_check_cols(env) == FAILURE)
-		return (ft_err("Map is not closed", FAILURE));
 	if (ft_flood_fill(env, px, py) == FAILURE)
 		return (ft_err("Map is not closed", FAILURE));
+	ft_print_map(env);
 	if (ft_check_each_zero(env) == FAILURE)
 		return (ft_err("Map is not closed", FAILURE));
 	ft_reset_map(env->map, env->mapw, env->maph);

@@ -3,35 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   parse_infos.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvaudain <vvaudain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 14:22:49 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/09 14:32:37 by vvaudain         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:51:25 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static int	ft_get_path(t_env *env, char **split)
+static int	ft_get_path(t_env *env, char *line, char *path)
 {
 	char	*nl;
 	int		id;
 
-	if (!split || !split[0] || !split[1])
+	if ((path && path[0] == '\0') || !line)
 		return (ft_err("Failed to get path", FAILURE));
-	if (ft_strcmp(split[0], "NO") == 0)
+	if (ft_strncmp(line, "NO ", 3) == 0)
 		id = NORTH;
-	else if (ft_strcmp(split[0], "SO") == 0)
+	else if (ft_strncmp(line, "SO ", 3) == 0)
 		id = SOUTH;
-	else if (ft_strcmp(split[0], "WE") == 0)
+	else if (ft_strncmp(line, "WE ", 3) == 0)
 		id = WEST;
-	else if (ft_strcmp(split[0], "EA") == 0)
+	else if (ft_strncmp(line, "EA ", 3) == 0)
 		id = EAST;
 	else
 		return (ft_err("Failed to get path", FAILURE));
 	if (env->img[id].path)
 		return (ft_err("Path already set", FAILURE));
-	env->img[id].path = ft_strdup(split[1]);
+	env->img[id].path = ft_strdup(path);
 	if (!env->img[id].path)
 		return (ft_err("Failed to get path", FAILURE));
 	nl = ft_strchr(env->img[id].path, '\n');
@@ -66,21 +66,26 @@ static int	ft_parse_line(t_env *env, char *line)
 {
 	char	**split;
 	int		ret;
+	int		i;
 
 	split = NULL;
 	ret = FAILURE;
 	if (ft_is_color_line(line) == YES)
 		split = ft_splitmore(line, " ,");
 	else if (ft_is_texture_line(line) == YES)
-		split = ft_splitmore(line, " ");
+	{
+		i = 3;
+		while (line[i] == ' ')
+			i++;
+	}
 	else
-		return (ft_err("Not enough or invalid info", FAILURE));
+		return (ft_err("Not enough or invalid infos", FAILURE));
 	if (ft_is_color_line(line) == YES && ft_splitlen(split) == 4)
 		ret = ft_get_color(env, split);
-	else if (ft_is_texture_line(line) == YES && ft_splitlen(split) == 2)
-		ret = ft_get_path(env, split);
+	else if (ft_is_texture_line(line) == YES)
+		ret = ft_get_path(env, line, &line[i]);
 	else
-		return (printf("split [%s]\n", split[0]), ft_free_split(split), ft_err("Line not conform", FAILURE));
+		return (ft_free_split(split), ft_err("Line not conform", FAILURE));
 	return (ft_free_split(split), ret);
 }
 
