@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:51:21 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/09 16:07:43 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/10 10:59:58 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,25 +68,6 @@ static int	ft_check_rows(t_env *env)
 	return (SUCCESS);
 }
 
-static void	ft_print_map(t_env *env)
-{
-	int	col;
-	int	row;
-
-	row = 0;
-	while (row < env->maph)
-	{
-		col = 0;
-		while (col < env->mapw)
-		{
-			printf("[%c]", env->map[col][row]);
-			col++;
-		}
-		printf("\n");
-		row++;
-	}
-}
-
 int	ft_map_is_closed(t_env *env)
 {
 	int const	px = env->px;
@@ -96,7 +77,6 @@ int	ft_map_is_closed(t_env *env)
 		return (ft_err("Empty line in map", FAILURE));
 	if (ft_flood_fill(env, px, py) == FAILURE)
 		return (ft_err("Map is not closed", FAILURE));
-	ft_print_map(env);
 	if (ft_check_each_zero(env) == FAILURE)
 		return (ft_err("Map is not closed", FAILURE));
 	ft_reset_map(env->map, env->mapw, env->maph);

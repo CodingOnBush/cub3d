@@ -1,15 +1,11 @@
-   WE                            ./assets/textures/eagle.xpm 
-  NO      ./assets/textures/grey_stone.xpm
-
-
-
-SO ./assets/textures/red_brick.xpm
+NO ./assets/textures/bookshelf.xpm
+SO ./assets/textures/bookshelf_01.xpm
+WE ./assets/textures/bookshelf_02.xpm
 
 F   69, 222, 199
 
-EA ./assets/textures/mossy.xpm
 
-
+EA ./assets/textures/bookshelf_03.xpm
 
 C 235, 198, 52
 

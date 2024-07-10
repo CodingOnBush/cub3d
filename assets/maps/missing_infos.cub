@@ -1,16 +1,11 @@
-   WE                            ./assets/textures/eagle.xpm 
-  NO      ./assets/textures/grey_stone.xpm
-
-
-
-
-
-EA ./assets/textures/mossy.xpm
+NO ./assets/textures/Mona_Lisa.xpm
+SO ./assets/textures/Wheat_Field.xpm
+WE ./assets/textures/the_starry_night.xpm
 
 
 
 C 235, 198, 52
-SO ./assets/textures/mossy.xpm
+EA ./assets/textures/girl_with_a_pearl_earring.xpm
 111111111111111111111111
 100000000000000000000001
 100000000000000000000001

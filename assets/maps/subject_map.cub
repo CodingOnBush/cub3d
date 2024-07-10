@@ -1,7 +1,7 @@
-NO ./assets/textures/grey_stone.xpm
-SO ./assets/textures/purple_stone.xpm
-WE ./assets/textures/red_brick.xpm
-EA ./assets/textures/wood.xpm
+NO ./assets/textures/bookshelf.xpm
+SO ./assets/textures/bookshelf_01.xpm
+WE ./assets/textures/bookshelf_02.xpm
+EA ./assets/textures/bookshelf_03.xpm
 
 F 220, 100, 0
 C 225, 30, 0

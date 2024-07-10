@@ -6,7 +6,7 @@
 /*   By: momrane <momrane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 15:27:50 by momrane           #+#    #+#             */
-/*   Updated: 2024/07/09 15:36:33 by momrane          ###   ########.fr       */
+/*   Updated: 2024/07/10 11:00:10 by momrane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,6 @@ int	ft_is_texture_line(char *line)
 		return (YES);
 	return (NO);
 }
-
-// static int	ft_color_line_is_valid(char *line)
-// {
-// 	int	digit;
-
-// 	printf("line = [%s]\n", line);
-// 	if (!line)
-// 		return (NO);
-// 	while(*line == ' ')
-// 		line++;
-// 	if (!ft_isdigit(*line))
-// 		return (NO);
-// 	digit = 1;
-// 	while(ft_isdigit(*line))
-// 		line++;
-// }
 
 int	ft_is_color_line(char *line)
 {
